@@ -1,0 +1,29 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to start the Data_Server on the requested machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Written  10jul07  DLM  Started with Phil Hinz's runao script
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Set the name of the logfile so we can write information into it
+#
+logfile="${MMTAO_DATA_DIR}/log_data_server"
+#
+# Check to see if the data_server is running.  If so, then kill it
+#
+running=`ps auxw | grep '\.\/data_server' | awk '{print $2}'`
+if [ $running ]; then 
+    kill -9 $running
+    echo "Killed: `date`" >> $logfile
+fi
+#
+# Check to see if the log_data_server output is running.  If so, then kill it
+#
+running=`ps auxw | grep 'tail \-0 \-f' | grep 'log_data_server' | awk '{print $2}'`
+if [ $running ]; then 
+    kill -9 $running
+fi

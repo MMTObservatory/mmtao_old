@@ -1,0 +1,52 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to check that the requested AO Server on the requested machine
+#   is running
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Written  26jul07  DLM  Started with Phil Hinz's runao script
+#
+# Altered  13sep07  DLM  Added Topbox Server stuff
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# A server name must be supplied.  Check to see if one was sent
+#
+if [[ $1 == "" ]]; then
+    echo "No server name given"
+else
+#
+# Save the server name
+#
+    server=$1
+#
+# Check to see if a hostname was given.  If not, use "localhost"
+#
+    if [[ $2 != "" ]]; then
+	hostname=$2
+    else
+	hostname="localhost"
+    fi
+#
+# add username pcr
+#
+    if [[ $hostname == ao-pcr.mmto.arizona.edu ]]; then
+	hostname="pcr@ao-pcr.mmto.arizona.edu"
+    fi
+#
+# Query the requested AO Server on the specified host
+#
+    if [[ $server == pcr_server ]]; then
+	ssh -XYCq $hostname query_pcr_server
+    elif [[ $server == pcr ]]; then
+	ssh -XYCq $hostname query_pcr
+    elif [[ $server == dds ]]; then
+	ssh -XYCq $hostname query_dds
+    elif [[ $server == topbox_server ]]; then
+	ssh -XYCq $hostname query_topbox_server
+    else
+	echo "Unkown server $server"
+    fi
+fi

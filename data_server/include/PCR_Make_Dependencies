@@ -1,0 +1,46 @@
+################
+#
+# General Make Dependancies for PCR routines
+#
+# Written  19nov05  DLM  	Started with GUI_Make_Dependancies for MMTAO GUI
+#
+################
+#
+# Compile and archive functions
+#
+
+$(LIB).a:$(LIB).a($(LIST:.c=.o))
+
+#
+# Create new .o file if .c file is newer or if any of the #include files are
+#   newer than the .o file.  The dependancies are created by the "make depends"
+#   command are held in the depends file.
+#
+
+.c.o:
+	$(CC) -c $(CFLAGS) $*.c
+
+#
+# Insert .o file if it is newer than the one currently in the archive.
+#
+
+.o.a:
+	@ar -rs $@ $*.o
+
+
+include depends
+
+clean:
+	@${RM} *.o *.a *.x depends
+
+depends:
+	@${RM} depends
+	@touch depends
+	@for i in $(LIST); do \
+		$(CC) $(DFLAGS) $(CFLAGS) $$i -o $${i/.c/.d} ; \
+		cat $${i/.c/.d} >> depends; \
+		rm $${i/.c/.d}; \
+	done
+	@echo "'depends' file created"
+
+.SUFFIXES: .c .a

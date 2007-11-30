@@ -1,0 +1,40 @@
+################
+#
+# General Make Flags for the PCR routines
+#
+# Written  19nov05  DLM  Started with Makefile from MMTAO GUI
+#
+################
+#
+# Compiler specifics
+#
+
+CC = gcc
+LINKER = gcc
+
+# Determine the operating system we are using and set the compilation
+#   and linking paramater accordingly
+#
+
+ifeq ($(OSTYPE), darwin)
+  #  Mac OSX
+  ifeq ($(MACHTYPE), powerpc)
+    # Mac with powerpc chip
+    CFLAGS = -I$(PCR_HOME)/include -I$(PCR_HOME)/data_server/include -Wall -DMAC
+    LD_FLAGS = -lcfitsio
+  else
+    # Mac with Intel chip
+    CFLAGS = -I$(PCR_HOME)/include -I$(PCR_HOME)/data_server/include -Wall
+    LD_FLAGS = -lcfitsio
+  endif
+else
+  #  Linux
+  CFLAGS = -I$(PCR_HOME)/include -I$(PCR_HOME)/data_server/include -Wall
+  LD_FLAGS = -lcfitsio -lm -lpthread
+endif
+
+#
+# Flags to make dependances
+#
+
+DFLAGS=	-MM

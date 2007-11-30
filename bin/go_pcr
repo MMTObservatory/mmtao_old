@@ -1,0 +1,17 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to start windows to run DServ with the test servers
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+cd ${PCR_HOME}/pcr_server/Source
+exec xterm -geo 70x10+839+192 -sb -sl 500 &
+cd ${PCR_HOME}/pcr_server/Source
+exec xterm -geo 70x10+839+359 -sb -sl 500 &
+cd ${PCR_HOME}/pcr_server/Source
+exec xterm -geo 70x10+839+526 -sb -sl 500 &
+cd ${PCR_HOME}/pcr_server/Source
+exec xterm -geo 70x10+839+693 -sb -sl 500 &
+cd ${PCR_HOME}/pcr_server
+exec xterm -geo 100x25+0+426 -sb -sl 500 &

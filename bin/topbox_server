@@ -1,0 +1,13 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script start the Topbox_Server process
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Written  12sep07 DLM  Started with ./pcr_server
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+cd ${PCR_HOME}/topbox_server
+exec ./topbox_server

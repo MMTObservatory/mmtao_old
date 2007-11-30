@@ -1,0 +1,20 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to start the Error PCR server
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Written   1aug07  DLM  Started local_pcr_server
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+#
+# Set the xterm title to something more informative
+#
+echo -n "]2;Error Server @ `/bin/hostname`"
+#
+# Start the pcr_server and place time stamp in the logfile
+#
+cd ${PCR_HOME}/data_server/Source
+./error

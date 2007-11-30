@@ -1,0 +1,22 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to start the Topbox_Server on the requested machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Written  10jul07  DLM  Started with Phil Hinz's runao script
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Check to see if a hostname was given.  If not, use "localhost"
+#
+if [[ $1 != "" ]]; then
+    hostname=$1
+else
+    hostname="localhost"
+fi
+#
+# Start the Topbox Server on the specified host
+#
+ssh -XYCq $hostname xterm -geometry 80x10+0+624 +hold -sb -sl 500 -title "Topbox_Server" -e "local_topbox_server" &

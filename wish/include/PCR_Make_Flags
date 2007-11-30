@@ -1,0 +1,54 @@
+################
+#
+# General Make Flags for the MMTAO GUI
+#
+# Written 24feb03  DLM  Removed these from the individual Makefiles
+#
+################
+#
+# Compiler specifics
+#
+################
+#
+# The C compiler is used for compilation, but in order to include PGplot in
+#   the wish shell, the FORTRAN compiler must be used to link
+#
+
+CC = gcc
+
+# Determine the operating system we are using and set the compilation
+#   and linking paramater accordingly
+#
+
+ifeq ($(OSTYPE), darwin)
+  #  Mac OS X (powerpc and i386)
+  ifeq ($(MACHTYPE), powerpc)
+    # Mac with powerpc chip
+    LINKER = gfortran
+    CFLAGS = -I$(PCR_HOME)/include -I$(PCR_HOME)/wish/include -DMAC -Wall
+    LD_FLAGS = -lpng -ltkpgplot -lcpgplot -lpgplot -ltcl -ltk -ltix -lcfitsio -L/usr/X11R6/lib -lX11 -multiply_defined suppress -bind_at_load
+  else
+    # Mac with Intel chip
+    LINKER = gfortran
+    CFLAGS = -I$(PCR_HOME)/include -I$(PCR_HOME)/wish/include -Wall
+    LD_FLAGS = -lpng -ltkpgplot -lcpgplot -lpgplot -ltcl -ltk -ltix -lcfitsio -L/usr/X11R6/lib -lX11 -multiply_defined suppress -bind_at_load
+  endif
+else
+  ifeq ($(MACHTYPE), x86_64)
+    #  Linux
+    LINKER = g77
+    CFLAGS = -I$(PCR_HOME)/include -I$(PCR_HOME)/wish/include -Wall
+    LD_FLAGS = -lpng -ltkpgplot -lcpgplot -lpgplot -ltcl -ltk -ltix -lcfitsio -lpthread
+  else
+    #  Linux
+    LINKER = gfortran
+    CFLAGS = -I$(PCR_HOME)/include -I$(PCR_HOME)/wish/include -Wall
+    LD_FLAGS = -lpng -ltkpgplot -lcpgplot -lpgplot -ltcl -ltk -ltix -lcfitsio -lpthread
+  endif
+endif
+
+#
+# Flags to make dependances
+#
+
+DFLAGS=	-MM

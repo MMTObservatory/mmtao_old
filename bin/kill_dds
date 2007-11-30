@@ -1,0 +1,29 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to start the PCR_Server on the requested machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Written  10jul07  DLM  Started with Phil Hinz's runao script
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Set the name of the logfile so we can write information into it
+#
+logfile="${MMTAO_DATA_DIR}/log_DDS"
+#
+# Check to see if the dm server is running.  If so, then kill it
+#
+running=`ps auxw | grep '\.\/dm' | awk '{print $2}'`
+if [ $running ]; then 
+    kill -9 $running
+    echo "Killed: `date`" >> $logfile
+fi
+#
+# Check to see if the log_DDS output is running.  If so, then kill it
+#
+running=`ps auxw | grep 'tail \-0 \-f' | grep 'log_DDS' | awk '{print $2}'`
+if [ $running ]; then 
+    kill -9 $running
+fi

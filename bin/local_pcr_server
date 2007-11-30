@@ -1,0 +1,36 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to start the Data_Server on the requested machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Written  10jul07  DLM  Started with Phil Hinz's runao script
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Check that the log directory exits.  If not, create it
+#
+if [ ! -e $MMTAO_DATA_DIR ]; then
+    mkdir -p $MMTAO_DATA_DIR
+fi
+#
+# Set the log file name
+#
+logfile="${MMTAO_DATA_DIR}/log_data_server"
+#
+# Start process to echo the log file to the terminal so the user can see
+#   what the data_server is doing and and errors
+#
+touch $logfile
+tail_logfile $logfile &
+sleep 1
+#
+# Set the xterm title to something more informative
+#
+echo -n "]2;Data Server @ `/bin/hostname`"
+#
+# Start the data_server and place time stamp in the logfile
+#
+echo "Started: `date`" >> $logfile
+data_server >> $logfile 

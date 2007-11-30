@@ -1,0 +1,9 @@
+
+   NOTE: The VoltMeter tcl routines have not been updated to
+	 PCR_HOME rather than AO_GUI_HOME.
+
+   NOTE: VoltMeter_Cmd is currently not included in
+         the compilation of PCR_Wish.  The VoltMeter
+	 GUI is about 90% done.
+
+   30nov07  DLM

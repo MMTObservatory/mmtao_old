@@ -1,0 +1,28 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to start the PCR on the requested machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Written  10jul07  DLM  Started with Phil Hinz's runao script
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Check to see if a hostname was given.  If not, use "localhost"
+#
+if [[ $1 != "" ]]; then
+    pcr_host=$1
+else
+    pcr_host="localhost"
+fi
+#
+# add username pcr
+#
+if [[ $pcr_host == ao-pcr.mmto.arizona.edu ]]; then
+    pcr_host="pcr@ao-pcr.mmto.arizona.edu"
+fi
+#
+# Kill the PCR Server on the specified host
+#
+ssh -XYCq $pcr_host kill_dds

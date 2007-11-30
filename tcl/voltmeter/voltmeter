@@ -1,0 +1,16 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Test script to create a Tcl-Tk window
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Altered  25feb03 DLM  Change path to AO_wish and DNet_startup.tcl from CAAO_HOME
+#                         to AO_GUI_HOME.  This last environment
+#                         variable is set in ${CAAO_HOME}/scripts/cshrc.caao,
+#                         which should be sourced by the users .cshrc
+#
+# The next line is execute by /bin/sh to start the TclTk shell
+
+cd ${AO_GUI_HOME}/tcl/voltmeter
+exec AO_Wish -f voltmeter_startup.tcl

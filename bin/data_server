@@ -1,0 +1,21 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to create a MMTAO Tcl-Tk window
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Altered  25may02 DLM  Change path to startup.tcl from CAAO_HOME
+#                         to AO_GUI_HOME.  This last environment
+#                         variable is set in ${CAAO_HOME}/scripts/cshrc.caao,
+#                         which should be sourced by the users .cshrc
+#                       Changed startup.tcl to AO_GUI_startup.tcl.
+#
+# Altered   2feb06 DLM  Created a new MMTAO main gui
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# The next line is execute by /bin/sh to start the TclTk shell
+#
+cd ${PCR_HOME}/data_server
+exec ./data_server
