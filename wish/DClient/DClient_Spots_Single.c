@@ -89,7 +89,7 @@ int DClient_Spots_Single( DClient_Info *Client_Info, short *Spots_Array, long *f
   nBytes = ntohl( *(long *)Client_Info->server.in_line);
 
 #if( DEBUG )
-  printf("  DClient_Spots_Single: Byte Count = %d\n", nBytes);
+  printf("  DClient_Spots_Single: Byte Count = %ld\n", nBytes);
 #endif
 
   if ( abs(nBytes) == Client_Info->server.nBytes ){
@@ -112,7 +112,7 @@ int DClient_Spots_Single( DClient_Info *Client_Info, short *Spots_Array, long *f
     *frameNumber = ntohl( *(long *)Client_Info->server.in_line);
 
 #if( DEBUG )
-    printf("  DClient_Spots_Single: Frame Number = %d\n", *frameNumber);
+    printf("  DClient_Spots_Single: Frame Number = %ld\n", *frameNumber);
 #endif
 
     num = Server_Read( (Server_Info *)Client_Info, Client_Info->server.nBytes);

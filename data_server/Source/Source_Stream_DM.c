@@ -41,12 +41,12 @@ int Source_Stream_DM( DServ_Info *Info, long debug )
 
   /* Array variables */
   short **DM_Vector = NULL;
+  short *host_data;
   short *data;
   char *dataPtr;
   short nullvalue = 0;
   int anynull;
   char string_value[80];
-  int num_dm_values;
   int num_values;
   int num_frames;
   static char File_Base[STRING_LENGTH];
@@ -119,6 +119,7 @@ int Source_Stream_DM( DServ_Info *Info, long debug )
   */
   DM_Vector = (short **) malloc (num_frames*sizeof(short *));
   DM_Vector[0] = (short *) malloc (num_frames*Info->data->total_bytes);
+  host_data = (short *) malloc (num_values*sizeof(short));
 
   memset( DM_Vector[0], 0,  Info->data->total_bytes);
   for ( i=1; i<num_frames; i++) {
@@ -429,7 +430,7 @@ int Source_Stream_DM( DServ_Info *Info, long debug )
     Convert ALL data to host format
   */
   for ( i=0; i<num_frames; i++) {
-    for ( j=0; j<num_dm_values; j++) {
+    for ( j=0; j<TOTAL_DM_VALUES; j++) {
       DM_Vector[i][j] = htons(DM_Vector[i][j]);
     }
   }
