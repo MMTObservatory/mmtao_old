@@ -367,6 +367,7 @@ Smart_Init ( Socket_Info *Socket, int debug)
     for ( tries = 0; tries < MAX_INIT_TRIES; ++tries ) {
 	if ( ! Socket->connected ) {
 	    printf("  Smart_Init: No connection\n" );
+	    fflush(stdout);
 	    return -1;
 	}
 
@@ -376,19 +377,20 @@ Smart_Init ( Socket_Info *Socket, int debug)
 
 	if ( rv == 0  ) {
 	    if ( tries > 0 )
-	    	printf ("Got it!\n");
+	      printf ("  Smart_Init: Initialization Successful after %d tries!\n", tries);
+	    fflush(stdout);
 	    return 0;
 	}
 
-        printf("  Smart_Init: Initialization fails, code %d (%s)\n", -rv, Socket->name);
-        fflush(stdout);
-
-	debug = 1;
-	printf("  Try again (attempt %d)\n", tries+1 );
+	if (debug ) {
+	  printf("  Smart_Init: Initialization fails, code %d (%s), attempt %d\n", -rv, Socket->name, tries+1 );
+	  fflush(stdout);
+	}
 
     }
 
-    printf("  Smart_Init: Giving up\n" );
+    printf("  Smart_Init: Initialization failed, quit after %d tries\n", tries );
+    fflush(stdout);
     return -1;
 }
 

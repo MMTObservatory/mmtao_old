@@ -16,6 +16,10 @@
 #
 if [[ $1 == "" ]]; then
     echo "No server name given"
+    echo "  usage:"
+    echo "    query_process \"process_name\" \"machine_name\""
+    echo "        \"process_name\" = pcr_server, pcr, dds, topbox_server"
+    echo "        \"machine_name\" = ao-server.mmto.arizona.edu (for example)"
 else
 #
 # Save the server name

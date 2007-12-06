@@ -1,9 +1,15 @@
 /*
   Define the ports that different server will listen
-    to.  This header file is read by
-    ~/mmtao/pcr/v?.?/wish
-    ~/mmtao/pcr/v?.?/pcr_server
-    ~/mmtao/pcr/v?.?/topbox_server
+    to.  This header file is read by routines in the
+    directories
+    ~/ao/wish
+    ~/ao/data_server
+    ~/ao/topbox_server
+
+  If you change this include file, then you only need
+    to type
+      % make
+    in the ~/ao directory for all routines to be updated
 
   Written  5sept03  DLM
 
@@ -21,7 +27,7 @@
 //#define PCR_ADDRESS       "trefoil.mmto.arizona.edu"
 //#define PCR_ADDRESS       "ao-pcr.mmto.arizona.edu"
 //#define PCR_ADDRESS       "tilt.as.arizona.edu"
-//#define PCR_ADDRESS       "tuco"
+//#define PCR_ADDRESS       "tuco.as.arizona.edu"
 //#define PCR_ADDRESS       "astigmatism"
 
 /* Ports to connect to the PCR */

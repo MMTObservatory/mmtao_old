@@ -49,11 +49,9 @@ proc process_start { process parent_win } {
 		[tk_messageBox -parent $parent_win -icon question -type yesno \
 		     -message "dds is running\nAre you sure you want to kill it?" ]
 	    if { $status == "yes" } {
-		puts "exec stop_dds $PCR_Address "
 		set status [catch { exec stop_dds $PCR_Address & } msg ]
 	    }
 	} else {
-	    puts "exec start_dds $PCR_Address "
 	    set status [catch { exec start_dds $PCR_Address & } msg ]
 	}
     }
