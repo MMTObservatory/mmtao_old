@@ -64,6 +64,7 @@ void *Info_Master( void *Passed_Info);
 void *Info_Process( void *Passed_Info);
 int Info_ReadFile( Info_Entry *List, long list_length, char *filename, long debug);
 int Info_ReadLine(FILE *f, char *header);
+int Info_SeeingArray( int clientfd, Info_Array *Array);
 int Info_SeeingPositions( Info_Struct *Info, long **Seeing_Positions,
 			  long *Seeing_Count, long debug);
 int Info_SendAll( int clientfd, Info_Entry *List, long list_length);

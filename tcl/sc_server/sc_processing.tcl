@@ -130,8 +130,8 @@ proc sc_processing { sock } {
 
 	if { $SC_Parameters != 3 } {
 
-	    SC_Log "sc_processing: Error: Astigmatism request requires 1 parameters"
-	    SC_Write $sock "Error: Astigmatism request requires 1 parameters"
+	    SC_Log "sc_processing: Error: Astigmatism request requires 2 parameters"
+	    SC_Write $sock "Error: Astigmatism request requires 2 parameters"
 
 	} elseif { $SC_Accept } {
 

@@ -844,7 +844,7 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
   strcat(filename,"/dds_");
   strcat(filename,fname);
 
-  printf(" frames saved to %s_*.fits in %f seconds (%3.0f Hz)\n", filename, total_time,
+  printf("     Data saved to %s_*.fits in %f seconds (%3.0f Hz)\n", filename, total_time,
 	 (float) frame_counter/total_time);
 
   status = DClient_SaveFrameNumbers( frames, frameNumbers, filename, time_string);

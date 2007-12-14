@@ -29,6 +29,7 @@ LIST = 	Info_FindParameter.c \
 	Info_Process.c \
 	Info_ReadFile.c \
 	Info_ReadLine.c \
+	Info_SeeingArray.c \
 	Info_SeeingPositions.c \
 	Info_SendAll.c \
 	Info_SendHelp.c \

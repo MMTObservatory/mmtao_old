@@ -19,6 +19,8 @@
 #include "PCR.h"
 #include "Info.h"
 
+#define MAX_TIME_LENGTH 20
+
 /*================================================================================*
  * Return an Info Parameter and its value
  *================================================================================*/
@@ -35,8 +37,16 @@ int Info_SetParameter( int sockfd, Info_Entry *List, long list_length, Info_Arra
   int status;
 
   /* time variable */
-  const time_t time_string[26];
+  time_t tp;
+  char time_string[MAX_TIME_LENGTH];
 
+  /*
+    Allocate structure needed for timestamp
+
+  if ( first_time ) {
+    systime = (struct tm *)malloc( sizeof(struct tm) );
+  }
+  */
   /*
     Read request from the client
   */  
@@ -89,7 +99,7 @@ int Info_SetParameter( int sockfd, Info_Entry *List, long list_length, Info_Arra
   }
 
   if ( debug ) {
-    printf("  Info_SetParameter: Set %s\n", reply);
+    printf("  Info_SetParameter: Set %s", reply);
     fflush(stdout);
   }
 
@@ -103,11 +113,12 @@ int Info_SetParameter( int sockfd, Info_Entry *List, long list_length, Info_Arra
     /*
       Save time that the seeing value was received
     */
-    ctime( time_string);
-    strncpy( Seeing->time[Seeing->position], (char *)time_string, strlen((char *)time_string));
+    time ( &tp);
+    strftime( time_string, MAX_TIME_LENGTH, "%I:%M:%S_%d%b%Y", localtime(&tp));
+    strncpy( Seeing->time[Seeing->position], time_string, strlen(time_string));
 
     if ( debug ) {
-      printf(" Seeing Array %s   %f\n", Seeing->time[Seeing->position], Seeing->value[Seeing->position]);
+      printf("  Seeing Array: %s %f\n", Seeing->time[Seeing->position], Seeing->value[Seeing->position]);
       fflush(stdout);
     }
 
@@ -130,11 +141,13 @@ int Info_SetParameter( int sockfd, Info_Entry *List, long list_length, Info_Arra
     /*
       Save time that the strehl value was received
     */
-    ctime( time_string);
-    strncpy( Strehl->time[Strehl->position], (char *)time_string, strlen((char *)time_string));
+    time ( &tp);
+    strftime( time_string, MAX_TIME_LENGTH, "%I:%M:%S_%d%b%Y", localtime(&tp));
+    printf("  >%s<\n", time_string);
+    strncpy( Strehl->time[Strehl->position], time_string, strlen(time_string));
 
     if ( debug ) {
-      printf(" Strehl Array %s   %f\n", Strehl->time[Strehl->position], Strehl->value[Strehl->position]);
+      printf("  Strehl Array: %s %f\n", Strehl->time[Strehl->position], Strehl->value[Strehl->position]);
       fflush(stdout);
     }
 

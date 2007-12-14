@@ -205,9 +205,11 @@ int Source_Start( char *name, char *type, int size, long debug )
 	  Socket_StringWrite( newsockfd, reply, strlen(reply) );
 	  strcpy( reply, "WFSC_Initialized 1\n");
 	  Socket_StringWrite( newsockfd, reply, strlen(reply) );
-	  strcpy( reply, "WFSC_Running 0\n");
+	  strcpy( reply, "WFSC_Running 1\n");
 	  Socket_StringWrite( newsockfd, reply, strlen(reply) );
 	  strcpy( reply, "WFSC_Size Bin\n");
+	  Socket_StringWrite( newsockfd, reply, strlen(reply) );
+	  strcpy( reply, "WFSC_Period 0.0018\n");
 	  Socket_StringWrite( newsockfd, reply, strlen(reply) );
 	  strcpy( reply, "WFSC_Frequency 550\n");
 	  Socket_StringWrite( newsockfd, reply, strlen(reply) );
@@ -233,7 +235,7 @@ int Source_Start( char *name, char *type, int size, long debug )
 	  Socket_StringWrite( newsockfd, reply, strlen(reply) );
 	  strcpy( reply, "Background_Static 0\n");
 	  Socket_StringWrite( newsockfd, reply, strlen(reply) );
-	  strcpy( reply, "Loop_Running 0\n");
+	  strcpy( reply, "Loop_Running 1\n");
 	  Socket_StringWrite( newsockfd, reply, strlen(reply) );
 	  strcpy( reply, "Loop_Gain 0.0\n");
 	  Socket_StringWrite( newsockfd, reply, strlen(reply) );

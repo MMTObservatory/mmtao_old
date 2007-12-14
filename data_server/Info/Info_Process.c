@@ -180,9 +180,9 @@ void *Info_Process( void *Passed_Info)
       /*
         Send the client all seeing values Info Parameters
       */
-//      status = Info_ServerSeeingArray( sockfd, Seeing);
+      status = Info_SeeingArray( sockfd, Seeing);
       if ( status ) {
-	printf("  Info_Process: Error in Info_ServerSeeing\n");
+	printf("  Info_Process: Error in Info_SeeingArray for Seeing Values\n");
 	fflush(stdout);
       }
 
@@ -191,9 +191,9 @@ void *Info_Process( void *Passed_Info)
       /*
         Send the client all strehl values Info Parameters
       */
-//      status = Info_ServerSeeingArray( sockfd, Strehl);
+      status = Info_SeeingArray( sockfd, Strehl);
       if ( status ) {
-	printf("  Info_Process: Error in Info_ServerSeeing\n");
+	printf("  Info_Process: Error in Info_SeeingArray for Strehl Values\n");
 	fflush(stdout);
       }
 

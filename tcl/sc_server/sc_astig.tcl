@@ -4,13 +4,8 @@ proc sc_astig { sock astig_0 astig_45 parent_win } {
     source $PCR_HOME/tcl/sc_server/sc_globals.tcl
     source $PCR_HOME/tcl/static/static_globals.tcl
 
-    global Base
-    global File
-    set Base $PCR_HOME/data
-    set File 56m_all.slo_off_zernike
-
     set msg "Appy this request?"
-    set msg "$msg\n   => Astigmatism"
+    set msg "$msg\n   => Static"
     set msg "$msg\n   => 0 Astig  = $astig_0"
     set msg "$msg\n   => 45 Astig = $astig_45"
 
