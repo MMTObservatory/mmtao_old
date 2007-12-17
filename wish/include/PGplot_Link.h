@@ -14,6 +14,11 @@
 
   Written  26aug03  DLM
 
+  Altered  17dec03  DLM  Added WFSC_Info->spots = NULL;, Spots_Info->spots = Null;
+                           and Slopes_Info->slopes = NULL; which caused a segmentation
+			   fault on Linux boxes when non-allocated memory was tried
+			   to be free(ed).
+
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   See description in ./AO_wishGlobals.c and ../AO_wish.c
@@ -35,7 +40,9 @@ Tcl_LinkVar(interp, "debug_PGplot", (char *)&debug_PGplot, TCL_LINK_INT);
     (eg extern PGlot_Info *Spots_Info)
 */
 WFSC_Info = (PGplot_Info *)malloc(sizeof(PGplot_Info));
+WFSC_Info->spots = NULL;
 Spots_Info = (PGplot_Info *)malloc(sizeof(PGplot_Info));
+Spots_Info->spots = NULL;
 
 /* Flags for Spots display */
 Tcl_LinkVar(interp, "Spots_Number", (char *)&Spots_Number, TCL_LINK_INT);
@@ -50,6 +57,7 @@ Tcl_LinkVar(interp, "Spots_Arrow", (char *)&Spots_Arrow, TCL_LINK_INT);
     (eg extern PGlot_Info *Slopes_Info)
 */
 Slopes_Info = (PGplot_Info *)malloc(sizeof(PGplot_Info));
+Slopes_Info->slopes = NULL;
 
 /* Flags for Slopes display */
 Tcl_LinkVar(interp, "Slopes_Number", (char *)&Slopes_Number, TCL_LINK_INT);

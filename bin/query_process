@@ -37,20 +37,36 @@ else
 # add username pcr
 #
     if [[ $hostname == ao-pcr.mmto.arizona.edu ]]; then
-	hostname="pcr@ao-pcr.mmto.arizona.edu"
-    fi
 #
-# Query the requested AO Server on the specified host
+# Special setup for pcr and dds running on ao-pcr
 #
-    if [[ $server == pcr_server ]]; then
-	ssh -XYCq $hostname query_pcr_server
-    elif [[ $server == pcr ]]; then
-	ssh -XYCq $hostname query_pcr
-    elif [[ $server == dds ]]; then
-	ssh -XYCq $hostname query_dds
-    elif [[ $server == topbox_server ]]; then
-	ssh -XYCq $hostname query_topbox_server
+	hostname="mmtao@ao-pcr.mmto.arizona.edu"
+
+	if [[ $server == pcr ]]; then
+	    ssh -XYCq $hostname query_pcr_ao-pcr
+	elif [[ $server == dds ]]; then
+	    ssh -XYCq $hostname query_dds_ao-pcr
+	else
+	    echo "Unkown server $server"
+	fi
+
     else
-	echo "Unkown server $server"
+#
+# All pcr_server and topbox_servers hosts will be the same.
+#
+# All other pcr and dds hosts will be running test routines (with the names
+#   cmd, wfsc, error and dm)
+#
+	if [[ $server == pcr_server ]]; then
+	    ssh -XYCq $hostname query_pcr_server
+	elif [[ $server == pcr ]]; then
+	    ssh -XYCq $hostname query_pcr
+	elif [[ $server == dds ]]; then
+	    ssh -XYCq $hostname query_dds
+	elif [[ $server == topbox_server ]]; then
+	    ssh -XYCq $hostname query_topbox_server
+	else
+	    echo "Unkown server $server"
+	fi
     fi
 fi

@@ -30,8 +30,8 @@ int PGplot_SetupInfo( PGplot_Info *Info, char *name, int debug)
         allocated in DClient_Spots_Init()
     */
     if ( Info->spots != NULL ) {
-      free(Info->spots);
       printf("  PGplot_SetupInfo: Spots_Info->spots memory freed\n");
+      free(Info->spots);
     }
 
     if (( Info->spots = (PGplot_Spots_Data *)malloc(sizeof(PGplot_Spots_Data) )) == NULL ) {
@@ -90,8 +90,8 @@ int PGplot_SetupInfo( PGplot_Info *Info, char *name, int debug)
         allocated in DClient_Slopes_Init()
     */
     if ( Info->slopes != NULL ) {
-      free(Info->slopes);
       printf("  PGplot_SetupInfo: Slopess_Info->slopes memory freed\n");
+      free(Info->slopes);
     }
 
     if (( Info->slopes = (PGplot_Slopes_Data *)malloc(sizeof(PGplot_Slopes_Data) )) == NULL ) {

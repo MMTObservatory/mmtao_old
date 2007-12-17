@@ -20,9 +20,15 @@ fi
 # add username pcr
 #
 if [[ $pcr_server_host == ao-pcr.mmto.arizona.edu ]]; then
-    pcr_server_host="pcr@ao-pcr.mmto.arizona.edu"
-fi
+#
+# Special startup for pcr on ao-pcr (no log file created)
+#
+    pcr_server_host="mmtao@ao-pcr.mmto.arizona.edu"
+    ssh -XYCq $pcr_server_host xterm -geometry 70x10+839+192 +hold -sb -sl 500 -title "PCR" -e "local_pcr_ao-pcr" &
+
+else
 #
 # Start the PCR Server on the specified host
 #
-ssh -XYCq $pcr_server_host xterm -geometry 70x10+839+192 +hold -sb -sl 500 -title "PCR" -e "local_pcr" &
+    ssh -XYCq $pcr_server_host xterm -geometry 70x10+839+192 +hold -sb -sl 500 -title "PCR" -e "local_pcr" &
+fi
