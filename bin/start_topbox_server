@@ -17,6 +17,12 @@ else
     hostname="localhost"
 fi
 #
+# Must add mmtao user if trying to start a process on ao-server
+#
+    if [[ $hostname == ao-server.mmto.arizona.edu ]]; then
+	hostname="mmtao@ao-server.mmto.arizona.edu"
+    fi
+#
 # Start the Topbox Server on the specified host
 #
 ssh -XYCq $hostname xterm -geometry 80x10+0+624 +hold -sb -sl 500 -title "Topbox_Server" -e "local_topbox_server" &

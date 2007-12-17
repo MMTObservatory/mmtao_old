@@ -34,6 +34,12 @@ else
 	hostname="localhost"
     fi
 #
+# Must add mmtao user if trying to query a process on ao-server
+#
+    if [[ $hostname == ao-server.mmto.arizona.edu ]]; then
+	hostname="mmtao@ao-server.mmto.arizona.edu"
+    fi
+#
 # add username pcr
 #
     if [[ $hostname == ao-pcr.mmto.arizona.edu ]]; then

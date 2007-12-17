@@ -20,9 +20,11 @@ fi
 # add username pcr
 #
 if [[ $pcr_host == ao-pcr.mmto.arizona.edu ]]; then
-    pcr_host="pcr@ao-pcr.mmto.arizona.edu"
-fi
+    pcr_host="mmtao@ao-pcr.mmto.arizona.edu"
+    ssh -XYCq $pcr_host kill_dds_ao-pcr
+else
 #
 # Kill the PCR Server on the specified host
 #
-ssh -XYCq $pcr_host kill_dds
+    ssh -XYCq $pcr_host kill_dds
+fi
