@@ -25,4 +25,4 @@ fi
 #
 # Start the Data_Server on the specified host
 #
-ssh -XYCq $pcr_server_host xterm -geometry 80x10+0+457 +hold -sb -sl 500 -title "Data_Server" -e "local_pcr_server" &
+ssh -XYCq $pcr_server_host xterm -geometry 70x10+839+192 +hold -sb -sl 500 -title "Data_Server" -e "local_pcr_server" &

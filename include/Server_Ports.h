@@ -22,10 +22,10 @@
  * PCR address and port numbers
  *
  *****************************************************************/
-//#define PCR_ADDRESS       "localhost"
+#define PCR_ADDRESS       "localhost"
 //#define PCR_ADDRESS       "spherical.as.arizona.edu"
 //#define PCR_ADDRESS       "trefoil.mmto.arizona.edu"
-#define PCR_ADDRESS       "ao-pcr.mmto.arizona.edu"
+//#define PCR_ADDRESS       "ao-pcr.mmto.arizona.edu"
 //#define PCR_ADDRESS       "tilt.as.arizona.edu"
 //#define PCR_ADDRESS       "tuco.as.arizona.edu"
 //#define PCR_ADDRESS       "astigmatism"
@@ -42,8 +42,8 @@
  * PCR Server address and port numbers
  *
  *****************************************************************/
-//#define PCR_SERVER_ADDRESS     "localhost"
-#define PCR_SERVER_ADDRESS     "ao-server.mmto.arizona.edu"
+#define PCR_SERVER_ADDRESS     "localhost"
+//#define PCR_SERVER_ADDRESS     "ao-server.mmto.arizona.edu"
 //#define PCR_SERVER_ADDRESS     "hoseclamp.mmto.arizona.edu"
 //#define PCR_SERVER_ADDRESS     "tilt.as.arizona.edu"
 //#define PCR_SERVER_ADDRESS     "tuco"
@@ -66,8 +66,8 @@
  * Topbox Server address and port numbers
  *
  *****************************************************************/
-//#define TOPBOX_SERVER_ADDRESS     "localhost"
-#define TOPBOX_SERVER_ADDRESS     "ao-server.mmto.arizona.edu"
+#define TOPBOX_SERVER_ADDRESS     "localhost"
+//#define TOPBOX_SERVER_ADDRESS     "ao-server.mmto.arizona.edu"
 
 /* Status Port from the Topbox_Server */
 #define STATUS_PORT              7400

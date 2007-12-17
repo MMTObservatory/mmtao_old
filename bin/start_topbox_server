@@ -25,4 +25,4 @@ fi
 #
 # Start the Topbox Server on the specified host
 #
-ssh -XYCq $hostname xterm -geometry 80x10+0+624 +hold -sb -sl 500 -title "Topbox_Server" -e "local_topbox_server" &
+ssh -XYCq $hostname xterm -geometry 70x10+839+359 +hold -sb -sl 500 -title "Topbox_Server" -e "local_topbox_server" &
