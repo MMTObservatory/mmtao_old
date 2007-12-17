@@ -45,7 +45,7 @@ int Client_ReadToEOF( Client_Info *Info, char *Client_Reply, char *errorMsg, int
         the \n.
     */
     line_length = Client_ReadLine(Info->fd, recvline, IO_LENGTH);
-    if (line_length < 0) {
+    if (line_length <= 0) {
       strcpy( errorMsg, "Client_StringReadToEOF: Error reading from socket");
       return(-1);
     }
