@@ -306,7 +306,7 @@ wm withdraw .
 #     3) PCR (the pcr and dds processes)
 #     4) Topbox Server
 #
-client_start 0 1 1 1 .
+client_start 1 1 1 1 .
 #
 # Create a data directory
 #
