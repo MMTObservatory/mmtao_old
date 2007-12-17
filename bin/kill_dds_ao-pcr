@@ -14,5 +14,5 @@
 running=`ps auxw | grep '\.\/dds' | awk '{print $2}'`
 if [ $running ]; then 
     kill -9 $running
-    echo "Killed: `date`" >> $logfile
+    echo "Killed: dds at `date`"
 fi

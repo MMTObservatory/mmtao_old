@@ -14,5 +14,5 @@
 running=`ps auxw | grep '\.\/pcr' | awk '{print $2}'`
 if [ $running ]; then 
     kill -9 $running
-    echo "Killed: `date`" >> $logfile
+    echo "Killed: pcr at `date`"
 fi
