@@ -1,0 +1,18 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to start the PCR_Server on the requested machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Written  10jul07  DLM  Started with Phil Hinz's runao script
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Check to see if the pcr is running.  If so, then kill it
+#
+running=`ps auxw | grep '\.\/pcr' | awk '{print $2}'`
+if [ $running ]; then 
+    kill -9 $running
+    echo "Killed: `date`" >> $logfile
+fi

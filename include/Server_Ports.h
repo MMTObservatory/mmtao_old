@@ -22,10 +22,10 @@
  * PCR address and port numbers
  *
  *****************************************************************/
-#define PCR_ADDRESS       "localhost"
+//#define PCR_ADDRESS       "localhost"
 //#define PCR_ADDRESS       "spherical.as.arizona.edu"
 //#define PCR_ADDRESS       "trefoil.mmto.arizona.edu"
-//#define PCR_ADDRESS       "ao-pcr.mmto.arizona.edu"
+#define PCR_ADDRESS       "ao-pcr.mmto.arizona.edu"
 //#define PCR_ADDRESS       "tilt.as.arizona.edu"
 //#define PCR_ADDRESS       "tuco.as.arizona.edu"
 //#define PCR_ADDRESS       "astigmatism"
