@@ -143,7 +143,6 @@ int Info_SetParameter( int sockfd, Info_Entry *List, long list_length, Info_Arra
     */
     time ( &tp);
     strftime( time_string, MAX_TIME_LENGTH, "%I:%M:%S_%d%b%Y", localtime(&tp));
-    printf("  >%s<\n", time_string);
     strncpy( Strehl->time[Strehl->position], time_string, strlen(time_string));
 
     if ( debug ) {
@@ -165,11 +164,13 @@ int Info_SetParameter( int sockfd, Info_Entry *List, long list_length, Info_Arra
   /*
     Return an Info Parameter
   */
+  /*
   status = Socket_StringWrite( sockfd, reply, strlen(reply));
   if ( status != strlen(reply) ) {
     printf("  Info_SetParameter: Error in Server_StringWrite sending number of bytes\n");
     fflush(stdout);
   }
+  */
 
   return(0);
 }
