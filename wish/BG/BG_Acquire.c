@@ -120,7 +120,7 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
   FD_ZERO(&rfds);
   FD_SET(BG_Info->server.fd, &rfds);
   /* Wait up to 1 second. */
-  tv.tv_sec = 1;
+  tv.tv_sec = 10;
   tv.tv_usec = 0;
 
   /*
@@ -290,7 +290,7 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
   FD_ZERO(&rfds);
   FD_SET(BG_Info->server.fd, &rfds);
   /* Wait up to 1 second */
-  tv.tv_sec = 1;
+  tv.tv_sec = 10;
   tv.tv_usec = 0;
 
   frame_counter = 0;

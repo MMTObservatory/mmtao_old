@@ -67,7 +67,6 @@ Power_Looper( void *Passed_Info)
       Open a socket to the requested device
     */
     status =  Socket_OpenClient ( Socket, *debug);
-    Socket->connected = 0;
     if ( status ) {
       printf("  Power_Looper: Error connecting to the %s, %s:%d in Socket_OpenClient\n",
 	     Socket->name, Socket->address, Socket->port);
@@ -79,7 +78,7 @@ Power_Looper( void *Passed_Info)
     */
     sleep(1);
 
-    if ( Socket->connected ) {
+   if ( Socket->connected ) {
 
       /* Get rid of odd junk */
       Socket_Flush ( Socket->sockfd);
