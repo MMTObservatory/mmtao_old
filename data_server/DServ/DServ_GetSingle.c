@@ -110,6 +110,8 @@ int DServ_GetSingle( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int
   } else {
     new_frame = 1;
   }
+  printf("%3ld %s  %d  %d\n", new_frame, request, ntohl(new_frameNumber), ntohl(old_frameNumber));
+  fflush(stdout);
   old_frameNumber = new_frameNumber;
 
   /*

@@ -91,6 +91,8 @@ void *DServ_Process( void *Passed_Info)
     if ( strlen(request) <= 1 ) {
       printf("  DServ_Process: Warning: request of zero length recieved\n");
       fflush(stdout);
+      nBytes = htonl(-1);
+      status = Socket_StringWrite( sockfd, (char *)&nBytes, sizeof(nBytes));
       continue;
     }
 

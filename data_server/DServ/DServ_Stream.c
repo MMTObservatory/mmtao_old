@@ -13,7 +13,7 @@
 #include "DServ.h"
 
 #define DEBUG 0
-#define TIMER 1
+#define TIMER 0
 
 /*===============================================================================
  * DServ_Stream 
