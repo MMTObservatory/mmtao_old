@@ -99,12 +99,18 @@ source $PCR_HOME/tcl/tcs/tcs_looper.tcl
 source $PCR_HOME/tcl/tcs/tcs_move.tcl
 source $PCR_HOME/tcl/tcs/tcs_set.tcl
 #
+# Rotator routines
+#
+source $PCR_HOME/tcl/rotator/rotator_globals.tcl
+source $PCR_HOME/tcl/rotator/rotator_globals_set.tcl
+source $PCR_HOME/tcl/rotator/rotator_looper.tcl
+source $PCR_HOME/tcl/rotator/rotator_tracking.tcl
+#
 # Hexapod routines
 #
 source $PCR_HOME/tcl/hex/hex_globals.tcl
 source $PCR_HOME/tcl/hex/hex_globals_set.tcl
-source $PCR_HOME/tcl/hex/hex_get.tcl
-source $PCR_HOME/tcl/hex/hex_focus.tcl
+source $PCR_HOME/tcl/hex/hex_move.tcl
 #
 # Main AO GUI window
 #
@@ -325,3 +331,7 @@ open_window main_window $main_win
 #     3) Topbox Server
 #
 process_start_all 1 1 1 $main_win
+#
+# Start looper for rotation tracking
+#
+rotator_looper $main_win

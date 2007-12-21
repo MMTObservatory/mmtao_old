@@ -204,7 +204,7 @@ proc server_page { server_win page } {
 # Status connection
 #
     label $server_page.server.gui.status_label \
-	-text "Status"
+	-text "Topbox_Status"
     button $server_page.server.gui.status_connected \
 	-background red -activebackground OrangeRed \
 	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
@@ -226,7 +226,7 @@ proc server_page { server_win page } {
 # Topbox connection
 #
     label $server_page.server.gui.topbox_label \
-	-text "Topbox_Server"
+	-text "Topbox_Cmd"
     button $server_page.server.gui.topbox_connected \
 	-background red -activebackground OrangeRed \
 	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
@@ -254,7 +254,7 @@ proc server_page { server_win page } {
 # Info connection
 #
     label $server_page.server.gui.info_label \
-	-text "Info"
+	-text "PCR_Info"
     button $server_page.server.gui.info_connected \
 	-background red -activebackground OrangeRed \
 	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
@@ -276,7 +276,7 @@ proc server_page { server_win page } {
 # PCR_Server connection
 #
     label $server_page.server.gui.pcr_label \
-	-text "PCR_Server"
+	-text "PCR_Cmd"
     button $server_page.server.gui.pcr_connected \
 	-background red -activebackground OrangeRed \
 	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \

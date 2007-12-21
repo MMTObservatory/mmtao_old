@@ -48,6 +48,7 @@ void *DServ_Process( void *Passed_Info)
    */
   DServ_Thread_Info *Main_Info;
   DServ_Info *WFSC_Info, *DM_Info;
+  long *old_frameNumber;
   int *continueRunning;
   int *debug;
 
@@ -65,6 +66,7 @@ void *DServ_Process( void *Passed_Info)
   WFSC_Info = Main_Info->wfsc;
   DM_Info = Main_Info->dm;
   sockfd = Main_Info->sockfd;
+  old_frameNumber = Main_Info->frameNumber;
   continueRunning = Main_Info->DServ_DM_continueRunning;
   debug = Main_Info->DServ_DM_debug;
 
@@ -262,7 +264,7 @@ void *DServ_Process( void *Passed_Info)
 
 	=> right now it's only the DM buffer  16jul06  DLM
       */
-      status = DServ_GetSingle( WFSC_Info, DM_Info, sockfd, debug);
+      status = DServ_GetSingle( WFSC_Info, DM_Info, sockfd, old_frameNumber, debug);
       if ( status ) {
 	nBytes = status;
 	status = Socket_StringWrite( sockfd, (char *)&nBytes, sizeof(long));

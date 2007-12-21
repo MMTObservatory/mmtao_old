@@ -12,6 +12,11 @@
 #   global_trace.tcl.  In this file, the trace command is used
 #   to force the update of gui variables on all gui panels.
 #
+# Gui flags
+#
+global Hex_Move
+global Hex_Incr
+#
 # Hex status flags and loooong return string
 #
 global Hex_Connected

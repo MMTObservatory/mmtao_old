@@ -18,7 +18,8 @@
  * DServ_GetSingle 
  *===============================================================================*/
 
-int DServ_GetSingle( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *debug)
+int DServ_GetSingle( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, 
+		     long *old_frameNumber, int *debug)
 {
   long nBytes, nBytes_Send, new_frame;
   DServ_Info *Info;
@@ -26,7 +27,6 @@ int DServ_GetSingle( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int
   long new_frameNumber;
   int status;
   char request[STRING_LENGTH];
-  static long old_frameNumber = -1;
 
   int sets, i;
   int offset[6];
@@ -105,14 +105,12 @@ int DServ_GetSingle( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int
       the data frame.
    */
 
-  if( new_frameNumber == old_frameNumber ) {
+  if( new_frameNumber == *old_frameNumber ) {
     new_frame = -1;
   } else {
     new_frame = 1;
   }
-  printf("%3ld %s  %d  %d\n", new_frame, request, ntohl(new_frameNumber), ntohl(old_frameNumber));
-  fflush(stdout);
-  old_frameNumber = new_frameNumber;
+  *old_frameNumber = new_frameNumber;
 
   /*
     Determine which image the client has requested and set the number of bytes

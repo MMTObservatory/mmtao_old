@@ -193,7 +193,7 @@ proc main_window { win_name } {
 #    Telescope
 #
     frame $main_win.main.info.pos.tcs.line -relief ridge -height 1m -border 3 -bg black
-    label $main_win.main.info.pos.tcs.label -text "Offsets"
+    label $main_win.main.info.pos.tcs.label -text "TCS Offsets"
 #
     label $main_win.main.info.pos.tcs.ra_label -text "RA: "
     label $main_win.main.info.pos.tcs.ra_value -width 6 -anchor e -relief sunken \
@@ -215,6 +215,7 @@ proc main_window { win_name } {
     label $main_win.main.info.pos.rot.tcs_label -text "Rotator: "
     label $main_win.main.info.pos.rot.tcs_value -width 6 -anchor e -relief sunken \
 	-textvariable TCS(rot) -bg white -fg black
+    label $main_win.main.info.pos.rot.tracking -text "Not Tracking" -bg green
 #
 #-----------------------------------------------------------------
 #
@@ -278,6 +279,9 @@ proc main_window { win_name } {
     grid config $main_win.main.info.pos.rot.tcs_value \
 	-row $i -column 1 -sticky ew
     incr i
+    grid config $main_win.main.info.pos.rot.tracking \
+	-row $i -column 0 -columnspan 2 -sticky ew
+    incr i
 #
 #    Entire panel
 #
@@ -305,7 +309,7 @@ proc main_window { win_name } {
 #
     pack $main_win.main.info.pos \
 	$main_win.main.info.fwheel \
-	-side top
+	-fill x -side top
 #
 ############################################
 # Build FSM move arrows

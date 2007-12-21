@@ -21,6 +21,7 @@ proc info_update_set { name element op } {
     global PCR_HOME
     source $PCR_HOME/tcl/window/window_globals.tcl
     source $PCR_HOME/tcl/camera/camera_globals.tcl
+    source $PCR_HOME/tcl/rotator/rotator_globals.tcl
     source $PCR_HOME/tcl/pcr/pcr_globals.tcl
 
     upvar #0 Info Info
@@ -143,6 +144,28 @@ proc info_update_set { name element op } {
 	    $camera_page.cam_bias.apply_1 configure -state disabled
 	    $camera_page.cam_bias.apply_2 configure -state disabled
 	    $camera_page.cam_bias.apply_3 configure -state disabled
+	}
+    }
+#
+# If the Alignment Page exists then update the Rotation Tracking button
+#
+    if { [ expr ![ expr ![winfo exists $main_win] || ![string compare .null $alignment_page] ] ] } {
+        if { $Rotator_Tracking } {
+	    #
+	    # Tracking
+	    #
+	    $alignment_page.far_right.rot.on_off configure \
+		-text "Tracking\n(Press to Stop)" -bg green -activebackground green
+	    $main_win.main.info.pos.rot.tracking configure \
+		-text "Tracking" -bg green
+	} else {
+	    #
+	    # Not Tracking
+	    #
+	    $alignment_page.far_right.rot.on_off configure \
+		-text "Not Tracking\n(Press to Start)" -bg grey84 -activebackground grey84
+	    $main_win.main.info.pos.rot.tracking configure \
+		-text "Not Tracking" -bg green
 	}
     }
 }

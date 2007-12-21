@@ -131,6 +131,7 @@ typedef struct _DServ_Thread_Info {
   DServ_Info *wfsc;                   // Data server information
   DServ_Info *dm;                     // Data server information
   int sockfd;                         // Socket of client
+  long *frameNumber;                  // Storelast frame number sent to the client
   int *DServ_WFSC_continueRunning;    // Flag used to shutdown WFSC server
   int *DServ_DM_continueRunning;      // Flag used to shutdown DM server
   int *DServ_WFSC_debug;              // Flag used for debugging WFSC server
@@ -167,7 +168,7 @@ void *PCR_Process( void *PCR_Thread_Info );
   DServ servers
 */
 int DServ_GetSingle( DServ_Info *WFSC_Info, DServ_Info *DM_Info,
-		     int sockfd, int *debug);
+		     int sockfd, long *old_frameNumber, int *debug);
 void *DServ_Master( void *Passed_Info);
 int DServ_SendHelp( int sockfd);
 void *DServ_Process( void *Passed_Info);

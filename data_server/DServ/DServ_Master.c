@@ -77,6 +77,7 @@ void *DServ_Master( void *Passed_Info)
   */
   for ( i=0; i<NUM_CONNECTIONS; i++) {
     Thread_Info[i].sockfd = -1;
+    Thread_Info[i].frameNumber = (long *)malloc(sizeof(long));
   }
 
   /*=====================================================================
@@ -172,6 +173,7 @@ void *DServ_Master( void *Passed_Info)
 	Thread_Info[i].wfsc = Main_Info->wfsc;
 	Thread_Info[i].dm = Main_Info->dm;
 	Thread_Info[i].sockfd = newsockfd;
+	*(Thread_Info[i].frameNumber) = -1;
 	Thread_Info[i].DServ_WFSC_continueRunning = Main_Info->DServ_WFSC_continueRunning;
 	Thread_Info[i].DServ_DM_continueRunning = Main_Info->DServ_DM_continueRunning;
 	Thread_Info[i].DServ_WFSC_debug = Main_Info->DServ_WFSC_debug;

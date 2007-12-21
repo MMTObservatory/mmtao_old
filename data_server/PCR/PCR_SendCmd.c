@@ -96,7 +96,7 @@ int PCR_SendCmd( DServ_Info *Info, char *request, int *debug )
   FD_ZERO(&rfds);
   FD_SET(Info->socket->sockfd, &rfds);
   /* Wait up to one seconds. */
-  tv.tv_sec = 3;
+  tv.tv_sec = 6;
   tv.tv_usec = 0;
  
   status = select( (Info->socket->sockfd)+1, &rfds, NULL, NULL, &tv);

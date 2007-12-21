@@ -16,6 +16,7 @@ proc alignment_page { alignment_win page } {
     source $PCR_HOME/tcl/window/window_globals.tcl
     source $PCR_HOME/tcl/alignment/alignment_globals.tcl
     source $PCR_HOME/tcl/topbox/topbox_globals.tcl
+    source $PCR_HOME/tcl/rotator/rotator_globals.tcl
     source $PCR_HOME/tcl/status/status_globals.tcl
     source $PCR_HOME/tcl/bitmaps/bitmaps_globals.tcl
 #
@@ -37,6 +38,7 @@ proc alignment_page { alignment_win page } {
     frame $alignment_page.left
     frame $alignment_page.center
     frame $alignment_page.right
+    frame $alignment_page.far_right
 #
 ##################################
 # Filter Wheel
@@ -184,46 +186,102 @@ proc alignment_page { alignment_win page } {
 #-----------------------------
 #
     frame $alignment_page.right.hex -relief ridge -border 4
+    frame $alignment_page.right.hex.move
+    frame $alignment_page.right.hex.incr
 #
 #-----------------------------
 #
     label $alignment_page.right.hex.hex_label \
-	-text "Focus at Science Camera" -bg cyan
-    button $alignment_page.right.hex.all -text "All"  \
-	-command {
-	    hex_get all $alignment_page
-	}
-    button $alignment_page.right.hex.motion -text "In Motion?"  \
-	-command {
-	    hex_get motion_flag $alignment_page
-	}
-    button $alignment_page.right.hex.up -text "+10"  \
-	-command {
-	    hex_focus 10 $alignment_page
-	}
-    button $alignment_page.right.hex.down -text "-10"  \
-	-command {
-	    hex_focus -10 $alignment_page
-	}
+	-text "Focus" -bg cyan
 #
-# Pack the focus buttons
+    radiobutton $alignment_page.right.hex.wfsc -text "WFSC" \
+	-var Hex_Move -value WFSC -anchor e
+    radiobutton $alignment_page.right.hex.science -text "Science\nCamera" \
+	-var Hex_Move -value Science -anchor e
+
+    button $alignment_page.right.hex.move.y_pos -bitmap @$BitMaps_Dir/up \
+	-command {
+	    hex_move up $alignment_page
+	}
+    button $alignment_page.right.hex.move.y_neg -bitmap @$BitMaps_Dir/down \
+	-command {
+	    hex_move down $alignment_page
+	}
+    label $alignment_page.right.hex.move.pos_label -height 2 -width 18 \
+	-text "Spots Move Inward" -anchor w
+    label $alignment_page.right.hex.move.neg_label -height 2 -width 18 \
+	-text "Spots Move Outward" -anchor w
+
+
+    radiobutton $alignment_page.right.hex.incr_10 -text "10 microns" \
+	-var Hex_Incr -value 10 -anchor w \
+	-command {
+	    set Hex_Incr 10
+	}
+
+    radiobutton $alignment_page.right.hex.incr_20 -text "20 microns" \
+	-var Hex_Incr -value 20 -anchor w \
+	-command {
+	    set Hex_Incr 20
+	}
+
+    radiobutton $alignment_page.right.hex.incr_50 -text "50 microns" \
+	-var Hex_Incr -value 50 -anchor w \
+	-command {
+	    set Hex_Incr 50
+	}
+
+    label $alignment_page.right.hex.incr.incr_label \
+	-text "Increment in\nHex microns"
+
+    entry $alignment_page.right.hex.incr.incr_entry \
+	-textvariable Hex_Incr \
+	-width 5 -justify right -bg white
+#
+# Pack the grid
 #
     set i 0
+    grid config $alignment_page.right.hex.move.y_pos \
+	-row $i -column 0
+    grid config $alignment_page.right.hex.move.pos_label \
+	-row $i -column 1 -sticky w
+    incr i
+    grid config $alignment_page.right.hex.move.y_neg \
+	-row $i -column 0
+    grid config $alignment_page.right.hex.move.neg_label \
+	-row $i -column 1 -sticky w
+
+    set i 0
+    grid config $alignment_page.right.hex.incr.incr_label \
+	-row $i -column 1 -sticky ew
+    grid config $alignment_page.right.hex.incr.incr_entry \
+	-row $i -column 0
+    incr i
+
+    set i 0
     grid config $alignment_page.right.hex.hex_label \
-        -row $i -column 0 -sticky ew
+	-row $i -column 0 -sticky nsew -columnspan 3
     incr i
-    grid config $alignment_page.right.hex.all \
-        -row $i -column 0 -sticky e
+    grid config $alignment_page.right.hex.wfsc  \
+	-row $i -column 0 -sticky w
     incr i
-    grid config $alignment_page.right.hex.motion \
-        -row $i -column 0 -sticky e
+    grid config $alignment_page.right.hex.science  \
+	-row $i -column 0 -sticky w
     incr i
-    grid config $alignment_page.right.hex.up \
-        -row $i -column 0 -sticky e
+    grid config $alignment_page.right.hex.move \
+	-row $i -column 0 -sticky nsew
     incr i
-    grid config $alignment_page.right.hex.down \
-        -row $i -column 0 -sticky e
+    grid config $alignment_page.right.hex.incr \
+	-row $i -column 0 -sticky ew
     incr i
+    grid config $alignment_page.right.hex.incr_10 \
+	-row $i -column 0
+    incr i
+    grid config $alignment_page.right.hex.incr_20 \
+	-row $i -column 0
+    incr i
+    grid config $alignment_page.right.hex.incr_50 \
+	-row $i -column 0
 #
 #---------------------------------------------------
 # Pack the Hex stuff
@@ -277,6 +335,36 @@ proc alignment_page { alignment_win page } {
 #
     pack $alignment_page.center.recon -side left
 #
+##################################
+# Rotator
+##################################
+#
+    frame $alignment_page.far_right.rot -relief ridge -border 4
+#
+    label $alignment_page.far_right.rot.label \
+	-text "Rotator" -bg cyan
+#
+    checkbutton $alignment_page.far_right.rot.on_off -text "Not Tracking\n(Press to Start)" \
+	-bg grey84 -var Rotator_Tracking -width 15 \
+	-command {
+	    puts "Rotation on-off"
+	}
+#
+# Pack the rotator stuff
+#
+    set i 0
+    grid config $alignment_page.far_right.rot.label \
+	-row $i -column 0 -sticky ew
+    incr i
+    grid config $alignment_page.far_right.rot.on_off \
+	-row $i -column 0
+#
+##################################
+#
+# Pack the devices
+#
+    pack $alignment_page.far_right.rot -side left
+#
 #---------------------------------------------------
 # Final packing
 #---------------------------------------------------
@@ -284,5 +372,6 @@ proc alignment_page { alignment_win page } {
     pack $alignment_page.left \
 	$alignment_page.center \
 	$alignment_page.right \
+	$alignment_page.far_right \
 	-side left -anchor nw
 }
