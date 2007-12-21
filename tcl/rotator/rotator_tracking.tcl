@@ -22,7 +22,6 @@ proc rotator_tracking { parent_win } {
     upvar #0 Status Status
 
     if { [ expr abs( $TCS(rot) - $Status(Rotation_Position) ) ] > 0.1 } {
-	puts "sending $TCS(rot)"
 	topbox_move_abs "Rotation" $TCS(rot)  $parent_win
     }
 

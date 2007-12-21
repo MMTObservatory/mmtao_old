@@ -34,8 +34,13 @@ proc hex_move { direction parent_win } {
 
     }
 
-    set status [catch { Hex_Cmd Focus $Hex_Incr } msg ]
-    set status 0
+    if { $direction == "up" } {
+	set incr $Hex_Incr
+    } else {
+	set incr [expr -1 * $Hex_Incr]
+    }
+    puts "focus $incr"
+    set status [catch { Hex_Cmd Focus $incr } msg ]
     if { $status } {
 	tk_messageBox -message \
 	    "Error changing Hexapod focus\n $reply_data" \
@@ -45,7 +50,7 @@ proc hex_move { direction parent_win } {
     }
 
     if { ![string compare Science $Hex_Move] } {
-	topbox_move_rel "Rotation" $Hex_Incr $parent_win
+	topbox_move_rel "Focus" $incr $parent_win
     }
 
     return 0
