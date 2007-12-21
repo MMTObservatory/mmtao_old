@@ -39,7 +39,7 @@ proc hex_move { direction parent_win } {
     } else {
 	set incr [expr -1 * $Hex_Incr]
     }
-    puts "focus $incr"
+
     set status [catch { Hex_Cmd Focus $incr } msg ]
     if { $status } {
 	tk_messageBox -message \

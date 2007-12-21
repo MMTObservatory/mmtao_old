@@ -9,6 +9,12 @@
 
   Modified  24aug07  tjt  Started with MVP_Home.c
 
+  Altered  21dec07  DLM  Had to remove check if motor is enabled while
+                           waiting for move to complete.  Apparently
+			   while moving, the enable flag is off (0).
+			   I thought this worked in September, but it
+			   did not now.
+
 */
 
 #include "Topbox.h"
@@ -125,7 +131,8 @@ void *Stage_Home( void *Passed_Info)
   count = 0;
   do {
 
-    if ( Data->error || !Data->enabled ) {
+    //    if ( Data->error || !Data->enabled ) {
+    if ( Data->error ) {
       printf("  Stage_Home: Move of %s to negative limit not completed.  Device Error\n",
 	     Socket->name);
       printf("            Terminating Stage_Home thread\n");
@@ -197,7 +204,8 @@ void *Stage_Home( void *Passed_Info)
     count = 0;
     do {
       
-      if ( Data->error || !Data->enabled ) {
+      //    if ( Data->error || !Data->enabled ) {
+      if ( Data->error ) {
 	printf("  Stage_Home: Move of %s to negative limit not completed.  Device Error\n",
 	       Socket->name);
 	printf("            Terminating Stage_Home thread\n");
@@ -275,7 +283,8 @@ void *Stage_Home( void *Passed_Info)
   count = 0;
   do {
     
-    if ( Data->error || !Data->enabled ) {
+    //    if ( Data->error || !Data->enabled ) {
+    if ( Data->error ) {
       printf("  Stage_Home: Move of %s slowly to negative limit not completed.  Device Error\n",
 	     Socket->name);
       fflush(stdout);
@@ -354,7 +363,8 @@ void *Stage_Home( void *Passed_Info)
   count = 0;
   do {
 
-    if ( Data->error || !Data->enabled ) {
+    //    if ( Data->error || !Data->enabled ) {
+    if ( Data->error ) {
       printf("  Stage_Home: Move of %s to negative limit not completed.  Device Error\n",
 	     Socket->name);
       printf("            Terminating Stage_Home thread\n");

@@ -345,10 +345,7 @@ proc alignment_page { alignment_win page } {
 	-text "Rotator" -bg cyan
 #
     checkbutton $alignment_page.far_right.rot.on_off -text "Not Tracking\n(Press to Start)" \
-	-bg grey84 -var Rotator_Tracking -width 15 \
-	-command {
-	    puts "Rotation on-off"
-	}
+	-bg grey84 -var Rotator_Tracking -width 15
 #
 # Pack the rotator stuff
 #
