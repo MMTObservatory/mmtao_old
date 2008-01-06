@@ -17,6 +17,7 @@
 
 SUB_DIRS = data_server \
 	topbox_server \
+	instrument_server \
 	wish
 
 #
