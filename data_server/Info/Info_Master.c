@@ -11,6 +11,13 @@
 
   Written  19nov06  DLM  Started with the DServ_Master.c
 
+  Altered  28dec07  DLM  Added setsockopt(... SO_LINGER ...) so sockets will be close
+                           immediately on a close(sockfd) rather than try to send any
+			   final data (socket in TIME_WAIT stat when a % netstat -tcp
+			   command is issued).  Needed to fix the problem of no socket
+			   resources available to state a new Info thread (error =
+			   "Info_Master: Errors starting thread")
+
 */
 
 #include <pthread.h>
@@ -39,6 +46,7 @@ void *Info_Master( void *Passed_Info)
   */
   struct sockaddr_in cli_addr;
   socklen_t clilen;
+  struct linger Linger;
 
   /*
     Structure to pass variable information to threads
@@ -99,6 +107,10 @@ void *Info_Master( void *Passed_Info)
     return( (void *)-1);
   }
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   do {
 
     /*
@@ -144,6 +156,15 @@ void *Info_Master( void *Passed_Info)
 	}
 
 	/*
+	  Tell the system not to try to send any leftover data when the socket
+	    is closed.  This should free up resources so we don't get a 
+	    sockets in a TIME_WAIT state
+	*/
+	Linger.l_onoff = 1;
+	Linger.l_linger = 0;
+	setsockopt (newsockfd, SOL_SOCKET, SO_LINGER, (char *)&Linger,  sizeof(struct linger));
+
+	/*
 	  Fill in Thread_Info structure with WFSC information and this new connection
 	*/
 	Thread_Info[i].info = Main_Info->info;
@@ -162,7 +183,7 @@ void *Info_Master( void *Passed_Info)
       /*
 	Start Thread
       */
-      status = pthread_create( &infoThread[i], NULL, Info_Process, (void *)&Thread_Info[i]);
+      status = pthread_create( &infoThread[i], &attr, Info_Process, (void *)&Thread_Info[i]);
       if ( *debug ) {
 	printf("  Info_Master: Starting thread\n");
 	fflush(stdout);
