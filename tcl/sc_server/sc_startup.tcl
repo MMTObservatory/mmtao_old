@@ -179,7 +179,8 @@ wm withdraw .
 #   The servers are:
 #     1) TCS Server
 #     2) PCR Server
-#     3) Topbox Server
+#     3) PCR (the pcr and dds processes)
+#     4) Topbox Server
 #
 client_start 1 1 0 1 .
 #
