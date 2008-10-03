@@ -10,7 +10,7 @@
 #include "PCR.h"
 #include "DServ.h"
 
-#include <fitsio.h>
+#include <cfitsio/fitsio.h>
 
 /*================================================================================*
  * Start server to manage data servers
