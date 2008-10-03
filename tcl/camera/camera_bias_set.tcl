@@ -19,8 +19,6 @@ proc camera_bias_set { quad value parent_win } {
 
     set status [catch { PCR_Cmd Cam_Bias_Set $quad $value } msg ]
 
-    after 5000
-
     return 0
 }
 
