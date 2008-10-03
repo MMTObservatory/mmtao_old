@@ -110,6 +110,10 @@ void *DM_Master( void *Passed_Info)
     return( (void *)-1);
   }
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   do {
 
     /*
@@ -173,7 +177,7 @@ void *DM_Master( void *Passed_Info)
       /*
 	Start Thread
       */
-      status = pthread_create( &wfscThread[i], NULL, DM_Process, (void *)&Thread_Info[i]);
+      status = pthread_create( &wfscThread[i], &attr, DM_Process, (void *)&Thread_Info[i]);
       if ( *debug ) {
 	printf("  DM_Master: Starting thread\n");
       }
