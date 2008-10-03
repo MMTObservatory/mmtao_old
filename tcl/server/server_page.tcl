@@ -119,6 +119,18 @@ proc server_page { server_win page } {
 	    process_start topbox_server $server_page
 	}
 #
+# TSS server Process
+#
+    label $server_page.server.process.tss_label \
+	-text "TSS_Server"
+    button $server_page.server.process.tss_start \
+	-background red -activebackground OrangeRed \
+	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-command { 
+	    puts "tss: not yet\n"
+	    ##process_start tss_server $server_page
+	}
+#
 # Pack PCR_SERVER stuff
 #
     set j 0
@@ -128,6 +140,7 @@ proc server_page { server_win page } {
     grid config $server_page.server.process.pcr_server_start \
         -row $i -column $j
     incr i
+
     set j 0
     grid config $server_page.server.process.pcr_label \
         -row $i -column $j -sticky e
@@ -135,6 +148,7 @@ proc server_page { server_win page } {
     grid config $server_page.server.process.pcr_start \
         -row $i -column $j
     incr i
+
     set j 0
     grid config $server_page.server.process.dds_label \
         -row $i -column $j -sticky e
@@ -142,11 +156,20 @@ proc server_page { server_win page } {
     grid config $server_page.server.process.dds_start \
         -row $i -column $j
     incr i
+
     set j 0
     grid config $server_page.server.process.topbox_label \
         -row $i -column $j -sticky e
     incr j
     grid config $server_page.server.process.topbox_start \
+        -row $i -column $j
+    incr i
+
+    set j 0
+    grid config $server_page.server.process.tss_label \
+        -row $i -column $j -sticky e
+    incr j
+    grid config $server_page.server.process.tss_start \
         -row $i -column $j
 #
 #-----------------------------
