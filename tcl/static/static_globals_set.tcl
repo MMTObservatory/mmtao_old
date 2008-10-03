@@ -90,4 +90,3 @@ proc static_set_trace { name element op } {
     }
 }
 
-
