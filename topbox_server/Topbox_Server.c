@@ -1057,6 +1057,10 @@ int main ( int argc, char **argv )
     Master_Info[i].sockfd = -1;
   }
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   do {
 
     /*
@@ -1130,7 +1134,7 @@ int main ( int argc, char **argv )
       /*
 	Start Thread
       */
-      status = pthread_create( &masterThread[i], NULL, Master_Process, (void *)&Master_Info[i]);
+      status = pthread_create( &masterThread[i], &attr, Master_Process, (void *)&Master_Info[i]);
       if ( start_debug ) {
 	printf("  Topbox_Server: Starting CMD thread\n");
 	fflush(stdout);
