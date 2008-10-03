@@ -39,11 +39,11 @@ proc sc_offset_open { sock ra dec parent_win } {
 	return -1
     }
 
-#    if { !$TCS_Connected } {
-#	SC_Log "sc_offset_open: Error: Not connected to the TCS"
-#	SC_Write $sock "Error: Not connected to the TCS"
-#	return -1
-#    }
+    if { !$TCS_Connected } {
+	SC_Log "sc_offset_open: Error: Not connected to the TCS"
+	SC_Write $sock "Error: Not connected to the TCS"
+	return -1
+    }
 
     if { $status == "yes" } {
 
@@ -65,7 +65,7 @@ proc sc_offset_open { sock ra dec parent_win } {
 		return -1
 	    }
 
-#	    set status [ tcs_set setrdao $ra $dec $parent_win ]
+	    set status [ tcs_set setrdao $ra $dec $parent_win ]
 
 	    if { $status } {
 		SC_Log "sc_offset_open: Error: Could not Offset_Open the telescsope $msg"
