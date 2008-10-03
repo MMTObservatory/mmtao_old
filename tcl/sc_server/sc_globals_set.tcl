@@ -71,11 +71,11 @@ set SC_Info_List [list \
 		      Background_File \
 		     ]
 
-set SC_Delay_1 2000
-set SC_Delay_2 200
+set SC_Delay_1 200
+set SC_Delay_2 10
 set SC_Delay_3 2000
-set SC_Delay_4 2000
-set SC_Delay_5 6000
+set SC_Delay_4 500
+set SC_Delay_5 500
 
 set SC_Focus 0
 
@@ -103,7 +103,7 @@ proc sc_accept { name element op } {
     source $PCR_HOME/tcl/sc_server/sc_globals.tcl
     if { [winfo exists .sc_win] } {
 	if { $x } {
-	    .sc_win.accept.button configure -bg green -activebackground lightgreen -text "Acceptig Requests"
+	    .sc_win.accept.button configure -bg green -activebackground lightgreen -text "Accepting Requests"
 	} else {
 	    .sc_win.accept.button configure -bg yellow -activebackground lightyellow -text "Not Accepting Requests"
 	}
