@@ -19,9 +19,10 @@ proc sc_focus { sock hex parent_win } {
 
     if { $status == "yes" } {
 
-	if { [expr abs($hex)] <= 10 } {
+	if { [expr abs($hex)] <= 20 } {
 
-	    Motor_Client move Focus $hex
+	    set status [catch { Hex_Cmd Focus $hex } msg ]
+	    topbox_move_rel "Focus" $hex $parent_win
 	    SC_Log "sc_focus: OK: Focus of $hex microns complete"
 	    SC_Write $sock "Done: Focus complete"
 	    set SC_Focus [expr $SC_Focus + $hex]
