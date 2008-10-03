@@ -114,6 +114,10 @@ void *WFSC_Master( void *Passed_Info)
     return( (void *)-1);
   }
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   do {
 
     /*
@@ -179,7 +183,7 @@ void *WFSC_Master( void *Passed_Info)
       /*
 	Start Thread
       */
-      status = pthread_create( &wfscThread[i], NULL, WFSC_Process, (void *)&Thread_Info[i]);
+      status = pthread_create( &wfscThread[i], &attr, WFSC_Process, (void *)&Thread_Info[i]);
       if ( *debug ) {
 	printf("  WFSC_Master: Starting thread\n");
       }
