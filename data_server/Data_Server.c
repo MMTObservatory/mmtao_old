@@ -383,13 +383,13 @@ int main( )
   PCR_Error_debug = (int *)malloc( sizeof(int));
   *PCR_Error_debug = debug;
   DServ_WFSC_debug = (int *)malloc( sizeof(int));
-  *DServ_WFSC_debug = 0;
+  *DServ_WFSC_debug = debug;
   DServ_DM_debug = (int *)malloc( sizeof(int));
-  *DServ_DM_debug = 0;
+  *DServ_DM_debug = debug;
   Info_debug = (int *)malloc( sizeof(int));
-  *Info_debug = 0;
+  *Info_debug = debug;
   Status_debug = (int *)malloc( sizeof(int));
-  *Status_debug = 0;
+  *Status_debug = debug;
 
   /*
     Fill in DServ_Thread_Info structures with WFSC and DM information and this new connection
@@ -671,6 +671,10 @@ int main( )
     return(-1);
   }
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   do {
 
     /*
@@ -751,7 +755,7 @@ int main( )
       /*
 	Start Thread
       */
-      status = pthread_create( &pcrThread[i], NULL, PCR_Process, (void *)&PCR_Info[i]);
+      status = pthread_create( &pcrThread[i], &attr, PCR_Process, (void *)&PCR_Info[i]);
       if ( start_debug ) {
 	printf("  PCR_Server: Starting CMD thread\n");
 	fflush(stdout);
