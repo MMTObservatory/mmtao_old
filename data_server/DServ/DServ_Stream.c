@@ -12,7 +12,6 @@
 #include "PCR.h"
 #include "DServ.h"
 
-#define DEBUG 0
 #define TIMER 0
 
 /*===============================================================================
@@ -50,13 +49,6 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
   */
   fd_set rfds;
   struct timeval tv;
-
-#if( DEBUG )
-  short *nxtShort;
-  char *nxtChar;
-  long datacount;
-  int j, k;
-#endif
 
 #if( TIMER )
   /*
