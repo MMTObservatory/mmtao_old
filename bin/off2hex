@@ -1,0 +1,25 @@
+#!/usr/bin/ruby
+
+# get ao az offset
+ao_az = `echo "get ao_off_az" | nc -w 5 mount 5240`.split(' ')[1].chomp
+
+# get ao el offset
+ao_el = `echo "get ao_off_alt" | nc -w 5 mount 5240`.split(' ')[1].chomp
+
+puts "We're offset #{ao_el} arcsec in el and #{ao_az} arcsec in az"
+
+# move hexapod
+
+`echo "offset_zc wfs tx #{ao_el}" | nc -w 5 hexapod 5340`
+`echo "offset_zc wfs ty #{ao_az}" | nc -w 5 hexapod 5340`
+
+tcs_cmd = "setaaao\n0.0\n0.0"
+
+print "zero mount offsets...\n"
+`echo "#{tcs_cmd}" | nc -w 5 mount 5240`
+#`echo "#{tcs_cmd}" > blah`
+
+print "now move hexapod...\n"
+`echo "apply_offsets" | nc -w 5 hexapod 5340`
+
+

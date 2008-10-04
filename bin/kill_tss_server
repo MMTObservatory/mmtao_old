@@ -1,0 +1,17 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to kill the TSS on the local machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# 4-2-2008 tjt
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Check to see if the TSS server is running.  If so, then kill it
+#
+running=`ps auxw | grep '\.\/tss_server' | awk '{print $2}'`
+if [ $running ]; then 
+    kill -9 $running
+fi

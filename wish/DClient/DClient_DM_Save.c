@@ -42,7 +42,7 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
 
   /* fitsio variables */
   char filename[STRING_LENGTH];
-  int dimension[3];
+  long dimension[3];
   int num_axis;
   int offset, totalBytes;
   int istatus;
@@ -669,7 +669,7 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
       frame_counter++;
 
       if ( frame_counter%10 == 0) {
-	printf("\b\b\b\b\b\b%6ld", frame_counter);
+	printf("\b\b\b\b\b\b%6d", frame_counter);
 	fflush(stdout);
       }
 

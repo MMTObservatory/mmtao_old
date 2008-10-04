@@ -1,0 +1,34 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to start the Topbox_Server on the requested machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# 4-2-2008 tjt
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#
+# Check to see if a hostname was given.  If not, use "localhost"
+#
+if [[ $1 != "" ]]; then
+    hostname=$1
+else
+    #hostname="localhost"
+    local_tss_server
+    exit
+fi
+
+#
+# Must add mmtao user if trying to start a process on ao-server
+#
+if [[ $hostname == ao-server.mmto.arizona.edu ]]; then
+	hostname="mmtao@ao-server.mmto.arizona.edu"
+fi
+
+#
+# Start the Topbox Server on the specified host
+#
+#ssh -XYCq $hostname xterm -geometry 70x10+839+359 +hold -sb -sl 500 -title "Topbox_Server" -e "local_topbox_server" &
+ssh -XYCq $hostname local_tss_server

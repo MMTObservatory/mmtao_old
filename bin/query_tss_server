@@ -1,0 +1,17 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to query if the TSS Server is running
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# 4-2-2008 tjt
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+running=`ps auxww | grep '\.\/tss_server' | awk '{print $2}'`
+if [ $running ]; then 
+    echo "1"
+else
+    echo "0"
+fi

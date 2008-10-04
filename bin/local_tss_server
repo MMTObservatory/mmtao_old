@@ -1,0 +1,24 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to start the TSS Server on the requested machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# 4-2-2008 tjt
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#
+# Set the xterm title to something more informative
+#
+#echo -n "]2;TSS Server @ `/bin/hostname`"
+
+#
+# Start the tss_server
+#
+if [ -f /home/tom/miniserver/tss_server ]; then
+	/home/tom/miniserver/tss_server &
+fi
+
+# THE END
