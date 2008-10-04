@@ -10,26 +10,26 @@
 #include "PCR_Wish.h"
 #include "DClient.h"
 
-#include <fitsio.h>
+#include <cfitsio/fitsio.h>
 
 #define DEBUG 0
 
 /*================================================================================
  * DClient_Slopes_Save: Save streaming data to FITS file
  *================================================================================*/
-int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frames, 
+int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, int frames, 
 		       short *Slopes_Array, int debug, char *errorMsg)
 {
   int status;
-  long i, j, num;
+  int i, j, num;
 
   /*
     Spot variables
   */
 
-  long *frameNumbers;
-  long *numberPtr;
-  long nBytes;
+  int *frameNumbers;
+  int *numberPtr;
+  int nBytes;
 
   short *nxtShort, *nxtArray;
 
@@ -37,10 +37,10 @@ int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frame
 
   fitsfile *fptr;
   char filename[STRING_LENGTH];
-  long blockDimension[2];
-  long slopesPerImage;
-  long num_axis = 2;
-  long first_slope = 1;
+  int blockDimension[2];
+  int slopesPerImage;
+  int num_axis = 2;
+  int first_slope = 1;
   int istatus;
 
   /* Time variables */
@@ -59,7 +59,7 @@ int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frame
   float total_time;
 
 #if( DEBUG )
-  long datacount;
+  int datacount;
   int k;
 #endif
 
@@ -69,13 +69,13 @@ int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frame
     Allocate memory to store frame numbers
   */
 
-  frameNumbers = (long *) malloc( sizeof(long)*frames );
+  frameNumbers = (int *) malloc( sizeof(int)*frames );
   if ( frameNumbers == NULL )
     {
       printf("  DClient_Slopes_Save: Error allocating frameNumbers\n");
       return(1);
     }
-  memset( frameNumbers, 0, sizeof(long)*frames );
+  memset( frameNumbers, 0, sizeof(int)*frames );
   numberPtr = frameNumbers;
 
   /* Open FITS file */
@@ -98,7 +98,7 @@ int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frame
 
   /*
     Slopes frames are either 24x24 or 72x72.  Note: our frame
-      has the frame number (long) at the beginning of the frame,
+      has the frame number (int) at the beginning of the frame,
       thus our frame is 24x24+2 or 72x72+2.
   */
 
@@ -180,7 +180,7 @@ int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frame
       return(-1);
     }
 
-    status = Server_Read( (Server_Info *)Slopes_Save_Info, sizeof(long));
+    status = Server_Read( (Server_Info *)Slopes_Save_Info, sizeof(int));
     if ( status ) {
       strcpy( errorMsg, "DClient_Slopes_Save: Error in Server_Read getting nBytes");
       printf("%s\n", errorMsg);
@@ -189,7 +189,7 @@ int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frame
       system(filename);
       return(status);
     }
-    nBytes = ntohl( *(long *)Slopes_Save_Info->server.in_line);
+    nBytes = ntohl( *(int *)Slopes_Save_Info->server.in_line);
 
 #if( DEBUG )
     printf("  DClient_Slopes_Save: Byte Count = %d\n", nBytes);
@@ -197,7 +197,7 @@ int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frame
 
     if ( nBytes == Slopes_Save_Info->server.nBytes ){
 
-      num = Server_Read( (Server_Info *)Slopes_Save_Info, sizeof(long));
+      num = Server_Read( (Server_Info *)Slopes_Save_Info, sizeof(int));
       if ( status ) {
 	strcpy( errorMsg, "DClient_Slopes_Save: Error in Server_Read getting frameNumber");
 	printf("%s\n", errorMsg);
@@ -206,7 +206,7 @@ int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frame
 	system(filename);
 	return(status);
       }
-      *numberPtr++ = ntohl( *(long *)Slopes_Save_Info->server.in_line);
+      *numberPtr++ = ntohl( *(int *)Slopes_Save_Info->server.in_line);
 
 #if( DEBUG )
       printf(" DClient_Slopes_Save: Frame Number = %d\n", *(numberPtr - 1));
@@ -235,7 +235,7 @@ int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frame
       if ( nBytes == -1 ) {
 	strcpy( errorMsg, "DClient_Slopes_Save: Error in server: closing connection");
 	if ( debug ) printf("%s\n", errorMsg);
-	sprintf( errorMsg, "DClient_Slopes_Save: Unkown error code %ld", nBytes);
+	sprintf( errorMsg, "DClient_Slopes_Save: Unkown error code %d", nBytes);
 	if ( debug ) printf("%s\n", errorMsg);
       }
       fits_close_file( fptr, &istatus);
@@ -291,7 +291,7 @@ int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frame
   fits_close_file( fptr, &istatus);
   fits_report_error( stderr, istatus);
 
-  printf("\n   %ld frames saved to %s in %f seconds (%3.0f Hz)\n", frames, filename, total_time, (float) frames/total_time);
+  printf("\n   %d frames saved to %s in %f seconds (%3.0f Hz)\n", frames, filename, total_time, (float) frames/total_time);
 
   status = DClient_SaveFrameNumbers( frames, frameNumbers, fname, time_string);
 

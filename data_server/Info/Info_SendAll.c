@@ -16,7 +16,7 @@
 /*================================================================================*
  * Return an Info Parameter and its value
  *================================================================================*/
-int Info_SendAll( int sockfd, Info_Entry *List, long list_length)
+int Info_SendAll( int sockfd, Info_Entry *List, int list_length)
 {
 
   /* local variables */

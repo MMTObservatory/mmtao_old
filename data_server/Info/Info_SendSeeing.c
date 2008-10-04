@@ -16,7 +16,7 @@
 /*================================================================================*
  * Return an Info Parameter and its value
  *================================================================================*/
-int Info_SendSeeing( int sockfd, Info_Entry *List, long list_length, long *Seeing_Positions, long Seeing_Count)
+int Info_SendSeeing( int sockfd, Info_Entry *List, int list_length, int *Seeing_Positions, int Seeing_Count)
 {
 
   /* local variables */

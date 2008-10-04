@@ -21,10 +21,10 @@
 void *PCR_GetDM( void *Passed_Info )
 {
   int status;
-  long nBytes;
+  int nBytes;
   char request[STRING_LENGTH];
   char *longPtr;
-  long tempLong;
+  int tempLong;
   int save_bytes, nerror;
   int local_debug = 0;
 
@@ -150,7 +150,7 @@ void *PCR_GetDM( void *Passed_Info )
       Read the number of bytes per frame
     */
     longPtr = (char *)&tempLong;
-    if ( Socket_Read( DM_Info->socket->sockfd, longPtr, sizeof(long)) ) {
+    if ( Socket_Read( DM_Info->socket->sockfd, longPtr, sizeof(int)) ) {
       if ( *debug ) {
 	printf("  PCR_GetDM: Error reading nBytes in Socket_Read\n");
 	fflush(stdout);
@@ -160,13 +160,13 @@ void *PCR_GetDM( void *Passed_Info )
     nBytes = ntohl(tempLong);
 
     if ( *debug ) {
-      printf("  PCR_GetDM: Frame size in bytes = %ld\n", nBytes);
+      printf("  PCR_GetDM: Frame size in bytes = %d\n", nBytes);
       fflush(stdout);
     }
 
     if ( nBytes != DM_Info->data->total_bytes ) {
       printf("  PCR_GetDM: Error with the number of bytes in data frame\n");
-      printf("             Read %ld\n", nBytes);
+      printf("             Read %d\n", nBytes);
       printf("         Expected %d\n", DM_Info->data->total_bytes);
       fflush(stdout);
       *continueRunning = 0;
@@ -282,7 +282,7 @@ void *PCR_GetDM( void *Passed_Info )
       /*
 	Read the frame number
       */
-      if ( Socket_Read( DM_Info->socket->sockfd, DM_Info->data->dataPtr, sizeof(long)) ) {
+      if ( Socket_Read( DM_Info->socket->sockfd, DM_Info->data->dataPtr, sizeof(int)) ) {
 	printf("  PCR_GetDM: Connection lost to DM port of PCR (frame number)\n");
 	fflush(stdout);
 	status =  Socket_Close ( (Socket_Info *)DM_Info->socket, *debug);
@@ -292,7 +292,7 @@ void *PCR_GetDM( void *Passed_Info )
       /*
 	Move past the frame number
       */
-      DM_Info->data->dataPtr+=sizeof(long);
+      DM_Info->data->dataPtr+=sizeof(int);
 
       /*
 	Watch to see when there is data to be read on sockfd

@@ -27,7 +27,7 @@ void *Info_Process( void *Passed_Info)
   Info_Entry *List;
   Info_Array *Seeing;
   Info_Array *Strehl;
-  long list_length;
+  int list_length;
   int *continueRunning;
   int *debug;
 
@@ -37,8 +37,8 @@ void *Info_Process( void *Passed_Info)
   char request[STRING_LENGTH];
 
   /* Seeing Parameter info */
-  long *Seeing_Positions;
-  long Seeing_Count;
+  int *Seeing_Positions;
+  int Seeing_Count;
 
   /*
     Put the passed variables in to the local variables

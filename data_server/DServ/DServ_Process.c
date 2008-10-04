@@ -48,7 +48,7 @@ void *DServ_Process( void *Passed_Info)
    */
   DServ_Thread_Info *Main_Info;
   DServ_Info *WFSC_Info, *DM_Info;
-  long *old_frameNumber;
+  int *old_frameNumber;
   int *continueRunning;
   int *debug;
 
@@ -57,7 +57,7 @@ void *DServ_Process( void *Passed_Info)
   int status;
   char request[STRING_LENGTH];
   char reply[STRING_LENGTH];
-  long nBytes;
+  int nBytes;
 
   /*
     Put the passed variables in to the local variables
@@ -267,8 +267,8 @@ void *DServ_Process( void *Passed_Info)
       status = DServ_GetSingle( WFSC_Info, DM_Info, sockfd, old_frameNumber, debug);
       if ( status ) {
 	nBytes = status;
-	status = Socket_StringWrite( sockfd, (char *)&nBytes, sizeof(long));
-	if ( status !=  sizeof(long)) {
+	status = Socket_StringWrite( sockfd, (char *)&nBytes, sizeof(int));
+	if ( status !=  sizeof(int)) {
 	  if ( debug ) {
 	    printf("  DServ_Process: Error sending nBytes in Socket_StringWrite\n");
 	    fflush(stdout);
@@ -292,8 +292,8 @@ void *DServ_Process( void *Passed_Info)
       /*
       if ( status ) {
 	nBytes = status;
-	status = Socket_StringWrite( sockfd, (char *)&nBytes, sizeof(long));
-	if ( status !=  sizeof(long)) {
+	status = Socket_StringWrite( sockfd, (char *)&nBytes, sizeof(int));
+	if ( status !=  sizeof(int)) {
 	  if ( debug ) {
 	    printf("  DServ_Process: Error sending nBytes in Socket_StringWrite\n");
 	    fflush(stdout);

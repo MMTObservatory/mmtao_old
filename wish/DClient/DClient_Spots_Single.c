@@ -5,8 +5,8 @@
     from the PCR_Server.  A connection to this server has already been
     established.
 
-  The server returns the number of bytes it will return (long), the
-    frame number (long) and the WFSC frame (char nBytes long).
+  The server returns the number of bytes it will return (int), the
+    frame number (int) and the WFSC frame (char nBytes int).
 
   The number of bytes is checked and if returned number in the structure
     Spots_Single_Info is not the same as will be returned, the structure
@@ -26,7 +26,7 @@
 
 #define DEBUG 0
 
-int DClient_Spots_Single( DClient_Info *Client_Info, short *Spots_Array, long *frameNumber,
+int DClient_Spots_Single( DClient_Info *Client_Info, short *Spots_Array, int *frameNumber,
 			 int debug, char *errorMsg)
 {
 
@@ -34,7 +34,7 @@ int DClient_Spots_Single( DClient_Info *Client_Info, short *Spots_Array, long *f
   int status;
   fd_set rfds;
   struct timeval tv;
-  long nBytes, retVal, count;
+  int nBytes, retVal, count;
   short *nxtShort, *nxtArray;
 
 #if( DEBUG )
@@ -80,16 +80,16 @@ int DClient_Spots_Single( DClient_Info *Client_Info, short *Spots_Array, long *f
     return(-1);
   }
 
-  status = Server_Read( (Server_Info *)Client_Info, sizeof(long));
+  status = Server_Read( (Server_Info *)Client_Info, sizeof(int));
   if ( status ) {
     strcpy( errorMsg, "  DClient_Spots_Single: Error in Server_Read getting nBytes");
     printf("%s\n", errorMsg);
     return(status);
   }
-  nBytes = ntohl( *(long *)Client_Info->server.in_line);
+  nBytes = ntohl( *(int *)Client_Info->server.in_line);
 
 #if( DEBUG )
-  printf("  DClient_Spots_Single: Byte Count = %ld\n", nBytes);
+  printf("  DClient_Spots_Single: Byte Count = %d\n", nBytes);
 #endif
 
   if ( abs(nBytes) == Client_Info->server.nBytes ){
@@ -103,16 +103,16 @@ int DClient_Spots_Single( DClient_Info *Client_Info, short *Spots_Array, long *f
       retVal = 0;
     }
 
-    num = Server_Read( (Server_Info *)Client_Info, sizeof(long));
+    num = Server_Read( (Server_Info *)Client_Info, sizeof(int));
     if ( status ) {
       strcpy( errorMsg, "  DClient_Spots_Single: Error in Server_Read getting frameNumber");
       printf("%s\n", errorMsg);
       return(status);
     }
-    *frameNumber = ntohl( *(long *)Client_Info->server.in_line);
+    *frameNumber = ntohl( *(int *)Client_Info->server.in_line);
 
 #if( DEBUG )
-    printf("  DClient_Spots_Single: Frame Number = %ld\n", *frameNumber);
+    printf("  DClient_Spots_Single: Frame Number = %d\n", *frameNumber);
 #endif
 
     num = Server_Read( (Server_Info *)Client_Info, Client_Info->server.nBytes);
@@ -145,8 +145,8 @@ int DClient_Spots_Single( DClient_Info *Client_Info, short *Spots_Array, long *f
 #endif
 
     if ( debug ) {
-      printf("  DClient_Spots_Single: Frame number = %ld\n", *frameNumber);
-      printf("                       Number of Bytes = %ld\n", nBytes);
+      printf("  DClient_Spots_Single: Frame number = %d\n", *frameNumber);
+      printf("                       Number of Bytes = %d\n", nBytes);
     }
 
   } else if ( nBytes < 0 ) {
@@ -169,7 +169,7 @@ int DClient_Spots_Single( DClient_Info *Client_Info, short *Spots_Array, long *f
       strcpy( errorMsg, "  DClient_Spots_Single: WFSC size changed: re-initializing");
       if ( debug ) printf("%s\n", errorMsg);
     } else {
-      sprintf( errorMsg, "  DClient_Spots_Single: Uknown error code %ld", nBytes);
+      sprintf( errorMsg, "  DClient_Spots_Single: Uknown error code %d", nBytes);
       if ( debug ) printf("%s\n", errorMsg);
     }
     return(nBytes);

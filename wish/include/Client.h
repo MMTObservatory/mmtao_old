@@ -56,8 +56,8 @@ int Client_Write( register int fd, register char *ptr, register int nbytes);
 
 /* Client_Error.c */
 int Client_ParameterError( Tcl_Interp *interp, char *type, char *routine, char *request, 
-			int required, int found, char *returnString, long debug);
+			int required, int found, char *returnString, int debug);
 int Client_RoutineError( Tcl_Interp *interp, char *type, char *routine, char *request,
-		      char *message, char *returnString, long debug);
+		      char *message, char *returnString, int debug);
 int Client_ConnectionWarning(  Tcl_Interp *interp, char *type, char *routine, char * name,
-			    char *request, char *returnString, long debug);
+			    char *request, char *returnString, int debug);

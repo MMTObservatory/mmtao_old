@@ -40,7 +40,7 @@
  *================================================================================*/
 int Static_ReadMatrix( float *soff_matrix, char *filename, int debug, char *replyData)
 {
-  long status;
+  int status;
   char ascii[120];
   int i;
   int num_slopes, num_modes;

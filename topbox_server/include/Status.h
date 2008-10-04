@@ -45,17 +45,17 @@ typedef struct _Status_Thread_Info {
 /*
   Prototypes for Status routines
 */
-int Status_FindParameter( Status_Entry *List, long list_length, char *request, long *position, long debug);
+int Status_FindParameter( Status_Entry *List, int list_length, char *request, int *position, int debug);
 int Status_InitFlags( Socket_Info *Info, Device_Data *Data);
 void *Status_Master( void *Passed_Info);
 void *Status_Process( void *Passed_Info);
-int Status_ReadFile( Status_Entry *List, long list_length, char *filename, long debug);
+int Status_ReadFile( Status_Entry *List, int list_length, char *filename, int debug);
 int Status_ReadLine(FILE *f, char *header);
-int Status_SendAll( int clientfd, Status_Entry *List, long list_length);
+int Status_SendAll( int clientfd, Status_Entry *List, int list_length);
 int Status_SendHelp( int sockfd);
-int Status_SetParameter( int sockfd, Status_Entry *List, long list_length, int debug);
+int Status_SetParameter( int sockfd, Status_Entry *List, int list_length, int debug);
 
-int Status_SetFlagPointers( Status_Entry *List, long list_length,
+int Status_SetFlagPointers( Status_Entry *List, int list_length,
 			    Socket_Info *Info,
 			    Device_Data *Data,
 			    char *Connected_String,
@@ -69,9 +69,9 @@ int Status_SetFlagPointers( Status_Entry *List, long list_length,
 			    char *Negative_String,
 			    char *Positive_String,
 			    char *Event_2_String,
-			    long debug);
+			    int debug);
 
-int Status_SetFwheelPointers( Status_Entry *List, long list_length,
+int Status_SetFwheelPointers( Status_Entry *List, int list_length,
 			      Socket_Info *Info,
 			      Device_Data *Data,
 			      char *Connected_String,
@@ -80,9 +80,9 @@ int Status_SetFwheelPointers( Status_Entry *List, long list_length,
 			      char *Position_String,
 			      char *Moving_String,
 			      char *Name_String,
-			      long debug);
+			      int debug);
 
-int Status_SetPowerPointers( Status_Entry *List, long list_length,
+int Status_SetPowerPointers( Status_Entry *List, int list_length,
 			     Socket_Info *Info,
 			     Device_Data *Data,
 			     char *Connected_String,
@@ -95,7 +95,7 @@ int Status_SetPowerPointers( Status_Entry *List, long list_length,
 			     char *Indigo_String,
 			     char *Spare1_String,
 			     char *Spare2_String,
-			     long debug);
+			     int debug);
 
 int Status_ZeroFlags( Device_Data *Data);
 

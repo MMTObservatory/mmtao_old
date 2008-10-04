@@ -15,9 +15,9 @@
 /************************************************************************
  * Write the request number of byte to given socket
  ************************************************************************/
-int PCR_Write( register int fd, register char *ptr, register long nbytes)
+int PCR_Write( register int fd, register char *ptr, register int nbytes)
 {
-  long nleft, nwritten;
+  int nleft, nwritten;
 
   nleft = nbytes;
   while (nleft > 0) {

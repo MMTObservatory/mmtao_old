@@ -36,7 +36,7 @@
  *================================================================================*/
 int Mod_ReadMatrix( float *mod_matrix, char *filename, int debug, char *replyData)
 {
-  long status;
+  int status;
   char ascii[120];
   int i;
   int num_slopes, num_modes;

@@ -104,7 +104,7 @@
 
 int Tcl_AppInit(Tcl_Interp* interp)
 {
-  long status;
+  int status;
   status = Tcl_Init(interp);
   if (status != TCL_OK) return TCL_ERROR;
 

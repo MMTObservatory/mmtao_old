@@ -34,9 +34,9 @@ typedef struct _Info_Entry {
 } Info_Entry;
 
 typedef struct _Info_Array {
-  long array_size;
-  long total_number;
-  long position;
+  int array_size;
+  int total_number;
+  int position;
   char time[SEEING_VALUES][STRING_LENGTH];
   double value[SEEING_VALUES];
 } Info_Array;
@@ -59,23 +59,23 @@ typedef struct _Info_Thread {
 /*
   Prototypes for Info routines
 */
-int Info_FindParameter( Info_Entry *List, long list_length, char *request, long *position, long debug);
+int Info_FindParameter( Info_Entry *List, int list_length, char *request, int *position, int debug);
 void *Info_Master( void *Passed_Info);
 void *Info_Process( void *Passed_Info);
-int Info_ReadFile( Info_Entry *List, long list_length, char *filename, long debug);
+int Info_ReadFile( Info_Entry *List, int list_length, char *filename, int debug);
 int Info_ReadLine(FILE *f, char *header);
 int Info_SeeingArray( int clientfd, Info_Array *Array);
-int Info_SeeingPositions( Info_Struct *Info, long **Seeing_Positions,
-			  long *Seeing_Count, long debug);
-int Info_SendAll( int clientfd, Info_Entry *List, long list_length);
+int Info_SeeingPositions( Info_Struct *Info, int **Seeing_Positions,
+			  int *Seeing_Count, int debug);
+int Info_SendAll( int clientfd, Info_Entry *List, int list_length);
 int Info_SendHelp( int sockfd);
-int Info_SendSeeing( int sockfd, Info_Entry *List, long list_length, long *Seeing_Positions, long Seeing_Count);
-int Info_SetParameter( int sockfd, Info_Entry *List, long list_length, Info_Array *Seeing, 
+int Info_SendSeeing( int sockfd, Info_Entry *List, int list_length, int *Seeing_Positions, int Seeing_Count);
+int Info_SetParameter( int sockfd, Info_Entry *List, int list_length, Info_Array *Seeing, 
 		       Info_Array *Strehl, int debug);
-int Info_SetFlagPointers( Info_Entry *List, long list_length, int *PCR_Client_running,
+int Info_SetFlagPointers( Info_Entry *List, int list_length, int *PCR_Client_running,
 			  int *DServ_WFSC_running, int *DServ_DDS_running, int *Info_running,
 			  int *PCR_WFSC_receiving_data, int *PCR_DDS_receiving_data,
 			  int *PCR_WFSC_rate, int *PCR_DDS_rate,
 			  Socket_Info *PCR_CMD_Socket, Socket_Info *PCR_WFSC_Socket,
 			  Socket_Info *PCR_DDS_Socket,
-			  Socket_Info *PCR_Error_Socket, long debug);
+			  Socket_Info *PCR_Error_Socket, int debug);

@@ -14,9 +14,9 @@
 /************************************************************************
  * Write the request number of byte to given socket
  ************************************************************************/
-int Socket_Write( register int fd, register char *ptr, register long nbytes)
+int Socket_Write( register int fd, register char *ptr, register int nbytes)
 {
-  long nleft, nwritten;
+  int nleft, nwritten;
 
   nleft = nbytes;
   while (nleft > 0) {

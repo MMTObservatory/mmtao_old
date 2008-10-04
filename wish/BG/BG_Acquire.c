@@ -12,20 +12,20 @@
 #include "PCR_Wish.h"
 #include "DClient.h"
 
-#include <fitsio.h>
+#include <cfitsio/fitsio.h>
 
 #define DEBUG 0
 
 /*================================================================================
  * BG_Acquire: Save streaming data to FITS file
  *================================================================================*/
-int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char *errorMsg)
+int BG_Acquire( DClient_Info *BG_Info, char *fname, int frames, int debug, char *errorMsg)
 {
   int status;
-  long i, j, num;
+  int i, j, num;
   int tries = 0;
   int max_tries = 100;
-  long frame_counter = 0;
+  int frame_counter = 0;
   int continueRunning = 1;
 
   /*
@@ -35,24 +35,24 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
   double *avgFrame = NULL;
   double *sigFrame = NULL;
   double *quad = NULL;
-  long *frameNumbers;
-  long *numberPtr;
-  long nBytes;
+  int *frameNumbers;
+  int *numberPtr;
+  int nBytes;
   int fd;
   FILE *fp;
   int type_hdu;
 
-  long *nxtLong;
+  int *nxtLong;
   short *nxtShort, *nxtArray;
 
   /* fitsio variables */
 
   fitsfile *fptr;
   char filename[STRING_LENGTH];
-  long blockDimension[3];
-  long pixelsPerImage;
-  long num_axis = 3;
-  long first_pixel = 1;
+  int blockDimension[3];
+  int pixelsPerImage;
+  int num_axis = 3;
+  int first_pixel = 1;
   int istatus;
 
   /* Time variables */
@@ -71,7 +71,7 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
   float total_time;
 
 #if( DEBUG )
-  long datacount;
+  int datacount;
   int k;
 #endif
 
@@ -138,15 +138,15 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
 
   } else {
 
-    status = Server_Read( (Server_Info *)BG_Info, sizeof(long));
+    status = Server_Read( (Server_Info *)BG_Info, sizeof(int));
     if ( status ) {
       strcpy( errorMsg, "BG_Acquire: Error in Server_Read getting nBytes");
       printf("  %s\n", errorMsg);
       return(status);
     }
-    nBytes = ntohl( *(long *)BG_Info->server.in_line);
+    nBytes = ntohl( *(int *)BG_Info->server.in_line);
     if ( debug ) {
-      printf("  BG_Acquire: Bytes in each frame %ld\n", nBytes);
+      printf("  BG_Acquire: Bytes in each frame %d\n", nBytes);
     }
 
   }
@@ -165,7 +165,7 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
   } else {
     sprintf( errorMsg, "BG_Acquire: Error receiving the number of pixels\n");
     sprintf( errorMsg, "    Should be 576 or 5184\n");
-    sprintf( errorMsg, "    Received %ld", pixelsPerImage);
+    sprintf( errorMsg, "    Received %d", pixelsPerImage);
     return(1);
   }
 
@@ -223,7 +223,7 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
     Allocate memory to store frame numbers
   */
 
-  frameNumbers = (long *) malloc( sizeof(long)*frames );
+  frameNumbers = (int *) malloc( sizeof(int)*frames );
   if ( frameNumbers == NULL ) {
     printf("  BG_Acquire: Error allocating frameNumbers\n");
     free(DM_Vector);
@@ -231,7 +231,7 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
     free(sigFrame);
     return(1);
   }
-  memset( frameNumbers, 0, sizeof(long)*frames );
+  memset( frameNumbers, 0, sizeof(int)*frames );
   numberPtr = frameNumbers;
 
   /* Open FITS file */
@@ -319,14 +319,14 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
       /*
 	Get the next frame and write to the fits file
       */
-      num = Server_Read( (Server_Info *)BG_Info, sizeof(long));
+      num = Server_Read( (Server_Info *)BG_Info, sizeof(int));
       if ( status ) {
 	strcpy( errorMsg, "BG_Acquire: Error in Server_Read getting frameNumber");
 	printf("  %s\n", errorMsg);
 	return(status);
       }
-      *numberPtr++ = ntohl( *(long *)BG_Info->server.in_line);
-      nxtLong = (long *)DM_Vector;
+      *numberPtr++ = ntohl( *(int *)BG_Info->server.in_line);
+      nxtLong = (int *)DM_Vector;
       *nxtLong = *(numberPtr - 1);
       //      printf("  BG_Acquire: Frame Number = %d\n", *(numberPtr - 1));
 
@@ -401,14 +401,14 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
 	/*
 	  nBytes is available, so read it
 	*/
-	status = Server_Read( (Server_Info *)BG_Info, sizeof(long));
+	status = Server_Read( (Server_Info *)BG_Info, sizeof(int));
 	if ( status ) {
 	  strcpy( errorMsg, "BG_Acquire: Error in Server_Read getting nBytes (1)");
 	  printf("  %s\n", errorMsg);
 	  continueRunning = 0;
 	  continue;
 	}
-	nBytes = ntohl( *(long *)BG_Info->server.in_line);
+	nBytes = ntohl( *(int *)BG_Info->server.in_line);
 
       } else {
 
@@ -451,14 +451,14 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
       /*
 	nBytes is available, so read it
       */
-      status = Server_Read( (Server_Info *)BG_Info, sizeof(long));
+      status = Server_Read( (Server_Info *)BG_Info, sizeof(int));
       if ( status ) {
 	strcpy( errorMsg, "BG_Acquire: Error in Server_Read getting nBytes (2)");
 	printf("  %s\n", errorMsg);
 	continueRunning = 0;
 	break;
       }
-      nBytes = ntohl( *(long *)BG_Info->server.in_line);
+      nBytes = ntohl( *(int *)BG_Info->server.in_line);
 
       /*
 	Increment the number of times we have read a -2 (new data not available)
@@ -493,7 +493,7 @@ int BG_Acquire( DClient_Info *BG_Info, char *fname, long frames, int debug, char
     } else {
 
       printf("\n");
-      sprintf( errorMsg, "BG_Acquire: Error reading the correct number of bytes %ld", nBytes);
+      sprintf( errorMsg, "BG_Acquire: Error reading the correct number of bytes %d", nBytes);
       if ( debug ) printf("  %s\n", errorMsg);
       continueRunning = 0;
 

@@ -15,11 +15,11 @@
 /*================================================================================*
  * Start server to manage data servers
  *================================================================================*/
-int Source_Stream_WFSC( DServ_Info *Info, char *type, int size, long debug )
+int Source_Stream_WFSC( DServ_Info *Info, char *type, int size, int debug )
 {
-  long num = 0;
+  int num = 0;
   int i, j, k, status;
-  long nBytes = -1;
+  int nBytes = -1;
 
   char sof[STRING_LENGTH];
   char request[STRING_LENGTH];
@@ -36,7 +36,7 @@ int Source_Stream_WFSC( DServ_Info *Info, char *type, int size, long debug )
 
   fitsfile *fptr;
   char filename[STRING_LENGTH];
-  long first_pixel = 1;
+  int first_pixel = 1;
   int istatus;
 
   /* Array variables */
@@ -168,7 +168,7 @@ int Source_Stream_WFSC( DServ_Info *Info, char *type, int size, long debug )
   */
   nBytes = htonl(Info->data->total_bytes);
   longPtr = (char *)&nBytes;
-  if ( Socket_Write( Info->socket->sockfd, longPtr, sizeof(long)) ) {
+  if ( Socket_Write( Info->socket->sockfd, longPtr, sizeof(int)) ) {
     if ( debug ) {
       printf("  Source_Stream_WFSC: Error writing nBytes in Socket_Write\n");
       fflush(stdout);
@@ -202,7 +202,7 @@ int Source_Stream_WFSC( DServ_Info *Info, char *type, int size, long debug )
     /*
       Send the frame number
     */
-    if ( Socket_Write( Info->socket->sockfd, numPtr, sizeof(long)) ) {
+    if ( Socket_Write( Info->socket->sockfd, numPtr, sizeof(int)) ) {
       if ( debug ) {
 	printf("  Source_Stream_WFSC: Error writing frame number in Socket_Write\n");
 	fflush(stdout);
@@ -287,7 +287,7 @@ int Source_Stream_WFSC( DServ_Info *Info, char *type, int size, long debug )
       /*
 	The PCR_GetWFSC thread has reset now, so we must send the number of bytes
       if ( Info->data->total_bytes == 1359 || Info->data->total_bytes == 12807 ) {
-	if ( Socket_Write( Info->socket->sockfd, longPtr, sizeof(long)) ) {
+	if ( Socket_Write( Info->socket->sockfd, longPtr, sizeof(int)) ) {
 	  if ( debug ) printf("  Source_Stream_WFSC: Error writing nBytes in Socket_Write\n");
 	  close( Info->socket->sockfd);
 	  return(-1);

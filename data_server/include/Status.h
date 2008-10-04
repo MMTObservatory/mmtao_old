@@ -26,9 +26,9 @@ typedef struct _Status_Thread {
 */
 int Status_EndOfData( char *input );
 void *Status_Master( void *Passed_Info);
-int Status_ParameterPositions( Info_Struct *Info, char *Status_Reply, long **Status_Position,
-			       long *Status_Count, long debug);
+int Status_ParameterPositions( Info_Struct *Info, char *Status_Reply, int **Status_Position,
+			       int *Status_Count, int debug);
 int Status_ReadLine( register int fd, register char *ptr, register int maxlen );
-int Status_ReadToEOF( Socket_Info *Info, char *Status_Reply, long *Status_Lines, int debug);
-int Status_UpdateParameters( Info_Struct *Info, char *Status_Reply, long *Status_Position,
-			     long Status_Count, long debug);
+int Status_ReadToEOF( Socket_Info *Info, char *Status_Reply, int *Status_Lines, int debug);
+int Status_UpdateParameters( Info_Struct *Info, char *Status_Reply, int *Status_Position,
+			     int Status_Count, int debug);

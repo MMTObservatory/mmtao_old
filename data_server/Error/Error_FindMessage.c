@@ -21,7 +21,7 @@
 /*================================================================================*
  * Return the position of the error number in the ErrorTable struct
  *================================================================================*/
-int Error_FindMessage( int errorNumber, char *errorMessage, long debug)
+int Error_FindMessage( int errorNumber, char *errorMessage, int debug)
 {
 
   /* local variables */

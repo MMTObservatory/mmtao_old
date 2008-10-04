@@ -54,8 +54,8 @@ void *PGplot_Master( void *Passed_Info)
   int *debug;
   int *update;
   int *realtime;
-  long frameNumber;
-  long debug_local = 0;
+  int frameNumber;
+  int debug_local = 0;
 
   int debug_PGplot = 1;
   int status;

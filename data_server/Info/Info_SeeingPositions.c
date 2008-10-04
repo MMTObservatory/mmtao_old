@@ -16,8 +16,8 @@
 /*================================================================================*
  * Return an Info Parameter and its value
  *================================================================================*/
-int Info_SeeingPositions( Info_Struct *Info, long **Seeing_Positions,
-			       long *Seeing_Count, long debug)
+int Info_SeeingPositions( Info_Struct *Info, int **Seeing_Positions,
+			       int *Seeing_Count, int debug)
 {
 
   /* Info Parameters to send to seeing monitor */
@@ -44,7 +44,7 @@ int Info_SeeingPositions( Info_Struct *Info, long **Seeing_Positions,
   /* local variables */
   int i, j;
   Info_Entry *List;
-  long list_length;
+  int list_length;
 
   /*
     Setup Info information
@@ -58,14 +58,14 @@ int Info_SeeingPositions( Info_Struct *Info, long **Seeing_Positions,
   *Seeing_Count = sizeof(Seeing_List)/sizeof(char *);
 
   if( debug ) {
-    printf("  Info_SeeingPositions: Number of parameters found = %ld\n", *Seeing_Count);
+    printf("  Info_SeeingPositions: Number of parameters found = %d\n", *Seeing_Count);
     fflush(stdout);
   }
 
   /*
     Allocate the Seeing_Positions array
   */
-  *Seeing_Positions = (long *)malloc( (*Seeing_Count)*sizeof(long) );
+  *Seeing_Positions = (int *)malloc( (*Seeing_Count)*sizeof(int) );
   
   /*
     Set all position values to -1 so if a parameter is not found
@@ -103,7 +103,7 @@ int Info_SeeingPositions( Info_Struct *Info, long **Seeing_Positions,
 
     if( debug ) {
       printf("  Info_SeeingPositions: %s\n", Seeing_List[j]);
-      printf("                        Position = %ld\n", (*Seeing_Positions)[j] );
+      printf("                        Position = %d\n", (*Seeing_Positions)[j] );
       fflush(stdout);
     }
 

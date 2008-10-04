@@ -16,7 +16,7 @@
 /*================================================================================*
  * Read an Status Parameter setup file from disk
  *================================================================================*/
-int Status_ReadFile( Status_Entry *List, long list_length, char *filename, long debug)
+int Status_ReadFile( Status_Entry *List, int list_length, char *filename, int debug)
 {
 
   /* local variables */

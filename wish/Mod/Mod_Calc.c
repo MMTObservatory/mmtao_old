@@ -32,7 +32,7 @@
  * Calculate a slope offset vector (144 X's & 144 Y's) with the requested almount
  *   of each of seven modes.
  *================================================================================*/
-int Mod_Calc( long mode, float *matrix, float *offsets,  int debug, char *replyData)
+int Mod_Calc( int mode, float *matrix, float *offsets,  int debug, char *replyData)
 {
   int i, j;
   float *fltptr;

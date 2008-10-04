@@ -48,9 +48,9 @@ void *Status_Master( void *Passed_Info)
   int status;
   int Init_List = 1;
 
-  long *Status_Position;
-  long Status_Count;
-  long Status_Lines;
+  int *Status_Position;
+  int Status_Count;
+  int Status_Lines;
   int local_debug = 0;
 
   /*

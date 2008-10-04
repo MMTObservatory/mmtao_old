@@ -25,16 +25,16 @@
 
 int WFSC_GetSingle( DServ_Info *Info, int sockfd, int debug)
 {
-  long nBytes, temp_nBytes, new_frame;
+  int nBytes, temp_nBytes, new_frame;
   char *WFSC_DataPtr;
-  long new_frameNumber;
+  int new_frameNumber;
   int status;
-  static long old_frameNumber = -1;
+  static int old_frameNumber = -1;
 
 #if( DEBUG )
-  long *nxtLong;
+  int *nxtLong;
   short *nxtShort;
-  long datacount;
+  int datacount;
   int i, j;
   char dimension[STRING_LENGTH];
 #endif
@@ -47,8 +47,8 @@ int WFSC_GetSingle( DServ_Info *Info, int sockfd, int debug)
   */
   if ( Info->data->last < 0 ) {
     nBytes = htonl(-2);
-    status = Socket_StringWrite( sockfd, (char *)&nBytes, sizeof(long));
-    if ( status !=  sizeof(long)) {
+    status = Socket_StringWrite( sockfd, (char *)&nBytes, sizeof(int));
+    if ( status !=  sizeof(int)) {
       if ( debug ) {
 	printf("  WFSC_Single: Error sending nBytes in Socket_StringWrite\n");
       }
@@ -70,8 +70,8 @@ int WFSC_GetSingle( DServ_Info *Info, int sockfd, int debug)
   /*
     Save the frame number
   */
-  new_frameNumber = *((long *)WFSC_DataPtr);
-  WFSC_DataPtr += sizeof(long);
+  new_frameNumber = *((int *)WFSC_DataPtr);
+  WFSC_DataPtr += sizeof(int);
 
   /*
     If the frame numbers are the same, then no new data is available
@@ -103,13 +103,13 @@ int WFSC_GetSingle( DServ_Info *Info, int sockfd, int debug)
     strcpy( dimension, "unknown");
   }
     
-  nxtLong = (long *)WFSC_DataPtr;
+  nxtLong = (int *)WFSC_DataPtr;
   printf(";=============================================;\n");
   printf("|  Debug information from WFSC_GetSingle      |\n");
   printf(";---------------------------------------------;\n");
-  printf("|    Frame Number = %ld\n", ntohl(new_frameNumber));
-  printf("|       New Frame = %ld (-1 is old frame)\n", new_frame);
-  printf("| Number of Bytes = %ld\n", nBytes);
+  printf("|    Frame Number = %d\n", ntohl(new_frameNumber));
+  printf("|       New Frame = %d (-1 is old frame)\n", new_frame);
+  printf("| Number of Bytes = %d\n", nBytes);
   printf("| Frame Dimension = %s\n", dimension);
   printf(";=============================================;\n\n");
 
@@ -134,8 +134,8 @@ int WFSC_GetSingle( DServ_Info *Info, int sockfd, int debug)
       so a htonl() must be used.
   */
   temp_nBytes = htonl(nBytes);
-  status = Socket_StringWrite( sockfd, (char *)&temp_nBytes, sizeof(long));
-  if ( status !=  sizeof(long)) {
+  status = Socket_StringWrite( sockfd, (char *)&temp_nBytes, sizeof(int));
+  if ( status !=  sizeof(int)) {
     if ( debug ) {
       printf("  WFSC_Single: Error sending nBytes in Socket_StringWrite\n");
     }
@@ -146,8 +146,8 @@ int WFSC_GetSingle( DServ_Info *Info, int sockfd, int debug)
     Send the frame number to the client.  The frameNumber is stored in the DServ
       memory in "network" format so a conversion is not needed.
   */
-  status = Socket_StringWrite( sockfd, (char *)&new_frameNumber, sizeof(long));
-  if ( status !=  sizeof(long)) {
+  status = Socket_StringWrite( sockfd, (char *)&new_frameNumber, sizeof(int));
+  if ( status !=  sizeof(int)) {
     if ( debug ) {
       printf("  WFSC_Single: Error sending new_frameNumber in Socket_StringWrite\n");
     }

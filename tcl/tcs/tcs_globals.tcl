@@ -47,10 +47,6 @@ set TCS_Float [list \
 global TCS_List
 set TCS_List [ concat $TCS_Float $TCS_Char]
 
-foreach el $TCS_List {
-    global TCS($el)
-}
+global TCS
+global TCS_Format
 
-foreach el $TCS_Float {
-    global TCS_Format($el)
-}

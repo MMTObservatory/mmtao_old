@@ -10,21 +10,21 @@
 #include "PCR_Wish.h"
 #include "DClient.h"
 
-#include <fitsio.h>
+#include <cfitsio/fitsio.h>
 
 #define DEBUG 0
 
 /*================================================================================
  * DClient_DM_Save: Save streaming data to FITS file
  *================================================================================*/
-int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, char *fname, long frames,
+int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, char *fname, int frames,
 		     int debug, char *errorMsg)
 {
   int status;
-  long i, j, num;
+  int i, j, num;
   int tries = 0;
   int max_tries = 100;
-  long frame_counter = 0;
+  int frame_counter = 0;
   int continueRunning = 1;
   short key;
 
@@ -33,25 +33,25 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
   */
 
   short *DM_Vector = NULL;
-  long *frameNumbers;
-  long *numberPtr;
-  long nBytes;
+  int *frameNumbers;
+  int *numberPtr;
+  int nBytes;
 
-  long *nxtLong;
+  int *nxtLong;
   short *nxtShort, *nxtArray;
 
   /* fitsio variables */
   char filename[STRING_LENGTH];
-  long dimension[3];
-  long num_axis;
-  long offset, totalBytes;
+  int dimension[3];
+  int num_axis;
+  int offset, totalBytes;
   int istatus;
 
   /* Added arrays so multiple files could be saved */
   int sets;
   fitsfile *fptr[6];
-  long values[6];
-  long first_pixel[6];
+  int values[6];
+  int first_pixel[6];
   short *Data_Ptr[6];
 
   /* Time variables */
@@ -70,7 +70,7 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
   float total_time;
 
 #if( DEBUG )
-  long datacount;
+  int datacount;
   int k;
 #endif
 
@@ -97,13 +97,13 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
     Allocate memory to store frame numbers
   */
 
-  frameNumbers = (long *) malloc( sizeof(long)*frames );
+  frameNumbers = (int *) malloc( sizeof(int)*frames );
   if ( frameNumbers == NULL )
     {
       printf("  DClient_DM_Save: Error allocating frameNumbers\n");
       return(1);
     }
-  memset( frameNumbers, 0, sizeof(long)*frames );
+  memset( frameNumbers, 0, sizeof(int)*frames );
   numberPtr = frameNumbers;
 
   /*
@@ -155,15 +155,15 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
 
   } else {
 
-    status = Server_Read( (Server_Info *)DM_Save_Info, sizeof(long));
+    status = Server_Read( (Server_Info *)DM_Save_Info, sizeof(int));
     if ( status ) {
       strcpy( errorMsg, "DClient_DM_Save: Error in Server_Read getting nBytes");
       printf("  %s\n", errorMsg);
       return(status);
     }
-    nBytes = ntohl( *(long *)DM_Save_Info->server.in_line);
+    nBytes = ntohl( *(int *)DM_Save_Info->server.in_line);
     if ( debug ) {
-      printf("  DClient_DM_Save: Bytes in each frame %ld\n", nBytes);
+      printf("  DClient_DM_Save: Bytes in each frame %d\n", nBytes);
     }
 
   }
@@ -230,7 +230,7 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
     } else {
 
       printf("  DClient_DM_Save: Not the correct number of bytes received\n");
-      printf("                   Received %ld\n", nBytes);
+      printf("                   Received %d\n", nBytes);
       printf("                   Could be 1152\n");
       printf("                        or 10368\n");
       return(-1);
@@ -555,8 +555,8 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
   if ( totalBytes != nBytes ) {
 
     printf("  DClient_DM_Save: Incorrect number of bytes to save\n");
-    printf("                   Recieved %ld\n", nBytes);
-    printf("                   To be saved %ld\n", totalBytes);
+    printf("                   Recieved %d\n", nBytes);
+    printf("                   To be saved %d\n", totalBytes);
     printf("  DClient_DM_Save: No data saved!\n");
 
     for ( i=0; i<sets; i++) {
@@ -614,14 +614,14 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
       /*
 	Get the next frame and write to the fits file
       */
-      num = Server_Read( (Server_Info *)DM_Save_Info, sizeof(long));
+      num = Server_Read( (Server_Info *)DM_Save_Info, sizeof(int));
       if ( status ) {
 	strcpy( errorMsg, "DClient_DM_Save: Error in Server_Read getting frameNumber");
 	printf("  %s\n", errorMsg);
 	return(status);
       }
-      *numberPtr++ = ntohl( *(long *)DM_Save_Info->server.in_line);
-      nxtLong = (long *)DM_Vector;
+      *numberPtr++ = ntohl( *(int *)DM_Save_Info->server.in_line);
+      nxtLong = (int *)DM_Vector;
       *nxtLong = *(numberPtr - 1);
       //      printf("  DClient_DM_Save: Frame Number = %d\n", *(numberPtr - 1));
 
@@ -692,14 +692,14 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
 	/*
 	  nBytes is available, so read it
 	*/
-	status = Server_Read( (Server_Info *)DM_Save_Info, sizeof(long));
+	status = Server_Read( (Server_Info *)DM_Save_Info, sizeof(int));
 	if ( status ) {
 	  strcpy( errorMsg, "DClient_DM_Save: Error in Server_Read getting nBytes (1)");
 	  printf("  %s\n", errorMsg);
 	  continueRunning = 0;
 	  continue;
 	}
-	nBytes = ntohl( *(long *)DM_Save_Info->server.in_line);
+	nBytes = ntohl( *(int *)DM_Save_Info->server.in_line);
 
       } else {
 
@@ -738,14 +738,14 @@ int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, c
       /*
 	nBytes is available, so read it
       */
-      status = Server_Read( (Server_Info *)DM_Save_Info, sizeof(long));
+      status = Server_Read( (Server_Info *)DM_Save_Info, sizeof(int));
       if ( status ) {
 	strcpy( errorMsg, "DClient_DM_Save: Error in Server_Read getting nBytes (2)");
 	printf("  %s\n", errorMsg);
 	continueRunning = 0;
 	break;
       }
-      nBytes = ntohl( *(long *)DM_Save_Info->server.in_line);
+      nBytes = ntohl( *(int *)DM_Save_Info->server.in_line);
 
       /*
 	Increment the number of times we have read a -2 (new data not available)

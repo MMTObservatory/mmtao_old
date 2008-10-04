@@ -24,7 +24,7 @@ void *PCR_Process( void *Passed_Info)
   DServ_Info *CMD_Info, *WFSC_Info, *DM_Info, *Error_Info;
   Info_Struct *Info;
   Info_Entry *List;
-  long list_length;
+  int list_length;
   PCR_Thread_Client WFSC_Thread_Client, DM_Thread_Client;
   pthread_t pcr_wfscThread, pcr_dmThread;
 
@@ -48,21 +48,21 @@ void *PCR_Process( void *Passed_Info)
   /*
     Pointers to the needed Info structures
   */
-  long Static_Position;
-  long WFSC_Initialized_Position;
-  long WFSC_Running_Position;
-  long WFSC_Size_Position;
-  long WFSC_Source_Position;
-  long WFSC_Bias_Position;
-  long WFSC_Frequency_Position;
-  long WFSC_Period_Position;
-  long Background_Static_Position;
-  long Background_Dynamic_Position;
-  long Seeing_Gain_Change_Position;
-  long Loop_Running_Position;
-  long Loop_Gain_Position;
-  long Loop_Save_Data_Position;
-  long Recon_Name_Position;
+  int Static_Position;
+  int WFSC_Initialized_Position;
+  int WFSC_Running_Position;
+  int WFSC_Size_Position;
+  int WFSC_Source_Position;
+  int WFSC_Bias_Position;
+  int WFSC_Frequency_Position;
+  int WFSC_Period_Position;
+  int Background_Static_Position;
+  int Background_Dynamic_Position;
+  int Seeing_Gain_Change_Position;
+  int Loop_Running_Position;
+  int Loop_Gain_Position;
+  int Loop_Save_Data_Position;
+  int Recon_Name_Position;
 
   /*
     Put the passed variables in to the local variables

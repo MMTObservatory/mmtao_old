@@ -1,7 +1,7 @@
 
 #include "PCR.h"
 
-int Source_Start( char *name, char *type, int size, long debug );
+int Source_Start( char *name, char *type, int size, int debug );
 
 int main(int argc, char *argv[])
 {

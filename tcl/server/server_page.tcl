@@ -111,7 +111,7 @@ proc server_page { server_win page } {
 # Topbox Process
 #
     label $server_page.server.process.topbox_label \
-	-text "Topbox_Server"
+	-text "Topbox Server"
     button $server_page.server.process.topbox_start \
 	-background red -activebackground OrangeRed \
 	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \

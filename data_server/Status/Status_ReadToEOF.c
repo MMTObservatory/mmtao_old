@@ -17,7 +17,7 @@
 /*================================================================================
  * Read from socket till EOF or OK
  *================================================================================*/
-int Status_ReadToEOF( Socket_Info *Info, char *Status_Reply, long *Status_Lines, int debug)
+int Status_ReadToEOF( Socket_Info *Info, char *Status_Reply, int *Status_Lines, int debug)
 {
   /*
     Local variables to read next line

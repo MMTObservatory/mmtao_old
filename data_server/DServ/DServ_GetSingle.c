@@ -19,12 +19,12 @@
  *===============================================================================*/
 
 int DServ_GetSingle( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, 
-		     long *old_frameNumber, int *debug)
+		     int *old_frameNumber, int *debug)
 {
-  long nBytes, nBytes_Send, new_frame;
+  int nBytes, nBytes_Send, new_frame;
   DServ_Info *Info;
   char *DServ_DataPtr;
-  long new_frameNumber;
+  int new_frameNumber;
   int status;
   char request[STRING_LENGTH];
 
@@ -34,7 +34,7 @@ int DServ_GetSingle( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd,
 
 #if( DEBUG )
   short *nxtShort;
-  long datacount;
+  int datacount;
   int j, k;
 #endif
 
@@ -96,7 +96,7 @@ int DServ_GetSingle( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd,
   /*
     Save the frame number
   */
-  new_frameNumber = *((long *)DServ_DataPtr);
+  new_frameNumber = *((int *)DServ_DataPtr);
 
   /*
     If the frame numbers are the same, then no new data is available
@@ -216,20 +216,20 @@ int DServ_GetSingle( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd,
   printf("|  Debug information from DServ_GetSingle      |\n");
   printf(";---------------------------------------------;\n");
   printf("|    Frame Number = %d\n", ntohl(new_frameNumber));
-  printf("|       New Frame = %ld (-1 is old frame)\n", new_frame);
-  printf("| Number of Bytes = %ld\n", nBytes);
+  printf("|       New Frame = %d (-1 is old frame)\n", new_frame);
+  printf("| Number of Bytes = %d\n", nBytes);
   printf(";=============================================;\n\n");
   fflush(stdout);
 
 #endif
 
   /*
-    Send the number of bytes to the client.  This long is in "host" format
+    Send the number of bytes to the client.  This int is in "host" format
       so a htonl() must be used.
   */
   nBytes_Send = htonl(nBytes_Send);
-  status = Socket_StringWrite( sockfd, (char *)&nBytes_Send, sizeof(long));
-  if ( status !=  sizeof(long)) {
+  status = Socket_StringWrite( sockfd, (char *)&nBytes_Send, sizeof(int));
+  if ( status !=  sizeof(int)) {
     if ( debug ) {
       printf("  DServ_GetSingle: Error sending nBytes_Send in Socket_StringWrite\n");
       fflush(stdout);
@@ -241,8 +241,8 @@ int DServ_GetSingle( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd,
     Send the frame number to the client.  The frameNumber is stored in the DServ
       memory in "network" format so a conversion is not needed.
   */
-  status = Socket_StringWrite( sockfd, (char *)&new_frameNumber, sizeof(long));
-  if ( status !=  sizeof(long)) {
+  status = Socket_StringWrite( sockfd, (char *)&new_frameNumber, sizeof(int));
+  if ( status !=  sizeof(int)) {
     if ( debug ) {
       printf("  DServ_GetSingle: Error sending new_frameNumber in Socket_StringWrite\n");
       fflush(stdout);

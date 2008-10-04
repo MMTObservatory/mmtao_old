@@ -72,8 +72,8 @@
           [0] - 336 x 5
  */
 typedef struct _DClient_Frame {
-  long dims;                  // number of dimensions
-  long length[2];             // size of each dimension
+  int dims;                  // number of dimensions
+  int length[2];             // size of each dimension
 } DClient_Frame;
 
 typedef struct _DClient_State {
@@ -92,9 +92,9 @@ typedef struct _DClient_Info {
 */
 /* DClient_Comm.c */
 int DClient_ReadString(register int fd, register char *ptr, register int nbytes, char *msg);
-long DClient_ReadLong( int sockfd, char *request, char *msg);
-long DClient_WriteLong( int sockfd, long longValue, char *msg);
-long DClient_WriteString( int sockfd, char *request, char *msg);
+int DClient_ReadLong( int sockfd, char *request, char *msg);
+int DClient_WriteLong( int sockfd, int longValue, char *msg);
+int DClient_WriteString( int sockfd, char *request, char *msg);
 
 /* DClient_Error.c */
 int DClient_ParameterError( char *type, char *routine, char *request, int required, 
@@ -120,22 +120,22 @@ int DClient_Spots_Display( DClient_Info *Client_Info, PGplot_Info *Spots_Info, c
 			   int debug_DClient, int debug_PGplot, char *errorMsg);
 int DClient_Spots_Init( DClient_Info *WFSC_Info, PGplot_Info *Spots_Info, char *name,
 			short **WFSC_Array, int debug, char *errorMsg);
-int DClient_Spots_Single( DClient_Info *Client_Info, short *Spots_Array, long *frameNumber,
+int DClient_Spots_Single( DClient_Info *Client_Info, short *Spots_Array, int *frameNumber,
 			  int debug, char *errorMsg);
-int DClient_WFSC_Save( DClient_Info *WFSC_Single_Info, char *fileName, long frames,
+int DClient_WFSC_Save( DClient_Info *WFSC_Single_Info, char *fileName, int frames,
 		       short *WFSC_Array, int debug, char *errorMsg);
-int DClient_WFSC_Single( DClient_Info *WFSC_Single_Info, short *WFSC_Array, long *frameNumber,
+int DClient_WFSC_Single( DClient_Info *WFSC_Single_Info, short *WFSC_Array, int *frameNumber,
 			 int debug, char *errorMsg);
-long DClient_SaveFrameNumbers( long framesReceived, long *frameNumbers, char *fname, char *time_string);
+int DClient_SaveFrameNumbers( int framesReceived, int *frameNumbers, char *fname, char *time_string);
 
 /* Slope client routines */
 int DClient_Slopes_Display( DClient_Info *Client_Info, PGplot_Info *Slopes_Info, char *name, char *type,
 			    int debug_DClient, int debug_PGplot, char *errorMsg);
 int DClient_Slopes_Init( DClient_Info *Client_Info, PGplot_Info *Slopes_Info, char *name,
 			 short **Slopes_Vector, int debug, char *errorMsg);
-int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, long frames, 
+int DClient_Slopes_Save( DClient_Info *Slopes_Save_Info, char *fname, int frames, 
 			 short *Slopes_Array, int debug, char *errorMsg);
-int DClient_Slopes_Single( DClient_Info *Slopes_Single_Info, short *Slopes_Array, long *frameNumber,
+int DClient_Slopes_Single( DClient_Info *Slopes_Single_Info, short *Slopes_Array, int *frameNumber,
 			   int debug, char *errorMsg);
 
 /* DM client routines */
@@ -143,7 +143,7 @@ int DClient_DM_Connect( DClient_Info *DM_Info, char *name,
 			int debug, char *errorMsg);
 int DClient_DM_Init( DClient_Info *Slopes_Single_Info, char *name,
 		       char **DM_Array, int debug, char *errorMsg);
-int DClient_RTR_Single( DClient_Info *RTR_Single_Info, char *RTR_Array, long *frameNumber,
+int DClient_RTR_Single( DClient_Info *RTR_Single_Info, char *RTR_Array, int *frameNumber,
 			int debug, char *errorMsg);
-int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, char *fname, long frames,
+int DClient_DM_Save( DClient_Info *DM_Save_Info, char *request, char *dirname, char *fname, int frames,
 		     int debug, char *errorMsg);

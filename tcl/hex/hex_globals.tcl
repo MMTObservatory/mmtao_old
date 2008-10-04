@@ -52,10 +52,13 @@ set Hex_Float [list \
 global Hex_List
 set Hex_List [ concat $Hex_Float $Hex_Char]
 
-foreach el $Hex_List {
-    global Hex($el)
-}
+global Hex
+global Hex_Format
 
-foreach el $Hex_Float {
-    global Hex_Format($el)
-}
+#foreach el $Hex_List {
+#    global Hex($el)
+#}
+
+#foreach el $Hex_Float {
+#    global Hex_Format($el)
+#}

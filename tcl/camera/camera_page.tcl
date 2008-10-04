@@ -112,6 +112,30 @@ proc camera_page { camera_win page } {
 	-command {
 	    camera_rate_set $cam_rate $camera_page
 	}
+    $rate_menu add radiobutton -label 100 -variable cam_rate \
+	-command {
+	    camera_rate_set $cam_rate $camera_page
+	}
+    $rate_menu add radiobutton -label 50 -variable cam_rate \
+	-command {
+	    camera_rate_set $cam_rate $camera_page
+	}
+    $rate_menu add radiobutton -label 25 -variable cam_rate \
+	-command {
+	    camera_rate_set $cam_rate $camera_page
+	}
+    $rate_menu add radiobutton -label 15 -variable cam_rate \
+	-command {
+	    camera_rate_set $cam_rate $camera_page
+	}
+    $rate_menu add radiobutton -label 10 -variable cam_rate \
+	-command {
+	    camera_rate_set $cam_rate $camera_page
+	}
+    $rate_menu add radiobutton -label 5 -variable cam_rate \
+	-command {
+	    camera_rate_set $cam_rate $camera_page
+	}
 #
 # Pack the rate buttons
 #

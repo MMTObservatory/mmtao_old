@@ -14,9 +14,9 @@
 /*======================================================================
  * Write a string via a socket to a client.
  *=======================================================================*/
-int Server_StringWrite( register int fd, register char *ptr, register long nbytes)
+int Server_StringWrite( register int fd, register char *ptr, register int nbytes)
 {
-  long nleft, nwritten;
+  int nleft, nwritten;
 
   nleft = nbytes;
   while (nleft > 0) {

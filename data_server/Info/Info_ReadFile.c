@@ -17,7 +17,7 @@
 /*================================================================================*
  * Read an Info Parameter setup file from disk
  *================================================================================*/
-int Info_ReadFile( Info_Entry *List, long list_length, char *filename, long debug)
+int Info_ReadFile( Info_Entry *List, int list_length, char *filename, int debug)
 {
 
   /* local variables */

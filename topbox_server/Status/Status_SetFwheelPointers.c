@@ -16,7 +16,7 @@
 /*================================================================================*
  * Read an Status Parameter setup file from disk
  *================================================================================*/
-int Status_SetFwheelPointers( Status_Entry *List, long list_length,
+int Status_SetFwheelPointers( Status_Entry *List, int list_length,
 			      Socket_Info *Info,
 			      Device_Data *Data,
 			      char *Connected_String,
@@ -25,7 +25,7 @@ int Status_SetFwheelPointers( Status_Entry *List, long list_length,
 			      char *Position_String,
 			      char *Name_String,
 			      char *Moving_String,
-			      long debug)
+			      int debug)
 {
 
   /* local variables */

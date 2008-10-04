@@ -48,7 +48,7 @@ int Mod_Cmd( ClientData client_data, Tcl_Interp* interp, int argc, char *argv[])
 
   int required_args;
   int status, i;
-  long mode;
+  int mode;
   char fileName[STRING_LENGTH];
   char request[STRING_LENGTH];
 

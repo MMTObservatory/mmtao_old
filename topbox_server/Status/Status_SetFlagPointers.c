@@ -16,7 +16,7 @@
 /*================================================================================*
  * Read an Status Parameter setup file from disk
  *================================================================================*/
-int Status_SetFlagPointers( Status_Entry *List, long list_length,
+int Status_SetFlagPointers( Status_Entry *List, int list_length,
 			    Socket_Info *Info,
 			    Device_Data *Data,
 			    char *Connected_String,
@@ -30,7 +30,7 @@ int Status_SetFlagPointers( Status_Entry *List, long list_length,
 			    char *Negative_String,
 			    char *Positive_String,
 			    char *Event_2_String,
-			    long debug)
+			    int debug)
 {
 
   /* local variables */

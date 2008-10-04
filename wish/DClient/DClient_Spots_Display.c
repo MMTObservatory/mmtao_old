@@ -27,7 +27,7 @@ int DClient_Spots_Display( DClient_Info *Client_Info, PGplot_Info *Spots_Info, c
 {
 
   int status, retVal;
-  long frameNumber;
+  int frameNumber;
 
   static short *Spots_Array;
 

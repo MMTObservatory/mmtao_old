@@ -37,7 +37,7 @@ int PCR_SendSlopeOffsets( DServ_Info *Info, Info_Entry *Static , int sockfd, int
   float *float_vector;
   float *flipped;
   char *float_ptr;
-  long vec_length = 288;
+  int vec_length = 288;
   int mode[7];
 
   /*

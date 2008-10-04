@@ -49,7 +49,7 @@ int Socket_Setup( Socket_Info *Info, char *name, int debug);
 int Socket_StringLowerCase( char *request);
 int Socket_StringRead( int fd, char *buffer);
 int Socket_StringTrim( char *request);
-int Socket_StringWrite( register int fd, register char *ptr, register long nbytes);
-int Socket_Write( register int fd, register char *ptr, register long nbytes);
+int Socket_StringWrite( register int fd, register char *ptr, register int nbytes);
+int Socket_Write( register int fd, register char *ptr, register int nbytes);
 
 #endif /* _SOCKET_H_ */

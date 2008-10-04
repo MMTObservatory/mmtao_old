@@ -16,13 +16,13 @@
 
 #define DEBUG 1
 
-int Source_Stream_WFSC( DServ_Info *Info, char *type, int size, long debug );
-int Source_Stream_DM( DServ_Info *Info, long debug );
+int Source_Stream_WFSC( DServ_Info *Info, char *type, int size, int debug );
+int Source_Stream_DM( DServ_Info *Info, int debug );
 
 /*================================================================================*
  * Start server to manage data servers
  *================================================================================*/
-int Source_Start( char *name, char *type, int size, long debug )
+int Source_Start( char *name, char *type, int size, int debug )
 {
   int status;
   int newsockfd;
@@ -39,7 +39,7 @@ int Source_Start( char *name, char *type, int size, long debug )
   float *Raw_Rate;
   char *charptr;
   int i, j;
-  long vec_length;
+  int vec_length;
   int errorNumber;
   char *intPtr;
   char answer[STRING_LENGTH];
@@ -418,7 +418,7 @@ int Source_Start( char *name, char *type, int size, long debug )
   	  }
 
           if ( debug ) {
-            printf("  Source_Start:           %ld Modulation Rate values Read\n", vec_length);
+            printf("  Source_Start:           %d Modulation Rate values Read\n", vec_length);
 	    fflush(stdout);
           }
 

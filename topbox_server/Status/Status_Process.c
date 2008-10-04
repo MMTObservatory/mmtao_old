@@ -24,7 +24,7 @@ void *Status_Process( void *Passed_Info)
   Status_Thread_Info *Main_Info;
   Status_Struct *Status;
   Status_Entry *List;
-  long list_length;
+  int list_length;
   int *continueRunning;
   int *debug;
 

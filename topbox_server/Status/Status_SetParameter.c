@@ -22,7 +22,7 @@
 /*================================================================================*
  * Return an Status Parameter and its value
  *================================================================================*/
-int Status_SetParameter( int sockfd, Status_Entry *List, long list_length, int debug)
+int Status_SetParameter( int sockfd, Status_Entry *List, int list_length, int debug)
 {
 
   /* local variables */
@@ -30,7 +30,7 @@ int Status_SetParameter( int sockfd, Status_Entry *List, long list_length, int d
   char request[STRING_LENGTH];
   char reply[STRING_LENGTH];
   char value[STRING_LENGTH];
-  long position;
+  int position;
   int status;
 
   /* time variable */

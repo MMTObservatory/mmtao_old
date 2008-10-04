@@ -14,13 +14,13 @@
 /*================================================================================*
  * Read an Info Parameter setup file from disk
  *================================================================================*/
-int Info_SetFlagPointers( Info_Entry *List, long list_length, int *PCR_Client_running,
+int Info_SetFlagPointers( Info_Entry *List, int list_length, int *PCR_Client_running,
 			  int *DServ_WFSC_running, int *DServ_DDS_running, int *Info_running,
 			  int *PCR_WFSC_receiving_data, int *PCR_DDS_receiving_data,
 			  int *PCR_WFSC_rate, int *PCR_DDS_rate,
 			  Socket_Info *PCR_CMD_Socket, Socket_Info *PCR_WFSC_Socket,
 			  Socket_Info *PCR_DDS_Socket,
-			  Socket_Info *PCR_Error_Socket, long debug)
+			  Socket_Info *PCR_Error_Socket, int debug)
 {
 
   /* local variables */

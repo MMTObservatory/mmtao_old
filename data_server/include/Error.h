@@ -14,5 +14,5 @@
   Prototypes for Error routines
 */
 void *Error_Master( void *Passed_Info);
-int Error_FindMessage( int errorNumber, char *errorMessage, long debug);
-int Error_PlaySound( long debug);
+int Error_FindMessage( int errorNumber, char *errorMessage, int debug);
+int Error_PlaySound( int debug);

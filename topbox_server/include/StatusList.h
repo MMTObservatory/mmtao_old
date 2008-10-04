@@ -104,4 +104,4 @@ Status_Entry Status_List[] = {
   { "Rotation_Positive",         "Pointer to a flag indicating if the device is at a positive limit", "I" },
 };
 
-long Status_ListLength = ( sizeof(Status_List)/sizeof(struct _Status_Entry) );
+int Status_ListLength = ( sizeof(Status_List)/sizeof(struct _Status_Entry) );

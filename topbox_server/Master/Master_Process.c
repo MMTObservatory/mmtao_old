@@ -38,7 +38,7 @@ void *Master_Process( void *Passed_Info)
   Device_Info *Smart_Info;
   Status_Struct *Status;
   Status_Entry *List;
-  long list_length;
+  int list_length;
 
   int sockfd;
   int *Master_continueRunning;
@@ -56,7 +56,7 @@ void *Master_Process( void *Passed_Info)
   /*
     Pointers to the needed Info structures
   */
-  long FSM_Tip_Connected;
+  int FSM_Tip_Connected;
 
   /*
     Put the passed variables in to the local variables

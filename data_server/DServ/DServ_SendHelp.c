@@ -31,7 +31,7 @@ int DServ_SendHelp( int sockfd)
     return(-1);
   }
 
-  strcpy( reply, "      => returns long (nBytes)\n");
+  strcpy( reply, "      => returns int (nBytes)\n");
   status = Socket_StringWrite( sockfd, reply, strlen(reply));
   if ( status != strlen(reply) ) {
     return(-1);
@@ -43,19 +43,19 @@ int DServ_SendHelp( int sockfd)
     return(-1);
   }
 
-  strcpy( reply, "      => returns long (nBytes)\n");
+  strcpy( reply, "      => returns int (nBytes)\n");
   status = Socket_StringWrite( sockfd, reply, strlen(reply));
   if ( status != strlen(reply) ) {
     return(-1);
   }
 
-  strcpy( reply, "      =>         long (frame number)\n");
+  strcpy( reply, "      =>         int (frame number)\n");
   status = Socket_StringWrite( sockfd, reply, strlen(reply));
   if ( status != strlen(reply) ) {
     return(-1);
   }
 
-  strcpy( reply, "      =>         many longs (values)\n");
+  strcpy( reply, "      =>         many ints (values)\n");
   status = Socket_StringWrite( sockfd, reply, strlen(reply));
   if ( status != strlen(reply) ) {
     return(-1);

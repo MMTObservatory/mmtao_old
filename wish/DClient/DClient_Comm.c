@@ -86,12 +86,12 @@ int DClient_ReadString(register int fd, register char *ptr, register int nbytes,
 
 ************************************************************************/
 
-long DClient_ReadLong( int sockfd, char *request, char *msg)
+int DClient_ReadLong( int sockfd, char *request, char *msg)
 {
 
   char requestData[MAX_REQUEST];
   char returnData[MAX_VALUES];
-  long longValue;
+  int longValue;
   int n, num, status;
 
   strcpy(requestData, request);
@@ -104,13 +104,13 @@ long DClient_ReadLong( int sockfd, char *request, char *msg)
     return(-1);
   }
   
-  n = sizeof(long);
+  n = sizeof(int);
   status = DClient_ReadString(sockfd, returnData, n, msg);
   if ( status ) {
     printf(msg, "DClient_ReadLong: Read error on socket\n");
     return(-1);
   }
-  longValue = ntohl(*(long *)returnData);
+  longValue = ntohl(*(int *)returnData);
 
   return(longValue);
 }
@@ -124,13 +124,13 @@ long DClient_ReadLong( int sockfd, char *request, char *msg)
 
 ************************************************************************/
 
-long DClient_WriteLong( int sockfd, long longValue, char *msg)
+int DClient_WriteLong( int sockfd, int longValue, char *msg)
 {
 
   char requestData[MAX_REQUEST];
   int n, num;
 
-  sprintf(requestData, "%ld\n", longValue);
+  sprintf(requestData, "%d\n", longValue);
   n = strlen(requestData);
 
   num = write(sockfd, requestData, n);
@@ -153,7 +153,7 @@ long DClient_WriteLong( int sockfd, long longValue, char *msg)
 
 ************************************************************************/
 
-long DClient_WriteString( int sockfd, char *request, char *msg)
+int DClient_WriteString( int sockfd, char *request, char *msg)
 {
 
   char requestData[MAX_REQUEST];

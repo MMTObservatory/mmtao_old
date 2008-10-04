@@ -42,8 +42,8 @@ void *MVP_Looper( void *Passed_Info)
   int start_sec, start_usec;
   int end_sec, end_usec;
   float total_time;
-  long count = 0;
-  long samples = 10;
+  int count = 0;
+  int samples = 10;
 #endif
 
   /*

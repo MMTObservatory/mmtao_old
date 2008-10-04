@@ -28,12 +28,12 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
   /*
     Variables used to find the next frame
   */
-  long nBytes, nBytes_send, wait;
+  int nBytes, nBytes_send, wait;
   int first_frame, new_frame;
-  long new_number, next_number;
+  int new_number, next_number;
   char *DServ_DataPtr, *DServ_NumberPtr, *dataPtr;
-  long count;
-  long number_tries = 10000000;
+  int count;
+  int number_tries = 10000000;
 
   int j;
 
@@ -292,8 +292,8 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
       Send the number of bytes to the client.  This long is in "host" format
       so a htonl() must be used.
     printf("Send wait (1)\n");
-    status = Socket_StringWrite( sockfd, (char *)&wait, sizeof(long));
-    if ( status !=  sizeof(long)) {
+    status = Socket_StringWrite( sockfd, (char *)&wait, sizeof(int));
+    if ( status !=  sizeof(int)) {
       if ( *debug ) {
 	printf("  DServ_Stream: Error sending nBytes in Socket_StringWrite\n");
 	fflush(stdout);
@@ -366,8 +366,8 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
 	/*
 	  Send a flag (nBytes) to the client
 	*/
-	status = Socket_StringWrite( sockfd, (char *)&wait, sizeof(long));
-	if ( status !=  sizeof(long)) {
+	status = Socket_StringWrite( sockfd, (char *)&wait, sizeof(int));
+	if ( status !=  sizeof(int)) {
 	  if ( *debug ) {
 	    printf("  DServ_Stream: Error sending nBytes in Socket_StringWrite\n");
 	    fflush(stdout);
@@ -414,9 +414,9 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
   */
   DServ_DataPtr = Info->data->framePtr[new_frame];
   DServ_NumberPtr = DServ_DataPtr + 3;
-  new_number = ntohl(*( (long *)DServ_NumberPtr));
-  //  new_number = *( (long *)DServ_NumberPtr);
-  //  printf(" first frame number = %ld\n", new_number);
+  new_number = ntohl(*( (int *)DServ_NumberPtr));
+  //  new_number = *( (int *)DServ_NumberPtr);
+  //  printf(" first frame number = %d\n", new_number);
 
   j = 0;
 
@@ -429,8 +429,8 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
       so a htonl() must be used.
     */
     nBytes_send = htonl(nBytes);
-    status = Socket_StringWrite( sockfd, (char *)&nBytes_send, sizeof(long));
-    if ( status !=  sizeof(long)) {
+    status = Socket_StringWrite( sockfd, (char *)&nBytes_send, sizeof(int));
+    if ( status !=  sizeof(int)) {
       if ( *debug ) {
 	printf("  DServ_Stream: Error sending nBytes in Socket_StringWrite\n");
 	fflush(stdout);
@@ -442,8 +442,8 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
       Send the frame number to the client.  The frameNumber is stored in the DServ
       memory in "network" format so a conversion is not needed.
     */
-    status = Socket_StringWrite( sockfd, DServ_NumberPtr, sizeof(long));
-    if ( status !=  sizeof(long)) {
+    status = Socket_StringWrite( sockfd, DServ_NumberPtr, sizeof(int));
+    if ( status !=  sizeof(int)) {
       if ( *debug ) {
 	printf("  DServ_Stream: Error sending new_number in Socket_StringWrite\n");
 	fflush(stdout);
@@ -506,7 +506,7 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
     new_frame = Info->data->nextFrame[new_frame];
     DServ_DataPtr = Info->data->framePtr[new_frame];
     DServ_NumberPtr = DServ_DataPtr + 3;
-    //    printf(" next frame %d  %ld\n", new_frame, ntohl(*( (long *)DServ_NumberPtr)) );
+    //    printf(" next frame %d  %d\n", new_frame, ntohl(*( (int *)DServ_NumberPtr)) );
 
     /*
       Set wait time to see if a request has been sent by the client.  This
@@ -583,8 +583,8 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
 	  /*
 	    Send a flag (nBytes) to the client
 	  */
-	  status = Socket_StringWrite( sockfd, (char *)&wait, sizeof(long));
-	  if ( status !=  sizeof(long)) {
+	  status = Socket_StringWrite( sockfd, (char *)&wait, sizeof(int));
+	  if ( status !=  sizeof(int)) {
 	    if ( *debug ) {
 	      printf("  DServ_Stream: Error sending nBytes in Socket_StringWrite\n");
 	      fflush(stdout);
@@ -601,9 +601,9 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
 
       }
 
-      new_number = ntohl(*( (long *)DServ_NumberPtr ));
+      new_number = ntohl(*( (int *)DServ_NumberPtr ));
 
-      //      printf("%ld  %ld\n", new_number, next_number);
+      //      printf("%d  %d\n", new_number, next_number);
       if ( new_number >= next_number ) {
 
 	/*
@@ -626,12 +626,12 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
 	*/
 	if ( count > number_tries ) {
 
-	  printf("  DServ_Stream: Did not receive new_number in %ld tries\n", number_tries);
+	  printf("  DServ_Stream: Did not receive new_number in %d tries\n", number_tries);
 	  fflush(stdout);
 
 	  wait = htonl(-3);
-	  status = Socket_StringWrite( sockfd, (char *)&wait, sizeof(long));
-	  if ( status !=  sizeof(long)) {
+	  status = Socket_StringWrite( sockfd, (char *)&wait, sizeof(int));
+	  if ( status !=  sizeof(int)) {
 	    if ( *debug ) {
 	      printf("  DServ_Stream: Error sending nBytes in Socket_StringWrite\n");
 	      fflush(stdout);

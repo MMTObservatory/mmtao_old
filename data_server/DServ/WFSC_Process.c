@@ -56,7 +56,7 @@ void *WFSC_Process( void *Passed_Info)
   int status;
   char request[STRING_LENGTH];
   char reply[STRING_LENGTH];
-  long nBytes;
+  int nBytes;
 
   /*
     Put the passed variables in to the local variables

@@ -25,10 +25,10 @@
 void *PCR_GetWFSC( void *Passed_Info )
 {
   int status, i;
-  long nBytes;
+  int nBytes;
   char request[STRING_LENGTH];
   char *longPtr;
-  long tempLong;
+  int tempLong;
   char skipPtr[640];  // 4*80*2=640  Rows*columns*size
   int nread, nsaved, nvalues, nerror;
   int save_bytes, extra_row_bytes, extra_edge_bytes;
@@ -160,7 +160,7 @@ void *PCR_GetWFSC( void *Passed_Info )
       Read the number of bytes per frame and convert from network to host
     */
     longPtr = (char *)&tempLong;
-    if ( Socket_Read( WFSC_Info->socket->sockfd, longPtr, sizeof(long)) ) {
+    if ( Socket_Read( WFSC_Info->socket->sockfd, longPtr, sizeof(int)) ) {
       if ( *debug ) {
 	printf("  PCR_GetWFSC: Error reading nBytes in Socket_Read\n");
 	fflush(stdout);
@@ -171,7 +171,7 @@ void *PCR_GetWFSC( void *Passed_Info )
     nBytes = ntohl(tempLong);
 
     if ( *debug ) {
-      printf("  PCR_GetWFSC: Frame size in bytes = %ld\n", nBytes);
+      printf("  PCR_GetWFSC: Frame size in bytes = %d\n", nBytes);
       fflush(stdout);
     }
 
@@ -205,7 +205,7 @@ void *PCR_GetWFSC( void *Passed_Info )
       printf("             or  1359\n");
       printf("             or 10375\n");
       printf("             or 12807\n");
-      printf("       Recieved %ld\n", nBytes);
+      printf("       Recieved %d\n", nBytes);
       fflush(stdout);
       *continueRunning = 0;
       continue;
@@ -330,7 +330,7 @@ void *PCR_GetWFSC( void *Passed_Info )
       /*
 	Read the frame number
       */
-      if ( Socket_Read( WFSC_Info->socket->sockfd, WFSC_Info->data->dataPtr, sizeof(long)) ) {
+      if ( Socket_Read( WFSC_Info->socket->sockfd, WFSC_Info->data->dataPtr, sizeof(int)) ) {
 	if ( *debug ) {
 	  printf("  PCR_GetWFSC: Error reading frame number in Socket_Read\n");
 	  fflush(stdout);
@@ -343,7 +343,7 @@ void *PCR_GetWFSC( void *Passed_Info )
       /*
 	Move past the frame number and increment byte counter
       */
-      WFSC_Info->data->dataPtr+=sizeof(long);
+      WFSC_Info->data->dataPtr+=sizeof(int);
       nread = WFSC_Info->data->header_bytes;
 
       /*

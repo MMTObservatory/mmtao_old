@@ -39,7 +39,7 @@ void *Error_Master( void *Passed_Info)
   Socket_Info *PCR_Error_Socket;
   Info_Struct *Info;
   Info_Entry *List;
-  long list_length;
+  int list_length;
   int *continueRunning;
   int *debug;
   int local_debug = 0;
@@ -52,7 +52,7 @@ void *Error_Master( void *Passed_Info)
   /*
     Pointers to the needed Info structures
   */
-  long PCR_ERROR_Connected;
+  int PCR_ERROR_Connected;
 
   /*
     Variables needed to use the select commands to watch for data on a port
@@ -63,8 +63,8 @@ void *Error_Master( void *Passed_Info)
   /*
     Pointers to the needed Info structures
   */
-  long Loop_Running_Position;
-  long Loop_Gain_Position;
+  int Loop_Running_Position;
+  int Loop_Gain_Position;
 
   /*
     Put the passed variables in to the local variables

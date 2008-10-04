@@ -29,7 +29,7 @@ int DClient_Slopes_Display( DClient_Info *Client_Info, PGplot_Info *Slopes_Info,
 {
 
   int status, retVal;
-  long frameNumber;
+  int frameNumber;
 
   static short *Slopes_Vector;
 

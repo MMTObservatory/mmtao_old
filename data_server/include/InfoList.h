@@ -99,7 +99,7 @@ Info_Entry Info_List[] = {
   { "Loop_Save_Data",        "Flag indicating the DDS server should save data", "i" },
 };
 
-long Info_ListLength = ( sizeof(Info_List)/sizeof(struct _Info_Entry) );
+int Info_ListLength = ( sizeof(Info_List)/sizeof(struct _Info_Entry) );
 
 Info_Array Seeing = { SEEING_VALUES, 0, 0 };
 

@@ -24,7 +24,7 @@
 /*================================================================================*
  * Return an Info Parameter and its value
  *================================================================================*/
-int Info_SetParameter( int sockfd, Info_Entry *List, long list_length, Info_Array *Seeing,
+int Info_SetParameter( int sockfd, Info_Entry *List, int list_length, Info_Array *Seeing,
                     Info_Array *Strehl, int debug)
 {
 
@@ -33,7 +33,7 @@ int Info_SetParameter( int sockfd, Info_Entry *List, long list_length, Info_Arra
   char request[STRING_LENGTH];
   char reply[STRING_LENGTH];
   char value[STRING_LENGTH];
-  long position;
+  int position;
   int status;
 
   /* time variable */

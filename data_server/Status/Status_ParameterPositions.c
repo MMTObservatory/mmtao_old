@@ -19,14 +19,14 @@
 /*================================================================================*
  * Return an Info Parameter and its value
  *================================================================================*/
-int Status_ParameterPositions( Info_Struct *Info, char *Status_Reply, long **Status_Position,
-			       long *Status_Count, long debug)
+int Status_ParameterPositions( Info_Struct *Info, char *Status_Reply, int **Status_Position,
+			       int *Status_Count, int debug)
 {
 
   /* local variables */
   int i, j;
   Info_Entry *List;
-  long list_length;
+  int list_length;
 
   char reply[STATUS_REPLY_LENGTH];
   char *next = NULL;
@@ -57,14 +57,14 @@ int Status_ParameterPositions( Info_Struct *Info, char *Status_Reply, long **Sta
   (*Status_Count)--;
 
   if( debug ) {
-    printf("  Status_ParameterPositions: Number of parameters found = %ld\n", *Status_Count);
+    printf("  Status_ParameterPositions: Number of parameters found = %d\n", *Status_Count);
     fflush(stdout);
   }
 
   /*
     Allocate the Status_Position array
   */
-  *Status_Position = (long *)malloc( (*Status_Count)*sizeof(long) );
+  *Status_Position = (int *)malloc( (*Status_Count)*sizeof(int) );
   
   /*
     Set all position values to -1 so if a parameter is not found
@@ -110,7 +110,7 @@ int Status_ParameterPositions( Info_Struct *Info, char *Status_Reply, long **Sta
 
     if( debug ) {
       printf("  Status_ParameterPositions: %s\n", next );
-      printf("                             Position = %ld\n", (*Status_Position)[j] );
+      printf("                             Position = %d\n", (*Status_Position)[j] );
       fflush(stdout);
     }
 

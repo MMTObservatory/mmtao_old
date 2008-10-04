@@ -19,14 +19,14 @@
 /*================================================================================*
  * Return an Info Parameter and its value
  *================================================================================*/
-int Status_UpdateParameters( Info_Struct *Info, char *Status_Reply, long *Status_Position,
-			     long Status_Count, long debug)
+int Status_UpdateParameters( Info_Struct *Info, char *Status_Reply, int *Status_Position,
+			     int Status_Count, int debug)
 {
 
   /* local variables */
   int i, j, type;
   Info_Entry *List;
-  long list_length;
+  int list_length;
 
   char reply[STATUS_REPLY_LENGTH];
   char *infoParameter = NULL;

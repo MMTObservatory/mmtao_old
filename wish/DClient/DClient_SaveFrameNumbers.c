@@ -10,12 +10,12 @@
 
 #include "PCR_Wish.h"
 
-#include <fitsio.h>
+#include <cfitsio/fitsio.h>
 
 /*================================================================================
  * DClient_SaveFrameNumbers: Save the frame tags from the DDS
  *================================================================================*/
-long DClient_SaveFrameNumbers( long framesReceived, long *frameNumbers, char *fname, char *time_string)
+int DClient_SaveFrameNumbers( int framesReceived, int *frameNumbers, char *fname, char *time_string)
 {
 
   char filename[STRING_LENGTH];
@@ -24,7 +24,7 @@ long DClient_SaveFrameNumbers( long framesReceived, long *frameNumbers, char *fn
 
   fitsfile *fptr;
   long num_axis = 3;
-  long first_pixel = 1;
+  int first_pixel = 1;
   int istatus;
   long dataDimension[1];
 

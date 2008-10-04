@@ -34,7 +34,7 @@ int PCR_SendIntVector( DServ_Info *Info, int sockfd, char *name, int *debug )
   char request[STRING_LENGTH];
   char reply[STRING_LENGTH];
   char Reply[STRING_LENGTH];
-  long vec_length;
+  int vec_length;
 
   int *int_vector;
   int *net_vector;
@@ -110,7 +110,7 @@ int PCR_SendIntVector( DServ_Info *Info, int sockfd, char *name, int *debug )
   if ( vec_length != 576 ) {
 
     printf("  PCR_SendIntVector: Incorrect number of pixel values read\n");
-    printf("                     Found %ld\n", vec_length);
+    printf("                     Found %d\n", vec_length);
     printf("                     Expected 576\n");
     fflush(stdout);
     return(-1);

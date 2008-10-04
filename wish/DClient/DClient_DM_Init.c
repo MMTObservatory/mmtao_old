@@ -10,7 +10,7 @@
   Written   6apr05  DLM  Started with DClient_WFSC_Init.c
 
   Altered  16mar06  DLM  Started with DClient_Slopes_Init.c.  DServ_Array was changed to
-                           char because DServ data is short and long.
+                           char because DServ data is short and int.
 
   Altered  21jul06  DLM  Started with DClient_DM_Init.c
 

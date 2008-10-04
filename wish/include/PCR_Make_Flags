@@ -41,7 +41,7 @@ else
     LD_FLAGS = -lpng -ltkpgplot -lcpgplot -lpgplot -ltcl -ltk -ltix -lcfitsio -lpthread
   else
     #  Linux
-    LINKER = gfortran
+    LINKER = g77
     CFLAGS = -I$(PCR_HOME)/include -I$(PCR_HOME)/wish/include -Wall
     LD_FLAGS = -lpng -ltkpgplot -lcpgplot -lpgplot -ltcl -ltk -ltix -lcfitsio -lpthread
   endif

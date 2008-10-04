@@ -18,7 +18,7 @@
 /*================================================================================*
  * Return an Info Parameter and its value
  *================================================================================*/
-int Info_FindParameter( Info_Entry *List, long list_length, char *request, long *position, long debug)
+int Info_FindParameter( Info_Entry *List, int list_length, char *request, int *position, int debug)
 {
 
   /* local variables */

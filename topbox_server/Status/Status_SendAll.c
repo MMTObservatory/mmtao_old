@@ -15,7 +15,7 @@
 /*================================================================================*
  * Return an Status Parameter and its value
  *================================================================================*/
-int Status_SendAll( int sockfd, Status_Entry *List, long list_length)
+int Status_SendAll( int sockfd, Status_Entry *List, int list_length)
 {
 
   /* local variables */

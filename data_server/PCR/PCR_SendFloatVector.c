@@ -34,7 +34,7 @@ int PCR_SendFloatVector( DServ_Info *Info, int sockfd, char *name, int *debug )
   char request[STRING_LENGTH];
   char reply[STRING_LENGTH];
   char Reply[STRING_LENGTH];
-  long vec_length;
+  int vec_length;
 
   float *float_vector;
   float *flipped;
@@ -187,7 +187,7 @@ int PCR_SendFloatVector( DServ_Info *Info, int sockfd, char *name, int *debug )
       return(-1);
     }
     
-    sprintf( request, "%ld\n", vec_length);
+    sprintf( request, "%d\n", vec_length);
     if ( Socket_StringWrite( Info->socket->sockfd, request, strlen(request)) != strlen(request) ) {
       if ( *debug ) {
 	printf("  PCR_SendFloatVector: Error writing vector length in Socket_StringWrite\n");

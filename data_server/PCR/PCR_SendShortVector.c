@@ -39,7 +39,7 @@ int PCR_SendShortVector( DServ_Info *Info, int sockfd, char *name, int *debug )
   char request[STRING_LENGTH];
   char reply[STRING_LENGTH];
   char Reply[STRING_LENGTH];
-  long vec_length;
+  int vec_length;
 
   short *short_vector;
   char *int_ptr;
@@ -112,7 +112,7 @@ int PCR_SendShortVector( DServ_Info *Info, int sockfd, char *name, int *debug )
   if ( vec_length != 576 ) {
 
     printf("  PCR_SendShortVector: Incorrect number of pixel values read\n");
-    printf("                     Found %ld\n", vec_length);
+    printf("                     Found %d\n", vec_length);
     printf("                     Expected 576\n");
     fflush(stdout);
     return(-1);

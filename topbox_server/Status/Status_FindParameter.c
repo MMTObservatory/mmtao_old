@@ -17,7 +17,7 @@
 /*================================================================================*
  * Return an Status Parameter and its value
  *================================================================================*/
-int Status_FindParameter( Status_Entry *List, long list_length, char *request, long *position, long debug)
+int Status_FindParameter( Status_Entry *List, int list_length, char *request, int *position, int debug)
 {
 
   /* local variables */

@@ -34,7 +34,7 @@ int BG_Cmd( ClientData client_data, Tcl_Interp* interp, int argc, char *argv[])
   /* Variables sent by TclTk and passed on to the subroutines */
   char name[SERVER_LENGTH];
   char request[SERVER_LENGTH];
-  long bg_num, bg_display;
+  int  bg_num, bg_display;
   char fileName[STRING_LENGTH];
 
   /* Character string used to send information back from called routines.
@@ -127,8 +127,8 @@ int BG_Cmd( ClientData client_data, Tcl_Interp* interp, int argc, char *argv[])
     bg_display = atol( argv[i++]);
     strcpy( fileName, argv[i++]);
     if ( debug_BG ) {
-      printf("  BG_Cmd: Number of Frames = %ld\n", bg_num);
-      printf("        Display Background = %ld\n", bg_display);
+      printf("  BG_Cmd: Number of Frames = %d\n", bg_num);
+      printf("        Display Background = %d\n", bg_display);
       printf("                  FileName = %s\n", fileName);
     }
 
