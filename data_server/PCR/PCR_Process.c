@@ -32,6 +32,10 @@ void *PCR_Process( void *Passed_Info)
   int *DServ_continueRunning;
   int *debug;
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   /*
     Local variables
   */
@@ -910,7 +914,7 @@ void *PCR_Process( void *Passed_Info)
 	  /*
 	    Start PCR_WFSC Thread
 	  */
-	  status = pthread_create( &pcr_wfscThread, NULL, PCR_GetWFSC, (void *)&WFSC_Thread_Client);
+	  status = pthread_create( &pcr_wfscThread, &attr, PCR_GetWFSC, (void *)&WFSC_Thread_Client);
 	  if ( debug ) {
 	    printf("  PCR_Process: Starting PCR_WFSC thread\n");
 	    fflush(stdout);
@@ -954,7 +958,7 @@ void *PCR_Process( void *Passed_Info)
 	  /*
 	    Start PCR_DM Thread
 	  */
-	  status = pthread_create( &pcr_dmThread, NULL, PCR_GetDM, (void *)&DM_Thread_Client);
+	  status = pthread_create( &pcr_dmThread, &attr, PCR_GetDM, (void *)&DM_Thread_Client);
 	  if ( debug ) {
 	    printf("  PCR_Process: Starting PCR_DM thread\n");
 	    fflush(stdout);

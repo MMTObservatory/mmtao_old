@@ -68,6 +68,10 @@ int main( )
   int local_debug = 0;
   char filename[STRING_LENGTH];
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   /*
     Client connection information
   */
@@ -466,7 +470,7 @@ int main( )
   /*
     Start Error Thread
   */
-  status = pthread_create( &errorThread, NULL, Error_Master, (void *)&Error);
+  status = pthread_create( &errorThread, &attr, Error_Master, (void *)&Error);
   if ( start_debug ) {
     printf("  PCR_Server: Starting PCR Error thread\n");
     fflush(stdout);
@@ -503,7 +507,7 @@ int main( )
   /*
     Start PCR_WFSC Thread
   */
-  status = pthread_create( &pcr_wfscThread, NULL, PCR_GetWFSC, (void *)&WFSC_Thread_Client);
+  status = pthread_create( &pcr_wfscThread, &attr, PCR_GetWFSC, (void *)&WFSC_Thread_Client);
   if ( debug ) {
     printf("  PCR_Server: Starting PCR_GetWFSC thread\n");
     fflush(stdout);
@@ -539,7 +543,7 @@ int main( )
   /*
     Start PCR_DM Thread
   */
-  status = pthread_create( &pcr_dmThread, NULL, PCR_GetDM, (void *)&DM_Thread_Client);
+  status = pthread_create( &pcr_dmThread, &attr, PCR_GetDM, (void *)&DM_Thread_Client);
   if ( debug ) {
     printf("  PCR_Server: Starting PCR_GetDM thread\n");
     fflush(stdout);
@@ -556,7 +560,7 @@ int main( )
   /*
     Start WFSC DServ Thread
   */
-  status = pthread_create( &wfscThread, NULL, WFSC_Master, (void *)&DServ_WFSC_Info);
+  status = pthread_create( &wfscThread, &attr, WFSC_Master, (void *)&DServ_WFSC_Info);
   if ( start_debug ) {
     printf("  PCR_Server: Starting WFSC thread\n");
     fflush(stdout);
@@ -570,7 +574,7 @@ int main( )
   /*
     Start DServ data server Thread
   */
-  status = pthread_create( &dservThread, NULL, DServ_Master, (void *)&DServ_DM_Info);
+  status = pthread_create( &dservThread, &attr, DServ_Master, (void *)&DServ_DM_Info);
   if ( start_debug ) {
     printf("  PCR_Server: Starting DM thread\n");
     fflush(stdout);
@@ -597,7 +601,7 @@ int main( )
     Start Status Thread
   */
 
-  status = pthread_create( &statusThread, NULL, Status_Master, (void *)&Status);
+  status = pthread_create( &statusThread, &attr, Status_Master, (void *)&Status);
   if ( start_debug ) {
     printf("  PCR_Server: Starting Status thread\n");
     fflush(stdout);
@@ -615,7 +619,7 @@ int main( )
   /*
     Start Info Server Thread
   */
-  status = pthread_create( &infoThread, NULL, Info_Master, (void *)&Info);
+  status = pthread_create( &infoThread, &attr, Info_Master, (void *)&Info);
   if ( start_debug ) {
     printf("  PCR_Server: Starting Info thread\n");
     fflush(stdout);
@@ -670,10 +674,6 @@ int main( )
     fflush(stdout);
     return(-1);
   }
-
-  pthread_attr_t attr;
-  pthread_attr_init(&attr);
-  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
   do {
 
