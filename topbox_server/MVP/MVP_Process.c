@@ -34,6 +34,10 @@ int MVP_Process( Device_Info *Info, char *request)
   Device_Data *Data;
   int *debug;
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   /*
     Put the passed variables in to the local variables
   */
@@ -149,7 +153,7 @@ int MVP_Process( Device_Info *Info, char *request)
       /*=====================================================================
        * Start thread to home the requested device
        *=====================================================================*/
-      status = pthread_create( &mvpThread, NULL, MVP_Home, (void *)&Local_Info);
+      status = pthread_create( &mvpThread, &attr, MVP_Home, (void *)&Local_Info);
       if ( debug ) {
 	printf("  MVP_Process: Starting thread to home %s\n", Socket->name);
 	fflush(stdout);

@@ -35,6 +35,10 @@ int main ( int argc, char **argv )
   int status;
   int i;
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   /*=========================================================
    *=========================================================
    *
@@ -119,7 +123,7 @@ int main ( int argc, char **argv )
   /*=====================================================================
     Start looping thread to retrieve status data from the given device
     =======================================================================*/
-  status = pthread_create( &fsm_tipThread, NULL, MVP_Looper, (void *)&FSM_Tip_Info);
+  status = pthread_create( &fsm_tipThread, &attr, MVP_Looper, (void *)&FSM_Tip_Info);
   if ( start_debug ) {
     printf("  Topbox_Server: Starting FSM_Tip_Looper thread\n");
     fflush(stdout);
@@ -214,7 +218,7 @@ int main ( int argc, char **argv )
   /*=====================================================================
     Start looping thread to retrieve status data from the given device
     =======================================================================*/
-  status = pthread_create( &fsm_tiltThread, NULL, MVP_Looper, (void *)&FSM_Tilt_Info);
+  status = pthread_create( &fsm_tiltThread, &attr, MVP_Looper, (void *)&FSM_Tilt_Info);
   if ( start_debug ) {
     printf("  Topbox_Server: Starting FSM_Tilt_Looper thread\n");
     fflush(stdout);
@@ -309,7 +313,7 @@ int main ( int argc, char **argv )
   /*=====================================================================
     Start looping thread to retrieve status data from the given device
     =======================================================================*/
-  status = pthread_create( &oap_tipThread, NULL, MVP_Looper, (void *)&OAP_Tip_Info);
+  status = pthread_create( &oap_tipThread, &attr, MVP_Looper, (void *)&OAP_Tip_Info);
   if ( start_debug ) {
     printf("  Topbox_Server: Starting OAP_Tip_Looper thread\n");
     fflush(stdout);
@@ -404,7 +408,7 @@ int main ( int argc, char **argv )
   /*=====================================================================
     Start looping thread to retrieve status data from the given device
     =======================================================================*/
-  status = pthread_create( &oap_tiltThread, NULL, MVP_Looper, (void *)&OAP_Tilt_Info);
+  status = pthread_create( &oap_tiltThread, &attr, MVP_Looper, (void *)&OAP_Tilt_Info);
   if ( start_debug ) {
     printf("  Topbox_Server: Starting OAP_Tilt_Looper thread\n");
     fflush(stdout);
@@ -499,7 +503,7 @@ int main ( int argc, char **argv )
   /*=====================================================================
     Start looping thread to retrieve status data from the given device
     =======================================================================*/
-  status = pthread_create( &indigoThread, NULL, Stage_Looper, (void *)&Indigo_Info);
+  status = pthread_create( &indigoThread, &attr, Stage_Looper, (void *)&Indigo_Info);
   if ( start_debug ) {
     printf("  Topbox_Server: Starting Indigo_Looper thread\n");
     fflush(stdout);
@@ -594,7 +598,7 @@ int main ( int argc, char **argv )
   /*=====================================================================
     Start looping thread to retrieve status data from the given device
     =======================================================================*/
-  status = pthread_create( &f15Thread, NULL, Stage_Looper, (void *)&F15_Info);
+  status = pthread_create( &f15Thread, &attr, Stage_Looper, (void *)&F15_Info);
   if ( start_debug ) {
     printf("  Topbox_Server: Starting F15_Looper thread\n");
     fflush(stdout);
@@ -684,7 +688,7 @@ int main ( int argc, char **argv )
   /*=====================================================================
     Start looping thread to retrieve status data from the given device
     =======================================================================*/
-  status = pthread_create( &fwheelThread, NULL, Fwheel_Looper, (void *)&Fwheel_Info);
+  status = pthread_create( &fwheelThread, &attr, Fwheel_Looper, (void *)&Fwheel_Info);
   if ( start_debug ) {
     printf("  Topbox_Server: Starting Fwheel looper thread\n");
     fflush(stdout);
@@ -774,7 +778,7 @@ int main ( int argc, char **argv )
   /*=====================================================================
     Start looping thread to retrieve status data from the given device
     =======================================================================*/
-  status = pthread_create( &PowerThread, NULL, Power_Looper, (void *)&Power_Info);
+  status = pthread_create( &PowerThread, &attr, Power_Looper, (void *)&Power_Info);
   if ( start_debug ) {
     printf("  Topbox_Server: Starting Power looper thread\n");
     fflush(stdout);
@@ -878,7 +882,7 @@ int main ( int argc, char **argv )
 
   pthread_t SmartThread;
 
-  status = pthread_create( &SmartThread, NULL, Smart_Looper, (void *)&Smart_Info);
+  status = pthread_create( &SmartThread, &attr, Smart_Looper, (void *)&Smart_Info);
   if ( start_debug ) {
     printf("  Topbox_Server: Starting Focus and Rotation looper thread\n");
     fflush(stdout);
@@ -948,7 +952,7 @@ int main ( int argc, char **argv )
   /*=====================================================================
     Start thread to serve Status data
     =======================================================================*/
-  status = pthread_create( &statusThread, NULL, Status_Master, (void *)&Status_Thread);
+  status = pthread_create( &statusThread, &attr, Status_Master, (void *)&Status_Thread);
   if ( start_debug ) {
     printf("  Topbox_Server: Starting Status thread\n");
     fflush(stdout);
@@ -1056,10 +1060,6 @@ int main ( int argc, char **argv )
   for ( i=0; i<NUM_CONNECTIONS; i++) {
     Master_Info[i].sockfd = -1;
   }
-
-  pthread_attr_t attr;
-  pthread_attr_init(&attr);
-  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
   do {
 

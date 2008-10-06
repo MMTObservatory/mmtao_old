@@ -27,6 +27,10 @@ int main( )
   int start_debug = 1;
   int status;
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   /*=========================================================
    *=========================================================
    *
@@ -88,7 +92,7 @@ int main( )
   /*=====================================================================
     Start FSM Tip motor server
     =======================================================================*/
-  status = pthread_create( &fsm_tipThread, NULL, Source_MVP, (void *)&FSM_Tip_Info);
+  status = pthread_create( &fsm_tipThread, &attr, Source_MVP, (void *)&FSM_Tip_Info);
   if ( start_debug ) {
     printf("  Source_Server: Starting FSM_Tip_Source thread\n");
     fflush(stdout);
@@ -160,7 +164,7 @@ int main( )
   /*=====================================================================
     Start FSM Tilt motor server
     =======================================================================*/
-  status = pthread_create( &fsm_tiltThread, NULL, Source_MVP, (void *)&FSM_Tilt_Info);
+  status = pthread_create( &fsm_tiltThread, &attr, Source_MVP, (void *)&FSM_Tilt_Info);
   if ( start_debug ) {
     printf("  Source_Server: Starting FSM_Tilt_Source thread\n");
     fflush(stdout);
@@ -232,7 +236,7 @@ int main( )
   /*=====================================================================
     Start OAP Tip motor server
     =======================================================================*/
-  status = pthread_create( &oap_tipThread, NULL, Source_MVP, (void *)&OAP_Tip_Info);
+  status = pthread_create( &oap_tipThread, &attr, Source_MVP, (void *)&OAP_Tip_Info);
   if ( start_debug ) {
     printf("  Source_Server: Starting OAP_Tip_Source thread\n");
     fflush(stdout);
@@ -304,7 +308,7 @@ int main( )
   /*=====================================================================
     Start OAP Tilt motor server
     =======================================================================*/
-  status = pthread_create( &oap_tiltThread, NULL, Source_MVP, (void *)&OAP_Tilt_Info);
+  status = pthread_create( &oap_tiltThread, &attr, Source_MVP, (void *)&OAP_Tilt_Info);
   if ( start_debug ) {
     printf("  Source_Server: Starting OAP_Tilt_Source thread\n");
     fflush(stdout);
@@ -376,7 +380,7 @@ int main( )
   /*=====================================================================
     Start Indigo Stage server
     =======================================================================*/
-  status = pthread_create( &indigoThread, NULL, Source_Stage, (void *)&Indigo_Info);
+  status = pthread_create( &indigoThread, &attr, Source_Stage, (void *)&Indigo_Info);
   if ( start_debug ) {
     printf("  Source_Server: Starting Indigo_Source thread\n");
     fflush(stdout);
@@ -448,7 +452,7 @@ int main( )
   /*=====================================================================
     Start F15 Stage server
     =======================================================================*/
-  status = pthread_create( &f15Thread, NULL, Source_Stage, (void *)&F15_Info);
+  status = pthread_create( &f15Thread, &attr, Source_Stage, (void *)&F15_Info);
   if ( start_debug ) {
     printf("  Source_Server: Starting F15_Source thread\n");
     fflush(stdout);

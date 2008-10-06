@@ -25,6 +25,10 @@ int Stage_Process( Device_Info *Info, char *request)
   int speed;
   char Request[STRING_LENGTH];
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   /* Local pointers to varible passed from the process which created this thread
    */
   Socket_Info *Socket;
@@ -153,7 +157,7 @@ int Stage_Process( Device_Info *Info, char *request)
       /*=====================================================================
        * Start thread to home the requested device
        *=====================================================================*/
-      status = pthread_create( &mvpThread, NULL, Stage_Home, (void *)&Local_Info);
+      status = pthread_create( &mvpThread, &attr, Stage_Home, (void *)&Local_Info);
       if ( debug ) {
 	printf("  Stage_Process: Starting thread to home %s\n", Socket->name);
 	fflush(stdout);

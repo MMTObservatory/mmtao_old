@@ -25,6 +25,10 @@ Smart_Process( Device_Info *Info, char *request )
   float distance;
   char Request[STRING_LENGTH];
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   /* Local pointers to varible passed from the process which created this thread
    */
   Socket_Info *Socket;
@@ -137,7 +141,7 @@ Smart_Process( Device_Info *Info, char *request )
       /*=====================================================================
        * Start thread to home the requested device
        *=====================================================================*/
-      status = pthread_create( &mvpThread, NULL, Smart_Home, (void *)&Local_Info);
+      status = pthread_create( &mvpThread, &attr, Smart_Home, (void *)&Local_Info);
       if ( debug ) {
 	printf("  Smart_Process: Starting thread to home %s\n", Socket->name);
 	fflush(stdout);

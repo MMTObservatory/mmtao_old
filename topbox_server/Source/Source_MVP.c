@@ -27,6 +27,10 @@ void *Source_MVP( void *Passed_Info)
   int *continueRunning;
   int *debug;
 
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   int position;
   int status;
   int newsockfd;
@@ -493,7 +497,7 @@ void *Source_MVP( void *Passed_Info)
 	  /*=====================================================================
 	    Start thread to move the device the given relative distance
 	    =======================================================================*/
-	  status = pthread_create( &mvpThread, NULL, Source_RelativeMVP, (void *)&Local_Info);
+	  status = pthread_create( &mvpThread, &attr, Source_RelativeMVP, (void *)&Local_Info);
 	  if ( local_debug ) {
 	    printf("  Source_MVP: Starting thread to make a relative move of %s\n", Socket->name);
 	    fflush(stdout);
