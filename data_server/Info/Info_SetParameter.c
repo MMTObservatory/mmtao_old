@@ -39,6 +39,7 @@ int Info_SetParameter( int sockfd, Info_Entry *List, int list_length, Info_Array
   /* time variable */
   time_t tp;
   char time_string[MAX_TIME_LENGTH];
+  struct tm tms;
 
   /*
     Allocate structure needed for timestamp
@@ -114,7 +115,7 @@ int Info_SetParameter( int sockfd, Info_Entry *List, int list_length, Info_Array
       Save time that the seeing value was received
     */
     time ( &tp);
-    strftime( time_string, MAX_TIME_LENGTH, "%I:%M:%S_%d%b%Y", localtime(&tp));
+    strftime( time_string, MAX_TIME_LENGTH, "%I:%M:%S_%d%b%Y", localtime_r(&tp,&tms));
     strncpy( Seeing->time[Seeing->position], time_string, strlen(time_string));
 
     if ( debug ) {
@@ -142,7 +143,7 @@ int Info_SetParameter( int sockfd, Info_Entry *List, int list_length, Info_Array
       Save time that the strehl value was received
     */
     time ( &tp);
-    strftime( time_string, MAX_TIME_LENGTH, "%I:%M:%S_%d%b%Y", localtime(&tp));
+    strftime( time_string, MAX_TIME_LENGTH, "%I:%M:%S_%d%b%Y", localtime_r(&tp,&tms));
     strncpy( Strehl->time[Strehl->position], time_string, strlen(time_string));
 
     if ( debug ) {

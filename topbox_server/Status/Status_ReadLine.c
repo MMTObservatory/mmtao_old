@@ -22,10 +22,11 @@
 int Status_ReadLine(FILE *f, char *header)
 {
   char sbuffer[512], *ptr;
+  char *save_ptr;
   while(!feof(f)){
     fgets(sbuffer, 511, f);
     strcpy(header, sbuffer);
-    ptr = (char *) strtok(sbuffer, ";, ");
+    ptr = (char *) strtok_r(sbuffer, ";, ", &save_ptr);
     if (feof(f)) strcpy(header, "\0");
     if (ptr==NULL) continue;
     if (*ptr=='\n') continue;

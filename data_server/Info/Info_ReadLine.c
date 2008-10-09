@@ -24,11 +24,12 @@
  *==========================================================================*/
 int Info_ReadLine(FILE *f, char *header)
 {
+  char *save_ptr;
   char sbuffer[512], *ptr;
   while(!feof(f)){
     fgets(sbuffer, 511, f);
     strcpy(header, sbuffer);
-    ptr = (char *) strtok(sbuffer, ";, ");
+    ptr = (char *) strtok_r(sbuffer, ";, ", &save_ptr);
     if (feof(f)) strcpy(header, "\0");
     if (ptr==NULL) continue;
     if (*ptr=='\n') continue;

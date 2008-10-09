@@ -23,6 +23,7 @@ int Fwheel_Process( Device_Info *Info, char *request)
   char *device, *action, *parameter;
   float distance;
   char Request[STRING_LENGTH];
+  char *save_ptr;
 
   /* Local pointers to varible passed from the process which created this thread
    */
@@ -69,8 +70,8 @@ int Fwheel_Process( Device_Info *Info, char *request)
 
   strcpy( Request, request);
 
-  device = strtok( Request, " ");
-  action = strtok( NULL, " ");
+  device = strtok_r( Request, " ", &save_ptr);
+  action = strtok_r( NULL, " ", &save_ptr);
   if ( action == NULL ) {
     printf("  Fwheel_Process: Action parameter not included in request\n");
     printf("               Request = %s\n", request);
@@ -95,7 +96,7 @@ int Fwheel_Process( Device_Info *Info, char *request)
     /*
       Parse the debug value to set
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Master_Process: Debug parameter not included in request\n");
       printf("                  Request = %s\n", request);
@@ -163,7 +164,7 @@ int Fwheel_Process( Device_Info *Info, char *request)
     /*
       Read the requested distance from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Fwheel_Process: Distance parameter not included in request\n");
       printf("               Request = %s\n", request);
@@ -183,7 +184,7 @@ int Fwheel_Process( Device_Info *Info, char *request)
     /*
       Read the requested distance from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Fwheel_Process: Distance parameter not included in request\n");
       printf("                 Request = %s\n", request);
@@ -206,7 +207,7 @@ int Fwheel_Process( Device_Info *Info, char *request)
 
 #ifdef notdef
     int speed;
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Fwheel_Process: Speed parameter not included in request\n");
       printf("                 Request = %s\n", request);

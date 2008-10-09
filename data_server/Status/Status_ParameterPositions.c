@@ -30,6 +30,7 @@ int Status_ParameterPositions( Info_Struct *Info, char *Status_Reply, int **Stat
 
   char reply[STATUS_REPLY_LENGTH];
   char *next = NULL;
+  char *save_ptr;
 
   /*
     Setup Info information
@@ -47,11 +48,11 @@ int Status_ParameterPositions( Info_Struct *Info, char *Status_Reply, int **Stat
     Determine how many parameters were sent
   */
   *Status_Count = 0;
-  next = strtok(reply, "\n");
+  next = strtok_r(reply, "\n", &save_ptr);
   while ( next != NULL ) {
 
     (*Status_Count)++;
-    next = strtok(NULL, "\n");
+    next = strtok_r(NULL, "\n", &save_ptr);
 
   }
   (*Status_Count)--;
@@ -85,7 +86,7 @@ int Status_ParameterPositions( Info_Struct *Info, char *Status_Reply, int **Stat
       parameter.  Save it in the Status_Position array
   */
   i = 0;
-  next = strtok(reply, " ");
+  next = strtok_r(reply, " ", &save_ptr);
   for ( j=0; j<(*Status_Count); j++ ) {
 
     /*
@@ -114,8 +115,8 @@ int Status_ParameterPositions( Info_Struct *Info, char *Status_Reply, int **Stat
       fflush(stdout);
     }
 
-    next = strtok(NULL, "\n");
-    next = strtok(NULL, " ");
+    next = strtok_r(NULL, "\n", &save_ptr);
+    next = strtok_r(NULL, " ", &save_ptr);
 
   }
 

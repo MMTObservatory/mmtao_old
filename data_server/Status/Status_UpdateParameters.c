@@ -31,6 +31,7 @@ int Status_UpdateParameters( Info_Struct *Info, char *Status_Reply, int *Status_
   char reply[STATUS_REPLY_LENGTH];
   char *infoParameter = NULL;
   char *infoValue = NULL;
+  char *save_ptr;
 
   /*
     Setup Info information
@@ -48,8 +49,8 @@ int Status_UpdateParameters( Info_Struct *Info, char *Status_Reply, int *Status_
     Split the parameter name and the value and find the position of the
       parameter.  Save it in the Status_Position array
   */
-  infoParameter = strtok(reply, " ");
-  infoValue = strtok(NULL, "\n");
+  infoParameter = strtok_r(reply, " ", &save_ptr);
+  infoValue = strtok_r(NULL, "\n", &save_ptr);
 
   for ( j=0; j<Status_Count; j++ ) {
 
@@ -108,8 +109,8 @@ int Status_UpdateParameters( Info_Struct *Info, char *Status_Reply, int *Status_
       }
     }
 
-    infoParameter = strtok(NULL, " ");
-    infoValue = strtok(NULL, "\n");
+    infoParameter = strtok_r(NULL, " ", &save_ptr);
+    infoValue = strtok_r(NULL, "\n", &save_ptr);
 
   }
 

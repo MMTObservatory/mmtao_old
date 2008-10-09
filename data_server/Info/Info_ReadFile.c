@@ -27,6 +27,7 @@ int Info_ReadFile( Info_Entry *List, int list_length, char *filename, int debug)
   char *infoValue;
   int i, type, found;
   char buffer[STRING_LENGTH];
+  char *save_ptr;
 
   /*
     Open file containing parameter and data file names
@@ -47,8 +48,8 @@ int Info_ReadFile( Info_Entry *List, int list_length, char *filename, int debug)
   while( !feof(fd) ) {
 
     if (Info_ReadLine(fd, buffer)==0) continue;
-    infoName = (char *)strtok(buffer, " \t");
-    infoValue = (char *)strtok(NULL, " ");
+    infoName = (char *)strtok_r(buffer, " \t", &save_ptr);
+    infoValue = (char *)strtok_r(NULL, " ", &save_ptr);
     if ( infoName[strlen(infoName)-1] == '\n' ) infoName[strlen(infoName)-1] = '\0';
     infoValue += strspn(infoValue, " \t");
     if ( infoValue[strlen(infoValue)-1] == '\n' ) infoValue[strlen(infoValue)-1] = '\0';

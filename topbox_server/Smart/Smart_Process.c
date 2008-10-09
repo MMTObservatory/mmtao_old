@@ -24,6 +24,7 @@ Smart_Process( Device_Info *Info, char *request )
   char *device, *action, *parameter;
   float distance;
   char Request[STRING_LENGTH];
+  char *save_ptr;
 
   pthread_attr_t attr;
   pthread_attr_init(&attr);
@@ -38,8 +39,8 @@ Smart_Process( Device_Info *Info, char *request )
   /* parse the request string */
   strcpy( Request, request);
 
-  device = strtok( Request, " ");
-  action = strtok( NULL, " ");
+  device = strtok_r( Request, " ", &save_ptr);
+  action = strtok_r( NULL, " ", &save_ptr);
   if ( action == NULL ) {
     printf("  Smart_Process: Action parameter not included in request\n");
     printf("               Request = %s\n", request);
@@ -103,7 +104,7 @@ Smart_Process( Device_Info *Info, char *request )
     /*
       Parse the debug value to set
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Master_Process: Debug parameter not included in request\n");
       printf("                  Request = %s\n", request);
@@ -171,7 +172,7 @@ Smart_Process( Device_Info *Info, char *request )
     /*
       Read the requested distance from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Smart_Process: Distance parameter not included in request\n");
       printf("               Request = %s\n", request);
@@ -191,7 +192,7 @@ Smart_Process( Device_Info *Info, char *request )
     /*
       Read the requested distance from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Smart_Process: Distance parameter not included in request\n");
       printf("                 Request = %s\n", request);
@@ -209,7 +210,7 @@ Smart_Process( Device_Info *Info, char *request )
   } else if ( !strncmp (action, "speed", strlen("speed") ) ) {
 
     int speed;
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Smart_Process: Speed parameter not included in request\n");
       printf("                 Request = %s\n", request);

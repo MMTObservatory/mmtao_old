@@ -52,6 +52,7 @@ void *Master_Process( void *Passed_Info)
   char request[STRING_LENGTH];
   char Request[STRING_LENGTH];
   char *device, *parameter;
+  char *save_ptr;
 
   /*
     Pointers to the needed Info structures
@@ -125,7 +126,7 @@ void *Master_Process( void *Passed_Info)
 
     strcpy( Request, request);
 
-    device = strtok( Request, " ");
+    device = strtok_r( Request, " ", &save_ptr);
 
     if ( !strncmp ( device, "?", strlen("?") ) ||
 	 !strncmp ( device, "help", strlen("help") ) ) {
@@ -142,7 +143,7 @@ void *Master_Process( void *Passed_Info)
       /*
 	Parse the debug value to set
       */
-      parameter = strtok( NULL, " ");
+      parameter = strtok_r( NULL, " ", &save_ptr);
       if ( parameter == NULL ) {
 	printf("  Master_Process: Debug parameter not included in request\n");
 	printf("                  Request = %s\n", request);

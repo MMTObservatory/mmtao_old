@@ -29,6 +29,7 @@ Power_Process( Device_Info *Info, char *request)
   int status;
   char *device, *action, *parameter;
   char Request[STRING_LENGTH];
+  char *save_ptr;
 
   /* Local pointers to varible passed from the process which created this thread
    */
@@ -75,9 +76,9 @@ Power_Process( Device_Info *Info, char *request)
    * to keep asking for stuff that isn't there,
    * you just get NULL back
    */
-  device = strtok( Request, " ");
-  action = strtok( NULL, " ");
-  parameter = strtok( NULL, " ");
+  device = strtok_r( Request, " ", &save_ptr);
+  action = strtok_r( NULL, " ", &save_ptr);
+  parameter = strtok_r( NULL, " ", &save_ptr);
 
   if ( action == NULL ) {
     printf("  Power_Process: Action parameter not included in request\n");

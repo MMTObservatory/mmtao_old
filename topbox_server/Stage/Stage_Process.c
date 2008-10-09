@@ -24,6 +24,7 @@ int Stage_Process( Device_Info *Info, char *request)
   float distance, hflag;
   int speed;
   char Request[STRING_LENGTH];
+  char *save_ptr;
 
   pthread_attr_t attr;
   pthread_attr_init(&attr);
@@ -70,8 +71,8 @@ int Stage_Process( Device_Info *Info, char *request)
 
   strcpy( Request, request);
 
-  device = strtok( Request, " ");
-  action = strtok( NULL, " ");
+  device = strtok_r( Request, " ", &save_ptr);
+  action = strtok_r( NULL, " ", &save_ptr);
   if ( action == NULL ) {
     printf("  Stage_Process: Action parameter not included in request\n");
     printf("               Request = %s\n", request);
@@ -96,7 +97,7 @@ int Stage_Process( Device_Info *Info, char *request)
     /*
       Parse the debug value to set
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Master_Process: Debug parameter not included in request\n");
       printf("                  Request = %s\n", request);
@@ -195,7 +196,7 @@ int Stage_Process( Device_Info *Info, char *request)
     /*
       Read the requested value of the Home flag
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Stage_Process: Home flag not included in request\n");
       printf("                 Request = %s\n", request);
@@ -215,7 +216,7 @@ int Stage_Process( Device_Info *Info, char *request)
     /*
       Read the requested distance from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Stage_Process: Distance parameter not included in request\n");
       printf("               Request = %s\n", request);
@@ -235,7 +236,7 @@ int Stage_Process( Device_Info *Info, char *request)
     /*
       Read the requested distance from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Stage_Process: Distance parameter not included in request\n");
       printf("                 Request = %s\n", request);
@@ -255,7 +256,7 @@ int Stage_Process( Device_Info *Info, char *request)
     /*
       Read the requested distance from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Stage_Process: Speed parameter not included in request\n");
       printf("                 Request = %s\n", request);

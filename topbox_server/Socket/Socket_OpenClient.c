@@ -51,10 +51,25 @@ int Socket_OpenClient (Socket_Info *Info, int debug)
   int ret;
   socklen_t len;
 
+  struct hostent host_entry;
+  struct hostent *result;
+  char hostbuf[500];
+  int   h_err;
+
   /*
     Fill in the serv_addr structure
   */
-  serv_ent = gethostbyname (Info->address);
+  serv_ent = &host_entry;
+  if (gethostbyname_r (Info->address,
+    serv_ent, hostbuf, sizeof(hostbuf),
+    &result, &h_err)) {
+      Info->error = 1;
+      return(-1);
+  }
+  if (h_err != 0 || result == NULL) {
+      Info->error = 1;
+      return(-1);
+  }
   bzero (&serv_addr, sizeof (serv_addr));
   bcopy (serv_ent->h_addr, (char *)(& serv_addr.sin_addr), serv_ent->h_length);
   serv_addr.sin_port   = htons (Info->port);

@@ -26,6 +26,7 @@ int MVP_Process( Device_Info *Info, char *request)
   float distance;
   int speed, accel, home;
   char Request[STRING_LENGTH];
+  char *save_ptr;
 
   /*
     Local pointers to varible passed from the process which created this thread
@@ -75,8 +76,8 @@ int MVP_Process( Device_Info *Info, char *request)
 
   strcpy( Request, request);
 
-  device = strtok( Request, " ");
-  action = strtok( NULL, " ");
+  device = strtok_r( Request, " ", &save_ptr);
+  action = strtok_r( NULL, " ", &save_ptr);
   if ( action == NULL ) {
     printf("  MVP_Process: Action parameter not included in request\n");
     printf("               Request = %s\n", request);
@@ -101,7 +102,7 @@ int MVP_Process( Device_Info *Info, char *request)
     /*
       Parse the debug value to set
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  Master_Process: Debug parameter not included in request\n");
       printf("                  Request = %s\n", request);
@@ -229,7 +230,7 @@ int MVP_Process( Device_Info *Info, char *request)
     /*
       Read the requested distance from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  MVP_Process: Distance parameter not included in request\n");
       printf("               Request = %s\n", request);
@@ -249,7 +250,7 @@ int MVP_Process( Device_Info *Info, char *request)
     /*
       Read the requested distance from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  MVP_Process: Distance parameter not included in request\n");
       printf("               Request = %s\n", request);
@@ -269,7 +270,7 @@ int MVP_Process( Device_Info *Info, char *request)
     /*
       Read the requested distance from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  MVP_Process: Speed parameter not included in request\n");
       printf("               Request = %s\n", request);
@@ -289,7 +290,7 @@ int MVP_Process( Device_Info *Info, char *request)
     /*
       Read the requested distance from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  MVP_Process: Acceleration parameter not included in request\n");
       printf("               Request = %s\n", request);
@@ -309,7 +310,7 @@ int MVP_Process( Device_Info *Info, char *request)
     /*
       Read the requested home flag from the request string
     */
-    parameter = strtok( NULL, " ");
+    parameter = strtok_r( NULL, " ", &save_ptr);
     if ( parameter == NULL ) {
       printf("  MVP_Process: Home parameter not included in request\n");
       printf("               Request = %s\n", request);
