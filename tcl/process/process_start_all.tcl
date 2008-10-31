@@ -17,13 +17,15 @@
 #
 # Altered 16sep07  DLM  Removed passes arguements and now use global varialbes
 #                         set in client_start.tcl
+# Altered 2008-10-28 skip Added science
 #
-proc process_start_all { pcr_server_start pcr_start topbox_start parent_win } {
+proc process_start_all { pcr_server_start pcr_start topbox_start science_start parent_win } {
 
     global PCR_HOME
     source $PCR_HOME/tcl/process/process_globals.tcl
     source $PCR_HOME/tcl/info/info_globals.tcl
     source $PCR_HOME/tcl/status/status_globals.tcl
+    source $PCR_HOME/tcl/science/science_globals.tcl
 #
 # Start the PCR_Server (commands and information)
 #
@@ -68,6 +70,30 @@ proc process_start_all { pcr_server_start pcr_start topbox_start parent_win } {
 	    } else {
 		puts "  process_start_all: $msg"
 		set Topbox_Server_Running 0
+	    }
+	}
+    }
+
+#
+# Start the Science server
+#
+    if { $Science_Connected } {
+	set Science_Server_Running 1
+    } else {
+	if { $science_start } {
+	    set status [ catch { exec query_process science_server $Science_Server_Address} msg ]
+	    if { $msg == "0" } {
+		set status \
+		    [tk_messageBox -parent $parent_win -icon question -type yesno \
+			 -message "Science_Server is not running\nDo you want to start it?" ]
+		if { $status == "yes" } {
+		    set status [catch { exec start_science_server $Science_Server_Address & } msg ]
+		}
+	    } elseif { $msg == "1" } {
+		set Science_Server_Running 1
+	    } else {
+		puts "  process_start_all: $msg"
+		set Science_Server_Running 0
 	    }
 	}
     }

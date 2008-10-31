@@ -182,7 +182,7 @@ wm withdraw .
 #     3) PCR (the pcr and dds processes)
 #     4) Topbox Server
 #
-client_start 1 1 0 1 .
+client_start 1 1 0 1 0 .
 #
 # Open log file
 #

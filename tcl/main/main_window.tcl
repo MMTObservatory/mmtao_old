@@ -605,6 +605,8 @@ proc main_window { win_name } {
 	-label "Seeing" -under 0
     $main_win.aux add save -createcmd { save_page $main_win.aux save } \
 	-label "Save\nData" -under 0
+    $main_win.aux add science -createcmd { science_page $main_win.aux science } \
+	-label "Science" -under 0
 #
 #-----------------------------------------------------------------
 #

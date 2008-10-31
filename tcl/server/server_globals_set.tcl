@@ -93,6 +93,23 @@ proc topbox_server_running_trace { name element op } {
     }
 }
 #
+# Science Server Running button controls
+#
+trace variable Science_Server_Running w science_server_running_trace
+proc science_server_running_trace { name element op } {
+    upvar ${name} value
+
+    global PCR_HOME
+    source $PCR_HOME/tcl/window/window_globals.tcl
+    if { [ expr ![ expr ![winfo exists $main_win] || ![string compare .null $server_page] ] ] } {
+	if { $value } {
+	    $server_page.server.process.science_start configure -bg green -activebackground lightgreen
+	} else {
+	    $server_page.server.process.science_start configure -bg red -activebackground OrangeRed
+	}
+    }
+}
+#
 # TCS Connected button controls
 #
 trace variable TCS_Connected w tcs_connected_trace
@@ -140,6 +157,23 @@ proc topbox_connected_trace { name element op } {
 	    $server_page.server.gui.topbox_connected configure -bg green -state disabled
 	} else {
 	    $server_page.server.gui.topbox_connected configure -bg red -state normal
+	}
+    }
+}
+#
+# Science Connected button controls
+#
+trace variable Science_Connected w science_connected_trace
+proc science_connected_trace { name element op } {
+    upvar ${name} value
+
+    global PCR_HOME
+    source $PCR_HOME/tcl/window/window_globals.tcl
+    if { [ expr ![ expr ![winfo exists $main_win] || ![string compare .null $server_page] ] ] } {
+	if { $value } {
+	    $server_page.server.gui.science_connected configure -bg green -state disabled
+	} else {
+	    $server_page.server.gui.science_connected configure -bg red -state normal
 	}
     }
 }

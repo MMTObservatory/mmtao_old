@@ -108,3 +108,11 @@
  *****************************************************************/
 #define HEXAPOD_ADDRESS       "hexapod.mmto.arizona.edu"
 #define	HEXAPOD_PORT          5340
+
+/*****************************************************************
+ *
+ * Science Server address and port numbers
+ *
+ *****************************************************************/
+#define SCIENCE_SERVER_ADDRESS     "ao-server.mmto.arizona.edu"
+#define SCIENCE_SERVER_PORT      7700

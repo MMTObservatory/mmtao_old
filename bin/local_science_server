@@ -1,0 +1,20 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to start the Science Server on the local machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# 2008-10-24 skip
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#
+# Set the xterm title to something more informative
+#
+echo -n "]2;Science Server @ `/bin/hostname`"
+#
+# Start the science server
+#
+science_server
+

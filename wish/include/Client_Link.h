@@ -141,6 +141,27 @@ Status_Reply = Tcl_Alloc( CLIENT_REPLY_LENGTH );
 strcpy(Status_Reply, "EOF");
 Tcl_LinkVar(interp, "Status_Reply", (char*) &Status_Reply, TCL_LINK_STRING);
 
+/**************
+ * Science Server *
+ **************/
+Tcl_CreateCommand(interp,"Science_Cmd", (Tcl_CmdProc*) Science_Cmd,
+                 (ClientData) NULL, (Tcl_CmdDeleteProc*) NULL);
+
+Tcl_LinkVar(interp, "debug_Science", (char *)&debug_Science, TCL_LINK_INT);
+
+/*
+  State variables with a link between C and TclTk variables so
+    information changed in C will be reflected on the GUI
+*/
+Tcl_LinkVar(interp, "Science_Connected", (char *)&Science_Connected, TCL_LINK_INT);
+Tcl_LinkVar(interp, "Science_Error", (char *)&Science_Error, TCL_LINK_INT);
+
+Science_Reply = Tcl_Alloc( CLIENT_REPLY_LENGTH );
+// Must access the string created here before it can be linked back to a 
+//   Tcl variable
+strcpy(Science_Reply, "EOF");
+Tcl_LinkVar(interp, "Science_Reply", (char*) &Science_Reply, TCL_LINK_STRING);
+
 /**********************/
 /* TCS Stage Stuff */
 /**********************/

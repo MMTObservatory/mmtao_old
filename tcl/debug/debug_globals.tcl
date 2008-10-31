@@ -35,6 +35,7 @@ set Debug_List [ list \
 		     Mod \
 		     BG \
 		     Utility \
+		     Science \
 		     ]
 
 foreach el $Debug_List {

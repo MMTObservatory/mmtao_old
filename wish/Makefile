@@ -31,7 +31,7 @@ NAME = PCR_Wish
 
 SUB_DIRS = BG Client Cmd DClient Hex Info Mod \
 	PCR PGplot Server Socket Static Status TCS \
-	Topbox Utility
+	Topbox Utility Science
 
 LINK_LIST = ./BG/lib_BG.a \
             ./DClient/lib_DClient.a \
@@ -49,6 +49,7 @@ LINK_LIST = ./BG/lib_BG.a \
 	    ./Utility/lib_Utility.a \
             ./Client/lib_Client.a \
             ./Server/lib_Server.a \
+            ./Science/lib_Science.a \
             ./Cmd/lib_Cmd.a
 
 

@@ -1,6 +1,6 @@
 ###################################
 #
-# debug_globals_set.tcl
+# science_globals.tcl
 #
 ###################################
 #
@@ -16,24 +16,24 @@
 #
 ###################################
 #
-foreach el $Debug_List {
-    set debug_$el 0
-}
+global Science_Connected
+global Science_Error
+global Science_Reply
+
+global Science_Int
+global Science_Float
+global Science_Char
+global Science_List
 #
-# Set individual debug variable to 1 here
+# Array variables.
+#   **Note: Only the array should be made global, not individual elementes
+#           The element are defined in science_globals_set.tcl
 #
-set debug_Info 0
-set debug_VoltMeter 0
-set debug_PCR 0
-set debug_DClient 0
-set debug_Sky 0
-set debug_IDL 0
-set debug_Static 0
-set debug_Mod 0
-set debug_BG 0
-set debug_Utility 0
-set debug_PGplot 0
-set debug_Hex 0
-set debug_Status 0
-set debug_Topbox 0
-set debug_Science 0
+global Science
+global Science_Format
+#
+# This variable is set after all Science variables have been set so the gui
+#  can be updated according to the new values of the Science variables.  The
+#  update routines are in tcl/gui/gui_update.tcl
+#
+global Science_Update

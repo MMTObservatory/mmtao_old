@@ -1,16 +1,12 @@
-#!/bin/sh
-#++++++++++++++++++++++++++++++++++++++++++++++++++++
-#
-# Test script to create a Tcl-Tk window
-#
-#++++++++++++++++++++++++++++++++++++++++++++++++++++
-#
-# Altered  25feb03 DLM  Change path to AO_wish and DNet_startup.tcl from CAAO_HOME
-#                         to AO_GUI_HOME.  This last environment
-#                         variable is set in ${CAAO_HOME}/scripts/cshrc.caao,
-#                         which should be sourced by the users .cshrc
-#
-# The next line is execute by /bin/sh to start the TclTk shell
+#!/bin/csh
 
-cd ${PCR_HOME}/tcl/sc_server
-exec ${PCR_HOME}/wish/PCR_Wish -f sc_startup.tcl
+# DEBUG
+#setenv TOPBOXHOST localhost
+#setenv INFOHOST localhost
+#setenv HEXAPODHOST localhost
+#setenv TCSHOST localhost
+
+setenv MATRIX_PATHNAME ${PCR_HOME}/tcl/static/robin_slopes2008_03_1.dat
+setenv SCIENCE_LOG_FILENAME ${MMTAO_DATA_DIR}/science_server_log.txt
+cd ${PCR_HOME}/bin
+./science.rb

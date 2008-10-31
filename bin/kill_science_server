@@ -1,0 +1,19 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to kill the Science Server on the local machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# 2008-10-23 skip
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Check to see if the science server is running.  If so, then kill it
+#
+#running=`ps auxww | grep -v grep | grep '\.\/science_server' | awk '{print $2}'`
+#running=`ps auxww | grep -v grep | grep '/wish/PCR_Wish -f sc_startup.tcl' | awk '{print $2}'`
+running=`ps auxww | grep -v grep | grep '/usr/bin/ruby ./science.rb' | awk '{print $2}'`
+if [ $running ]; then 
+    kill -9 $running
+fi

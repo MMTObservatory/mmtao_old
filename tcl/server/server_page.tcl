@@ -131,6 +131,17 @@ proc server_page { server_win page } {
 	    ##process_start tss_server $server_page
 	}
 #
+# Science server Process
+#
+    label $server_page.server.process.science_label \
+	-text "Science Server"
+    button $server_page.server.process.science_start \
+	-background red -activebackground OrangeRed \
+	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-command { 
+	    process_start science_server $server_page
+	}
+#
 # Pack PCR_SERVER stuff
 #
     set j 0
@@ -170,6 +181,14 @@ proc server_page { server_win page } {
         -row $i -column $j -sticky e
     incr j
     grid config $server_page.server.process.tss_start \
+        -row $i -column $j
+    incr i
+
+    set j 0
+    grid config $server_page.server.process.science_label \
+        -row $i -column $j -sticky e
+    incr j
+    grid config $server_page.server.process.science_start \
         -row $i -column $j
 #
 #-----------------------------
@@ -314,6 +333,28 @@ proc server_page { server_win page } {
         -row $i -column $j -sticky e
     incr j
     grid config $server_page.server.gui.pcr_connected \
+        -row $i -column $j
+    incr j
+    incr i
+#
+# Science connection
+#
+    label $server_page.server.gui.science_label \
+	-text "Science"
+    button $server_page.server.gui.science_connected \
+	-background red -activebackground OrangeRed \
+	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-command { 
+	    science_connect $server_page
+	}
+#
+# Pack Science stuff
+#
+    set j 0
+    grid config $server_page.server.gui.science_label \
+        -row $i -column $j -sticky e
+    incr j
+    grid config $server_page.server.gui.science_connected \
         -row $i -column $j
     incr j
     incr i
@@ -609,5 +650,9 @@ proc server_page { server_win page } {
 # Force an update of the Status conneciont to the Topbox Server
 #
     set Status_Connected $Status_Connected
+#
+# Force an update of the Science_Server Running button
+#
+    set Science_Server_Running $Science_Server_Running
 
 }

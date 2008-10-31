@@ -26,3 +26,8 @@ char *PCR_Address;
  *   Topbox Server  *
  *************************/
 char *Topbox_Server_Address;
+
+/*************************
+ *   Science Server  *
+ *************************/
+char *Science_Server_Address;

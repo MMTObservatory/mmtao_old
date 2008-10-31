@@ -38,3 +38,11 @@ Tcl_LinkVar(interp, "PCR_Address", (char*) &PCR_Address, TCL_LINK_STRING);
 Topbox_Server_Address = Tcl_Alloc( STRING_LENGTH );
 strcpy(Topbox_Server_Address, TOPBOX_SERVER_ADDRESS);
 Tcl_LinkVar(interp, "Topbox_Server_Address", (char*) &Topbox_Server_Address, TCL_LINK_STRING);
+
+/*
+  Science Server Address
+*/
+
+Science_Server_Address = Tcl_Alloc( STRING_LENGTH );
+strcpy(Science_Server_Address, SCIENCE_SERVER_ADDRESS);
+Tcl_LinkVar(interp, "Science_Server_Address", (char*) &Science_Server_Address, TCL_LINK_STRING);

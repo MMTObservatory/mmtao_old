@@ -21,7 +21,9 @@
 #
 # Altered 12sep07  DLM  Added the new connection to the topbox and status server
 #
-proc client_start { tcs_start pcr_server_start pcr_start topbox_start parent_win } {
+# Altered 2008-10-28 skip Added science
+#
+proc client_start { tcs_start pcr_server_start pcr_start topbox_start science_start parent_win } {
 
     global PCR_HOME
     source $PCR_HOME/tcl/client/client_globals.tcl
@@ -31,6 +33,7 @@ proc client_start { tcs_start pcr_server_start pcr_start topbox_start parent_win
     source $PCR_HOME/tcl/info/info_globals.tcl
     source $PCR_HOME/tcl/status/status_globals.tcl
     source $PCR_HOME/tcl/topbox/topbox_globals.tcl
+    source $PCR_HOME/tcl/science/science_globals.tcl
 #
 # Open connection to the TCS
 #
@@ -65,5 +68,16 @@ proc client_start { tcs_start pcr_server_start pcr_start topbox_start parent_win
 	}
     }
     after $Client_Update_Rate status_looper $parent_win
+#
+# Connect to the Science_Server (commands and status)
+#
+    if { $science_start } {
+	science_connect $parent_win
+	if { $Science_Connected } {
+	    set Science_Server_Running 1
+	    set status [ science_get all $parent_win ]
+	}
+    }
+    after $Client_Update_Rate science_looper $parent_win
 
 }

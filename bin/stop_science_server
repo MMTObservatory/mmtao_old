@@ -1,0 +1,29 @@
+#!/bin/sh
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Script to stop the Science Server on the requested machine
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# 2008-10-24 skip
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# Check to see if a hostname was given.  If not, use "localhost"
+#
+if [[ $1 != "" ]]; then
+    hostname=$1
+else
+    hostname="localhost"
+fi
+#
+# Must add mmtao user if trying to start a process on ao-server
+#
+    if [[ $hostname == ao-server.mmto.arizona.edu ]]; then
+	hostname="mmtao@ao-server.mmto.arizona.edu"
+    fi
+#
+# Kill the Science Server on the specified host
+#
+ssh -XYCq $hostname kill_science_server
+#kill_science_server DEBUG

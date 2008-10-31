@@ -88,6 +88,16 @@ source $PCR_HOME/tcl/status/status_connect.tcl
 source $PCR_HOME/tcl/status/status_get.tcl
 source $PCR_HOME/tcl/status/status_looper.tcl
 #
+# Science routines
+#
+source $PCR_HOME/tcl/science/science_globals.tcl
+source $PCR_HOME/tcl/science/science_globals_set.tcl
+source $PCR_HOME/tcl/science/science_close.tcl
+source $PCR_HOME/tcl/science/science_connect.tcl
+source $PCR_HOME/tcl/science/science_get.tcl
+source $PCR_HOME/tcl/science/science_looper.tcl
+source $PCR_HOME/tcl/science/science_page.tcl
+#
 # TCS routines
 #
 source $PCR_HOME/tcl/tcs/tcs_globals.tcl
@@ -311,8 +321,9 @@ wm withdraw .
 #     2) PCR Server
 #     3) PCR (the pcr and dds processes)
 #     4) Topbox Server
+#     5) Science Server
 #
-client_start 1 1 1 1 .
+client_start 1 1 1 1 1 .
 #
 # Create a data directory
 #
@@ -329,8 +340,9 @@ open_window main_window $main_win
 #     1) PCR_Server
 #     2) PCR and DDS
 #     3) Topbox Server
+#     4) Science Server
 #
-process_start_all 1 1 1 $main_win
+process_start_all 1 1 1 1 $main_win
 #
 # Start looper for rotation tracking
 #

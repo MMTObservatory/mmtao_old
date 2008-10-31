@@ -29,3 +29,6 @@ global AO_Server_Running
 global Topbox_Server_Start
 global Topbox_Server_Running
 global Topbox_Server_Address
+
+global Science_Server_Running
+global Science_Server_Address

@@ -71,6 +71,9 @@ else
 	    ssh -XYCq $hostname query_dds
 	elif [[ $server == topbox_server ]]; then
 	    ssh -XYCq $hostname query_topbox_server
+	elif [[ $server == science_server ]]; then
+	    ssh -XYCq $hostname query_science_server
+	    #query_science_server DEBUG
 	else
 	    echo "Unkown server $server"
 	fi
