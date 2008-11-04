@@ -64,6 +64,11 @@ int Client_SetupInfo( Client_Info *Info, Gui_Variables *Gui, char *name,
     strcpy( Info->address, SCIENCE_SERVER_ADDRESS);
     Info->port = SCIENCE_SERVER_PORT;
 
+  } else if ( !strncmp( name, "TSS", strlen(name)) ) {
+
+    strcpy( Info->address, TSS_SERVER_ADDRESS);
+    Info->port = TSS_SERVER_PORT;
+
   } else {
 
     printf("  Client_SetupInfo: name not found: %s\n", name);

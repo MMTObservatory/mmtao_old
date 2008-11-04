@@ -6,6 +6,7 @@
 #++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
 # 4-2-2008 atjt
+# 2008-11-03 skip
 #
 #++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -15,9 +16,7 @@
 if [[ $1 != "" ]]; then
     hostname=$1
 else
-#    hostname="localhost"
-    kill_tss_server
-    exit
+    hostname="localhost"
 fi
 #
 # Must add mmtao user if trying to start a process on ao-server
@@ -26,6 +25,6 @@ fi
 	hostname="mmtao@ao-server.mmto.arizona.edu"
     fi
 #
-# Kill the Topbox Server on the specified host
+# Kill the TSS Server on the specified host
 #
 ssh -XYCq $hostname kill_tss_server

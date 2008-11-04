@@ -6,19 +6,18 @@
 #++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
 # 4-2-2008 tjt
+# 2008-11-03 skip
 #
 #++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #
 # Set the xterm title to something more informative
 #
-#echo -n "]2;TSS Server @ `/bin/hostname`"
+echo -n "]2;TSS Server @ `/bin/hostname`"
 
 #
 # Start the tss_server
 #
-if [ -f /home/tom/miniserver/tss_server ]; then
-	/home/tom/miniserver/tss_server &
-fi
+tss_server
 
 # THE END

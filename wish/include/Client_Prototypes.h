@@ -48,5 +48,6 @@ int PCR_Cmd (ClientData client_data, Tcl_Interp* interp, int argc, char **argv);
 int TCS_Cmd (ClientData client_data, Tcl_Interp* interp, int argc, char **argv);
 int Hex_Cmd (ClientData client_data, Tcl_Interp* interp, int argc, char **argv);
 int Status_Cmd (ClientData client_data, Tcl_Interp* interp, int argc, char **argv);
+int TSS_Cmd (ClientData client_data, Tcl_Interp* interp, int argc, char **argv);
 int Science_Cmd (ClientData client_data, Tcl_Interp* interp, int argc, char **argv);
 int Topbox_Cmd (ClientData client_data, Tcl_Interp* interp, int argc, char **argv);

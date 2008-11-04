@@ -142,6 +142,27 @@ strcpy(Status_Reply, "EOF");
 Tcl_LinkVar(interp, "Status_Reply", (char*) &Status_Reply, TCL_LINK_STRING);
 
 /**************
+ * TSS Server *
+ **************/
+Tcl_CreateCommand(interp,"TSS_Cmd", (Tcl_CmdProc*) TSS_Cmd,
+                 (ClientData) NULL, (Tcl_CmdDeleteProc*) NULL);
+
+Tcl_LinkVar(interp, "debug_TSS", (char *)&debug_TSS, TCL_LINK_INT);
+
+/*
+  State variables with a link between C and TclTk variables so
+    information changed in C will be reflected on the GUI
+*/
+Tcl_LinkVar(interp, "TSS_Connected", (char *)&TSS_Connected, TCL_LINK_INT);
+Tcl_LinkVar(interp, "TSS_Error", (char *)&TSS_Error, TCL_LINK_INT);
+
+TSS_Reply = Tcl_Alloc( CLIENT_REPLY_LENGTH );
+// Must access the string created here before it can be linked back to a 
+//   Tcl variable
+strcpy(TSS_Reply, "EOF");
+Tcl_LinkVar(interp, "TSS_Reply", (char*) &TSS_Reply, TCL_LINK_STRING);
+
+/**************
  * Science Server *
  **************/
 Tcl_CreateCommand(interp,"Science_Cmd", (Tcl_CmdProc*) Science_Cmd,

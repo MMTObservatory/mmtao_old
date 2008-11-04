@@ -116,3 +116,11 @@
  *****************************************************************/
 #define SCIENCE_SERVER_ADDRESS     "ao-server.mmto.arizona.edu"
 #define SCIENCE_SERVER_PORT      7700
+
+/*****************************************************************
+ *
+ * TSS Server address and port numbers
+ *
+ *****************************************************************/
+#define TSS_SERVER_ADDRESS     "ao-server.mmto.arizona.edu"
+#define TSS_SERVER_PORT      7003

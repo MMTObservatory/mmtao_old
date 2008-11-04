@@ -110,6 +110,23 @@ proc science_server_running_trace { name element op } {
     }
 }
 #
+# TSS Server Running button controls
+#
+trace variable TSS_Server_Running w tss_server_running_trace
+proc tss_server_running_trace { name element op } {
+    upvar ${name} value
+
+    global PCR_HOME
+    source $PCR_HOME/tcl/window/window_globals.tcl
+    if { [ expr ![ expr ![winfo exists $main_win] || ![string compare .null $server_page] ] ] } {
+	if { $value } {
+	    $server_page.server.process.tss_start configure -bg green -activebackground lightgreen
+	} else {
+	    $server_page.server.process.tss_start configure -bg red -activebackground OrangeRed
+	}
+    }
+}
+#
 # TCS Connected button controls
 #
 trace variable TCS_Connected w tcs_connected_trace
@@ -174,6 +191,23 @@ proc science_connected_trace { name element op } {
 	    $server_page.server.gui.science_connected configure -bg green -state disabled
 	} else {
 	    $server_page.server.gui.science_connected configure -bg red -state normal
+	}
+    }
+}
+#
+# TSS Connected button controls
+#
+trace variable TSS_Connected w tss_connected_trace
+proc tss_connected_trace { name element op } {
+    upvar ${name} value
+
+    global PCR_HOME
+    source $PCR_HOME/tcl/window/window_globals.tcl
+    if { [ expr ![ expr ![winfo exists $main_win] || ![string compare .null $server_page] ] ] } {
+	if { $value } {
+	    $server_page.server.gui.tss_connected configure -bg green -state disabled
+	} else {
+	    $server_page.server.gui.tss_connected configure -bg red -state normal
 	}
     }
 }

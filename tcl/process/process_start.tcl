@@ -82,5 +82,18 @@ proc process_start { process parent_win } {
 	}
     }
 
+    if { $process == "tss_server" } {
+	if { $TSS_Server_Running } {
+	    set status \
+		[tk_messageBox -parent $parent_win -icon question -type yesno \
+		     -message "TSS Server is running\nAre you sure you want to kill it?" ]
+	    if { $status == "yes" } {
+		set status [catch { exec stop_tss_server $TSS_Server_Address & } msg ]
+	    }
+	} else {
+	    set status [catch { exec start_tss_server $TSS_Server_Address & } msg ]
+	}
+    }
+
     return 0
 }

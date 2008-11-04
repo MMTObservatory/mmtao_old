@@ -6,12 +6,15 @@
 #++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
 # 4-2-2008 tjt
+# 2008-11-03 skip
 #
 #++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # Check to see if the TSS server is running.  If so, then kill it
 #
-running=`ps auxw | grep '\.\/tss_server' | awk '{print $2}'`
+#running=`ps auxw | grep -v grep | grep '\.\/tss_server' | awk '{print $2}'`
+#running=`ps auxw | grep -v grep | grep '/usr/bin/ruby /home/skip/mmt/REPOS/ao/trunk/bin/tss_server' | awk '{print $2}'`
+running=`ps auxww | grep -v grep | grep "/usr/bin/perl -w ${PCR_HOME}/bin/tss_server" | awk '{print $2}'`
 if [ $running ]; then 
     kill -9 $running
 fi

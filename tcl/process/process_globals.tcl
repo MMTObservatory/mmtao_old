@@ -32,3 +32,6 @@ global Topbox_Server_Address
 
 global Science_Server_Running
 global Science_Server_Address
+
+global TSS_Server_Running
+global TSS_Server_Address

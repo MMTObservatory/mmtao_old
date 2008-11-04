@@ -31,3 +31,8 @@ char *Topbox_Server_Address;
  *   Science Server  *
  *************************/
 char *Science_Server_Address;
+
+/*************************
+ *   TSS Server  *
+ *************************/
+char *TSS_Server_Address;

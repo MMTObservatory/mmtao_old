@@ -22,8 +22,9 @@
 # Altered 12sep07  DLM  Added the new connection to the topbox and status server
 #
 # Altered 2008-10-28 skip Added science
+# Altered 2008-11-03 skip Added tss
 #
-proc client_start { tcs_start pcr_server_start pcr_start topbox_start science_start parent_win } {
+proc client_start { tcs_start pcr_server_start pcr_start topbox_start science_start tss_start parent_win } {
 
     global PCR_HOME
     source $PCR_HOME/tcl/client/client_globals.tcl
@@ -34,6 +35,7 @@ proc client_start { tcs_start pcr_server_start pcr_start topbox_start science_st
     source $PCR_HOME/tcl/status/status_globals.tcl
     source $PCR_HOME/tcl/topbox/topbox_globals.tcl
     source $PCR_HOME/tcl/science/science_globals.tcl
+    source $PCR_HOME/tcl/tss/tss_globals.tcl
 #
 # Open connection to the TCS
 #
@@ -79,5 +81,16 @@ proc client_start { tcs_start pcr_server_start pcr_start topbox_start science_st
 	}
     }
     after $Client_Update_Rate science_looper $parent_win
+#
+# Connect to the TSS_Server (commands and status)
+#
+    if { $tss_start } {
+	tss_connect $parent_win
+	if { $TSS_Connected } {
+	    set TSS_Server_Running 1
+	    set status [ tss_get all $parent_win ]
+	}
+    }
+    after $Client_Update_Rate tss_looper $parent_win
 
 }

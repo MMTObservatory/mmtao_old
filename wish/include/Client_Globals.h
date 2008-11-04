@@ -112,6 +112,23 @@ int Status_Error;
 char *Status_Reply;
 
 /*********************
+ *   TSS Server      *
+ *********************/
+int debug_TSS;
+
+/*
+  State variables with a link between C and TclTk variables so
+    information changed in C will be reflected on the GUI
+*/
+int TSS_Connected;
+int TSS_Error;
+
+/*
+  A very long string to send Science string from C to Tcl
+*/
+char *TSS_Reply;
+
+/*********************
  *   Science Server      *
  *********************/
 int debug_Science;

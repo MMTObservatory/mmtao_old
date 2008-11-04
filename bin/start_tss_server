@@ -1,11 +1,12 @@
 #!/bin/sh
 #++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
-# Script to start the Topbox_Server on the requested machine
+# Script to start the TSS_Server on the requested machine
 #
 #++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
 # 4-2-2008 tjt
+# 2008-11-03 skip
 #
 #++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -15,9 +16,7 @@
 if [[ $1 != "" ]]; then
     hostname=$1
 else
-    #hostname="localhost"
-    local_tss_server
-    exit
+    hostname="localhost"
 fi
 
 #
@@ -28,7 +27,6 @@ if [[ $hostname == ao-server.mmto.arizona.edu ]]; then
 fi
 
 #
-# Start the Topbox Server on the specified host
+# Start the TSS Server on the specified host
 #
-#ssh -XYCq $hostname xterm -geometry 70x10+839+359 +hold -sb -sl 500 -title "Topbox_Server" -e "local_topbox_server" &
-ssh -XYCq $hostname local_tss_server
+ssh -XYCq $hostname xterm -geometry 70x10+839+359 +hold -sb -sl 500 -title "TSS_Server" -e "local_tss_server" &

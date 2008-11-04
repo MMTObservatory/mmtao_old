@@ -1,6 +1,6 @@
 ###################################
 #
-# debug_globals.tcl
+# tss_globals.tcl
 #
 ###################################
 #
@@ -16,29 +16,24 @@
 #
 ###################################
 #
-# We use Debug_$el instead of Debug($el) because these variables are linked
-#   to C variables and I don't know how (if possible) to link a tcl array to
-#   a C array and retain the name (eg $el)
-#
-global Debug_List
-set Debug_List [ list \
-		     Info\
-		     Motor \
-		     Msg \
-		     TCS \
-		     SDSU \
-		     PCR \
-		     BG \
-		     Static \
-		     Status \
-		     Topbox \
-		     Mod \
-		     BG \
-		     Utility \
-		     Science \
-		     TSS \
-		     ]
+global TSS_Connected
+global TSS_Error
+global TSS_Reply
 
-foreach el $Debug_List {
-    global debug_$el
-}
+global TSS_Int
+global TSS_Float
+global TSS_Char
+global TSS_List
+#
+# Array variables.
+#   **Note: Only the array should be made global, not individual elementes
+#           The element are defined in tss_globals_set.tcl
+#
+global TSS
+global TSS_Format
+#
+# This variable is set after all TSS variables have been set so the gui
+#  can be updated according to the new values of the TSS variables.  The
+#  update routines are in tcl/gui/gui_update.tcl
+#
+global TSS_Update

@@ -127,8 +127,7 @@ proc server_page { server_win page } {
 	-background red -activebackground OrangeRed \
 	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
 	-command { 
-	    puts "tss: not yet\n"
-	    ##process_start tss_server $server_page
+	    process_start tss_server $server_page
 	}
 #
 # Science server Process
@@ -333,6 +332,28 @@ proc server_page { server_win page } {
         -row $i -column $j -sticky e
     incr j
     grid config $server_page.server.gui.pcr_connected \
+        -row $i -column $j
+    incr j
+    incr i
+#
+# TSS connection
+#
+    label $server_page.server.gui.tss_label \
+	-text "TSS"
+    button $server_page.server.gui.tss_connected \
+	-background red -activebackground OrangeRed \
+	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-command { 
+	    tss_connect $tss_page
+	}
+#
+# Pack TSS stuff
+#
+    set j 0
+    grid config $server_page.server.gui.tss_label \
+        -row $i -column $j -sticky e
+    incr j
+    grid config $server_page.server.gui.tss_connected \
         -row $i -column $j
     incr j
     incr i
@@ -654,5 +675,9 @@ proc server_page { server_win page } {
 # Force an update of the Science_Server Running button
 #
     set Science_Server_Running $Science_Server_Running
+#
+# Force an update of the TSS_Server Running button
+#
+    set TSS_Server_Running $TSS_Server_Running
 
 }

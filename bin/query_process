@@ -74,6 +74,8 @@ else
 	elif [[ $server == science_server ]]; then
 	    ssh -XYCq $hostname query_science_server
 	    #query_science_server DEBUG
+	elif [[ $server == tss_server ]]; then
+	    ssh -XYCq $hostname query_tss_server
 	else
 	    echo "Unkown server $server"
 	fi

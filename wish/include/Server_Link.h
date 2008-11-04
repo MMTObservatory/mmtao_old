@@ -46,3 +46,11 @@ Tcl_LinkVar(interp, "Topbox_Server_Address", (char*) &Topbox_Server_Address, TCL
 Science_Server_Address = Tcl_Alloc( STRING_LENGTH );
 strcpy(Science_Server_Address, SCIENCE_SERVER_ADDRESS);
 Tcl_LinkVar(interp, "Science_Server_Address", (char*) &Science_Server_Address, TCL_LINK_STRING);
+
+/*
+  TSS Server Address
+*/
+
+TSS_Server_Address = Tcl_Alloc( STRING_LENGTH );
+strcpy(TSS_Server_Address, TSS_SERVER_ADDRESS);
+Tcl_LinkVar(interp, "TSS_Server_Address", (char*) &TSS_Server_Address, TCL_LINK_STRING);
