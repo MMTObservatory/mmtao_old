@@ -26,5 +26,5 @@ fi
 #
 # Start the Science Server on the specified host
 #
-ssh -XYCq $hostname xterm -geometry 70x10+839+359 +hold -sb -sl 500 -title "Science Server" -e "local_science_server" &
-#xterm -geometry 70x10+839+359 +hold -sb -sl 500 -title "Science Server" -e "local_science_server" & DEBUG
+ssh -XYCq $hostname xterm -geometry 70x10+839+25 +hold -sb -sl 500 -title "Science_Server" -e "local_science_server" &
+#xterm -geometry 70x10+839+359 +hold -sb -sl 500 -title "Science_Server" -e "local_science_server" & DEBUG
