@@ -1,1 +1,504 @@
-/mmt/ao/tss_server
+#!/usr/bin/perl -w
+
+use IO::Socket;
+
+#use lib "/home/tom/mmtao/tss";
+#use AOIO::AOserver;
+
+use lib "/mmt/miniserver";
+use IO::AOserver;
+
+# In demo mode, we are talking to the "tss_demo" server
+# which is a limited TSS simulator (it returns binary
+# status, but does not accept commands).
+# Set this to 0 to run with the real TSS.
+my $demo = 1;
+#my $demo = 0;
+
+# Theory of Operation
+# Tom Trebisky  11-3-2008
+#
+# The tss_server is an event drive protocol translation server
+# for the TSS (Thin Shell Safety) subsystem of he AO f/15 secondary.
+#
+# The TSS itself interfaces via serial IO over fiber, which is handled
+# by a copper to fiber media translator on one port of a cylcades terminal
+# server, which makes the TSS accessible over the network, but with its own
+# peculiar protocol and allowing only one connection at a time.
+#
+# The purpose of this server is twofold, first to allow multiple connections,
+# second to perform protocol translation (it parses the tss response records
+# and makes their content available as a set of variables via the usual
+# MMT miniserver protocols to facilitate logging as well as a more sane
+# control interface.  The server also supports a pass-through mode to allow
+# legacy clients to be used with minimal changes.
+#
+# The AOserver module supports this event driven paradigm, and is used by
+# the TSS server as follows:
+#
+# 1 - a timer (presently running at 1 Hz, sends commands requesting
+#     telemetry responses (but does not process the responses).
+#     This is supported by update_handler() in this module.
+#
+# 2 - when a full telemetry response has been collected in the client
+#     input buffer, it is passed to client_handler(), which parses
+#     the datastream and updates TSS status variables.
+#
+# - the above process will take place at all times when the tss-server
+#   is running, and the TSS itself is powered on.
+#
+# 3 - in addition, the server supports (potentially multiple) connections from
+#     the network.  These connections typically are either of one type or
+#     another, namely ascii "miniserver" type connections, or binary "legacy"
+#     connections.
+#
+# 4 - ascii remote connections act like typical MMT miniservers and support the
+#     "all" and "get" commands.  These connection and responses are all handled as
+#     part of the standard miniserver support code in the AOserver.pm module.
+#     A variable "raw_data" provides the unparsed TSS response string.
+#     One exception is a special pass-through command, provided to relay commands
+#     to the TSS. "tss_cmd M000" would send <STX>M000<ETX> to the TSS.
+#     This pass through command is handled by command_handler() in this file.
+#     Note that the pass-through command mode has not yet been tested.
+#
+# 5 - legacy "binary" connections support commands from the network that come
+#     already wrapped in <STX>xxx<ETX> and are passed along as-is to the TSS.
+#     An exception is the <STX>J000<ETX> command which merely requests data,
+#     the response for this command comes from the most recently cached data
+#     in the tss_server itself.
+#
+# Legacy code expects a response to each "action command" in the same format as
+#  the J000 command provides.  In addition, the response is expected in many
+#  cases to reflect the result the action just commanded.  For this reason, this
+#  server must take care to provide up-to-date responses after action commands.
+
+my $my_server_port = 7400;
+
+my $update_interval = 1.0;
+
+# Host name and port for the Cyclades connected to the TSS.
+my $client_host = 'mmtts2';
+my $client_port = 7003;
+
+my $server;
+my $client_handle = 0;
+my $client_session = 0;
+
+my $request;
+my $request_string;
+
+# Note: The current dm_status GUI (written in IDL)
+# sends the J000 command to get a one-time string.
+# (this is the way things were done prior to this server).
+
+# The J001 command gets a different string, over and
+# over and over.  This works also, and we don't have
+# to do anything but set the TSS up once and then just
+# listen.  It seems to talk at about a 4 Hz rate.
+
+#my $send_j001 = 0;
+my $send_j001 = 1;
+
+if ( $demo == 1 ) {
+    $send_j001 = 0;
+}
+
+#my $expect_j001 = 0;
+my $expect_j001 = 1;
+
+if ( $send_j001 ) {
+    $request = "J001";
+} else {
+    $request = "J000";
+}
+
+if ( $demo ) {
+    $request_string = "$request\n";
+    $client_host = 'localhost';
+    $client_port = 7200;
+} else {
+    $request_string = "\x02$request\x03";
+}
+
+my $parse_format = "A6" x 20 . "A2" x 4 . "A13";
+my $flags_format = "A1" x 13;
+
+my %onoff = ( "1" => "on", "0" => "off" );
+my %yesno = ( "1" => "yes", "0" => "no" );
+my %okerr = ( "1" => "ok", "0" => "err" );
+
+my $server_vars;
+my @cmd_list = ();
+
+# Here is a list of TSS variables in the order they are sent
+# by the TSS, it is sometimes handy to see things in this order,
+# rather than alphabetical or whatever, for humans anyway.
+my @tss_keys = qw(
+total_current
+power_vccp
+power_vssp
+voltage_vccp
+voltage_vssp
+voltage_vcca
+voltage_vssa
+voltage_vccl
+temp_crate1
+temp_crate2
+temp_crate3
+temp_water_inlet
+temp_water_outlet
+temp_coldplate1
+temp_coldplate2
+temp_ambient
+humidity_ambient
+pressure_inlet
+pressure_outlet
+max_crate_temp
+current_on_tss
+max_hold1
+max_hold2
+max_hold3
+overcurrent_vccp
+overcurrent_vssp
+overcurrent_push
+overcurrent_pull
+
+mystery
+
+enable_coil_sw
+enable_coil_hw
+coil_status
+tss_status
+power_status
+fiber_status
+command
+wrong
+);
+
+# There are some discrepancies in documentation.
+# 1) I have a sheet labelled "Power Backplane diagnostic data transmission record"
+#    it seems to almost document the J000 response,
+#    but it has 19 instead of 20 thingies in the first group,
+#    (it leaves off the last thing, current_on_tss),
+#    It also lists only 8 flags, not 13.
+# 2) I have the ao tss wicki, which only has 19 things in the first group
+#    (it omits the humidity)
+# 3) I have Vidhya's IDL script that parses the J000 line, and I have used
+#    this as the authoritative reference.  It changes the order of two of
+#    the flags as compared to the Wicki, in particular it skips over the flag
+#    that I label as "mystery".  And it moves "command" to follow "status"
+#    instead of following "fiber" as shown in the wicki.
+#
+# Also, I have been liberal in the assignment of on/ok/yes to the flags,
+#    it might be best to just leave them as 0/1, but I would really like
+#    to know what 0/1 mean at this level and assign words.
+
+sub tss_parser {
+    my ( $data ) = @_;
+
+    # I would swear that once upon a time, the J001 yielded this alternate
+    # reply format.  On testing 3/12/2008, we get the J000 format whether
+    # we issue the J000 or the J001 string.  Pretty weird.
+    if ( $expect_j001 ) {
+    	j001_parser ( $data );
+    } else {
+    	j000_parser ( $data );
+    }
+}
+
+sub dump_data {
+	my ( $msg, $data ) = @_;
+
+	print "$msg\n";
+	$data =~ s/\r/<RET>\n/g;
+	print $data;
+	print "\nEND\n";
+}
+
+# This (J000) is the "normal" one time string way.
+# It gets a 167 byte multiline reply as follows:
+#  (and yes there is a blank line at the start and end)
+#-----------------------------------------------------
+#
+#  3131
+#     0
+#     0
+#     0
+#  -504
+#     0
+#  -174
+#     0
+#  1949
+#  1889
+#  1854
+#  1693
+#  1713
+#  2060
+#  2038
+#  1935
+#   496
+#  1040
+#   671
+#  4000
+#12
+#63
+#34
+# 8
+#1011100011010
+#
+#-----------------------------------------------------
+
+sub j000_parser {
+    my ( $data ) = @_;
+
+    my $nb = length($data);
+    print "Got J000 data: $nb\n";
+    dump_data ( "J000 data", $data );
+
+    # normal count looks to be 167 bytes.
+    # we essentially always get something weird on
+    # the first read.
+    if ( $nb != 167 ) {
+	print "Bizarre J000 read count (ignored): $nb\n";
+	return;
+    }
+
+    @lines = split /\r/, $data;
+
+    # always blank line at start
+    shift @lines;
+
+    # now 24 lines
+    #foreach $l ( @lines ) {
+    #	print "line: $l\n";
+    #}
+
+    # XXX - check line count
+
+    $$server_vars{raw_data} = pack $parse_format, @lines;
+
+    load_vars ( @lines );
+
+}
+
+# This is the endless telemetry way.
+# It gets a single line as follows (141 bytes):
+#  3138     0     0     0  -509     0    88     0  1946  1886  1851  1693  1713  2048  2027  1923   502  1046   677  4000126334 81011100011010
+#
+sub j001_parser {
+    my ( $data ) = @_;
+    my @stuff;
+
+    my $nb = length($data);
+    print "Got J001 data: $nb\n";
+
+#    dump_data ( "J001 data", $data );
+
+    $$server_vars{raw_data} = $data;
+
+    # we get 37 items (0-36)
+    @stuff = unpack $parse_format, $data;
+
+    # XXX validate count XXX
+
+    load_vars ( @stuff );
+}
+
+sub load_vars {
+    my @stuff = @_;
+
+    $$server_vars{total_current} = $stuff[0] / 100.0;
+    $$server_vars{power_vccp} = $stuff[1] / 100.0;
+    $$server_vars{power_vssp} = $stuff[2] / 100.0;
+    $$server_vars{voltage_vccp} = $stuff[3] / 1000.0;
+    $$server_vars{voltage_vssp} = $stuff[4] / 1000.0;
+    $$server_vars{voltage_vcca} = $stuff[5] / 1000.0;
+    $$server_vars{voltage_vssa} = $stuff[6] / 1000.0;
+    $$server_vars{voltage_vccl} = $stuff[7] / 1000.0;
+    $$server_vars{temp_crate1} = $stuff[8] / 100.0;
+    $$server_vars{temp_crate2} = $stuff[9] / 100.0;
+    $$server_vars{temp_crate3} = $stuff[10] / 100.0;
+    $$server_vars{temp_water_inlet} = $stuff[11] / 100.0;
+    $$server_vars{temp_water_outlet} = $stuff[12] / 100.0;
+    $$server_vars{temp_coldplate1} = $stuff[13] / 100.0;
+    $$server_vars{temp_coldplate2} = $stuff[14] / 100.0;
+    $$server_vars{temp_ambient} = $stuff[15] / 100.0;
+    $$server_vars{humidity_ambient} = $stuff[16] / 10.0;
+    $$server_vars{pressure_inlet} = $stuff[17] / 100.0;
+    $$server_vars{pressure_outlet} = $stuff[18] / 100.0;
+    $$server_vars{max_crate_temp} = $stuff[19] / 100.0;
+
+    $$server_vars{current_on_tss} = $stuff[20];
+    $$server_vars{max_hold1} = $stuff[21];
+    $$server_vars{max_hold2} = $stuff[22];	# delta current pull
+    $$server_vars{max_hold3} = $stuff[23];	# delta current push
+
+    # now the flags ... 13 of them.
+    $$server_vars{flags} = $stuff[24];
+    @flags = unpack $flags_format, $stuff[24];
+
+    $$server_vars{overcurrent_vccp} = $yesno{$flags[0]};
+    $$server_vars{overcurrent_vssp} = $yesno{$flags[1]};
+    $$server_vars{overcurrent_push} = $yesno{$flags[2]};
+    $$server_vars{overcurrent_pull} = $yesno{$flags[3]};
+
+    $$server_vars{mystery} = $yesno{$flags[4]};
+
+    $$server_vars{enable_coil_sw} = $onoff{$flags[5]};
+    $$server_vars{enable_coil_hw} = $onoff{$flags[6]};
+    $$server_vars{coil_status} = $onoff{$flags[7]};
+
+    $$server_vars{tss_status} = $okerr{$flags[8]};
+    $$server_vars{power_status} = $okerr{$flags[9]};
+    $$server_vars{fiber_status} = $okerr{$flags[10]};
+    $$server_vars{command} = $okerr{$flags[11]};
+    $$server_vars{wrong} = $okerr{$flags[12]};
+
+#    foreach $key ( @tss_keys ) {
+#    	$val = $$server_vars{$key};
+#	print "$key ==> $val\n";
+#    }
+
+}
+
+my $read_count = 0;
+
+sub client_handler {
+    my ( $data ) = @_;
+
+    print "client_handler called with " . length($data) . "\n";
+
+    # connection closed (eof) or error.
+    # (socket close should already have been done)
+    unless ( defined $data ) {
+        print "Lost client connection!\n";
+#       $server->client_close ( $client_session );
+        undef $client_handle;
+        return;
+    }
+
+    tss_parser ( $data );
+
+    while ( $cmd = shift @cmd_list ) {
+    	print "CMD: $cmd\n";
+	unless ( $demo ) {
+	    $client_session->write ( "\x02$cmd\x03" );
+	}
+    }
+
+}
+
+#sub client_handler {
+#    my ( $session ) = @_;
+#    my $data;
+#    my $nb;
+#
+#    # save session for timer routine to write.
+#    $client_session = $session;
+#
+#    $nb = $session->aoline ( $data );
+#
+##    print "In client handler $read_count  $nb\n";
+##    $read_count++;
+##    exit if $read_count > 10;
+#
+#    # With all due respect to Lincoln Stein, this 0E0 thing
+#    # is silly and should be hidden and/or done away with.
+#    #
+#    # For now this means "no data yet, sorry, come back later".
+#    if ( $nb eq '0E0' ) {
+##	print "client handler, blocking avoided\n";
+#    	return;
+#    }
+#
+#    if ( $nb == 0 ) {
+##	print "client handler, connection lost\n";
+#	$client_handle = 0;
+#	$server->client_close ( $session );
+#    	return;
+#    }
+#
+#    tss_parser ( $data );
+#
+#    while ( $cmd = shift @cmd_list ) {
+#    	print "CMD: $cmd\n";
+#	unless ( $demo ) {
+#	    $client_session->write ( "\x02$cmd\x03" );
+#	}
+#    }
+#}
+
+sub update_handler {
+
+#	print "In update handler\n";
+
+	unless ( $client_handle ) {
+	    $client_handle = IO::Socket::INET->new (  PeerAddr => $client_host,
+                                        PeerPort => $client_port,
+                                        Proto => "tcp",
+                                        Timeout => 0.1);
+
+	    print "No client\n" unless $client_handle;
+	    return unless $client_handle;
+
+	    $client_session = $server->add_client ( $client_handle, \&client_handler );
+
+	    # In this mode we just ask once and get data forever.
+	    if ( $send_j001 ) {
+		#print "SEND: $request_string\n";
+		$client_session->write ( $request_string );
+	    }
+	}
+
+	return if ( $send_j001 );
+
+	# Once upon a time, on the first call,
+	# we did not yet have a client session
+	# and needed to do a sys_write.
+
+#	print "In update handler, sending request\n";
+
+	if ( $client_session ) {
+#	    print "session write: $request_string\n";
+	    $client_session->write ( $request_string );
+	} else {
+#	    print "sys write: $request_string\n";
+	    syswrite ( $client_handle, $request_string );
+	}
+}
+
+# Command from user, queue it up to send to the TSS.
+
+sub command_handler {
+    my ( $cmd, $arg ) = @_;
+
+    print "Adding user command: $arg\n";
+    push @cmd_list, $arg;
+
+    return "OK\n";
+}
+
+$server = AOserver->new ( "tss_server" );
+$server_vars = $server->get_data_ref ();
+
+# Two different ways to use a hash reference.
+#$$server_vars{junk} = "ham";
+#$server_vars->{trash} = "salad";
+
+#$server->debug ( 1 );
+#$server->server_debug ( 1 );
+
+$server->set_port ( $my_server_port );
+$server->tssmode ( 1 );
+
+$server->add_update_hook ( \&update_handler, $update_interval );
+
+$server->add_hook ( "tss_cmd", \&command_handler );
+
+#print " .. start tss server on port $my_server_port\n";
+$server->server_init ();
+
+#print " .. enter main loop\n";
+$server->main_loop ();
+
+# THE END
