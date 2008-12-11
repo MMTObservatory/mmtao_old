@@ -5,15 +5,16 @@ use IO::Socket;
 #use lib "/home/tom/mmtao/tss";
 #use AOIO::AOserver;
 
-use lib "/mmt/miniserver";
+#use lib "/mmt/miniserver";
+use lib qw { /home/tom/mmtao/TSS /mmt/miniserver };
 use IO::AOserver;
 
 # In demo mode, we are talking to the "tss_demo" server
 # which is a limited TSS simulator (it returns binary
 # status, but does not accept commands).
 # Set this to 0 to run with the real TSS.
-my $demo = 1;
-#my $demo = 0;
+#my $demo = 1;
+my $demo = 0;
 
 # Theory of Operation
 # Tom Trebisky  11-3-2008
@@ -56,10 +57,6 @@ my $demo = 1;
 #     "all" and "get" commands.  These connection and responses are all handled as
 #     part of the standard miniserver support code in the AOserver.pm module.
 #     A variable "raw_data" provides the unparsed TSS response string.
-#     One exception is a special pass-through command, provided to relay commands
-#     to the TSS. "tss_cmd M000" would send <STX>M000<ETX> to the TSS.
-#     This pass through command is handled by command_handler() in this file.
-#     Note that the pass-through command mode has not yet been tested.
 #
 # 5 - legacy "binary" connections support commands from the network that come
 #     already wrapped in <STX>xxx<ETX> and are passed along as-is to the TSS.
@@ -72,7 +69,7 @@ my $demo = 1;
 #  cases to reflect the result the action just commanded.  For this reason, this
 #  server must take care to provide up-to-date responses after action commands.
 
-my $my_server_port = 7400;
+my $my_server_port = 7003;
 
 my $update_interval = 1.0;
 
@@ -83,28 +80,27 @@ my $client_port = 7003;
 my $server;
 my $client_handle = 0;
 my $client_session = 0;
+my $client_mode = "idle";
+my $waiting_session = undef;
 
 my $request;
 my $request_string;
 
 # Note: The current dm_status GUI (written in IDL)
-# sends the J000 command to get a one-time string.
+# sends the J000 command to get a one-time multi line string.
 # (this is the way things were done prior to this server).
 
-# The J001 command gets a different string, over and
-# over and over.  This works also, and we don't have
-# to do anything but set the TSS up once and then just
-# listen.  It seems to talk at about a 4 Hz rate.
+# The J001 command gets a different (single line) string,
+# over and over and over.
+# This works also, and we don't have to do anything but set
+# the TSS up once and then just listen.
+# It seems to talk at about a 4 Hz rate.
 
-#my $send_j001 = 0;
-my $send_j001 = 1;
+#my $send_j001 = 1;
+my $send_j001 = 0;
 
-if ( $demo == 1 ) {
-    $send_j001 = 0;
-}
-
-#my $expect_j001 = 0;
-my $expect_j001 = 1;
+#my $expect_j001 = 1;
+my $expect_j001 = 0;
 
 if ( $send_j001 ) {
     $request = "J001";
@@ -113,12 +109,16 @@ if ( $send_j001 ) {
 }
 
 if ( $demo ) {
-    $request_string = "$request\n";
-    $client_host = 'localhost';
+    #$request_string = "$request\n";
+    $request_string = "\x02$request\x03";
+    $client_host = 'cholla';
     $client_port = 7200;
 } else {
     $request_string = "\x02$request\x03";
 }
+
+my $last_j000 = "stale";
+my $stale_count = 1;
 
 my $parse_format = "A6" x 20 . "A2" x 4 . "A13";
 my $flags_format = "A1" x 13;
@@ -128,6 +128,21 @@ my %yesno = ( "1" => "yes", "0" => "no" );
 my %okerr = ( "1" => "ok", "0" => "err" );
 
 my $server_vars;
+
+# itsy bitsy perl object to put on command queue
+package Command;
+
+sub new {
+	my ( $class, $session, $command ) = @_;
+
+	my $self = bless {
+		session => $session,
+		command => $command
+	}, $class;
+}
+
+package main;
+
 my @cmd_list = ();
 
 # Here is a list of TSS variables in the order they are sent
@@ -196,9 +211,6 @@ wrong
 sub tss_parser {
     my ( $data ) = @_;
 
-    # I would swear that once upon a time, the J001 yielded this alternate
-    # reply format.  On testing 3/12/2008, we get the J000 format whether
-    # we issue the J000 or the J001 string.  Pretty weird.
     if ( $expect_j001 ) {
     	j001_parser ( $data );
     } else {
@@ -209,10 +221,24 @@ sub tss_parser {
 sub dump_data {
 	my ( $msg, $data ) = @_;
 
-	print "$msg\n";
+	print "START tss_server dump: $msg\n";
+
+	#my @chars = split //, $data;
+	my @chars = unpack "C*", $data;
+
+	foreach $ch ( @chars ) {
+	    printf ( "<%02x>", $ch );
+	}
+	return;
+
+	$data =~ s/\x02/<STX>\n/g;
+	$data =~ s/\x03/<ETX>\n/g;
 	$data =~ s/\r/<RET>\n/g;
+	$data =~ s/\n/<NL>\n/g;
+	$data =~ s/\x00/<NULL>\n/g;
+
 	print $data;
-	print "\nEND\n";
+	print "\nEND of tss_server dump\n";
 }
 
 # This (J000) is the "normal" one time string way.
@@ -252,16 +278,21 @@ sub j000_parser {
     my ( $data ) = @_;
 
     my $nb = length($data);
-    print "Got J000 data: $nb\n";
-    dump_data ( "J000 data", $data );
+    #print "Got J000 data: $nb\n";
+    #dump_data ( "J000 data", $data );
 
     # normal count looks to be 167 bytes.
     # we essentially always get something weird on
     # the first read.
     if ( $nb != 167 ) {
 	print "Bizarre J000 read count (ignored): $nb\n";
+	dump_data ( "Bizarre", $data );
 	return;
     }
+
+    # save multiline response (without STX/ETX)
+    $last_j000 = $data;
+    $stale_count = 0;
 
     @lines = split /\r/, $data;
 
@@ -290,9 +321,8 @@ sub j001_parser {
     my @stuff;
 
     my $nb = length($data);
-    print "Got J001 data: $nb\n";
-
-#    dump_data ( "J001 data", $data );
+    #print "Got J001 data: $nb\n";
+    #dump_data ( "J001 data", $data );
 
     $$server_vars{raw_data} = $data;
 
@@ -363,13 +393,19 @@ sub load_vars {
 
 my $read_count = 0;
 
+# This is called when we get binary responses on the client handle.
+# When called, the data already has the STX/ETX stripped.
+
 sub client_handler {
     my ( $data ) = @_;
 
-    print "client_handler called with " . length($data) . "\n";
+    #print "client_handler called with " . length($data) . "\n";
 
     # connection closed (eof) or error.
     # (socket close should already have been done)
+
+    $client_mode = "idle";
+
     unless ( defined $data ) {
         print "Lost client connection!\n";
 #       $server->client_close ( $client_session );
@@ -377,60 +413,85 @@ sub client_handler {
         return;
     }
 
-    tss_parser ( $data );
+#    print "tjt - client handler\n";
 
-    while ( $cmd = shift @cmd_list ) {
-    	print "CMD: $cmd\n";
-	unless ( $demo ) {
-	    $client_session->write ( "\x02$cmd\x03" );
-	}
+    # respond to a waiting session
+    if ( $waiting_session ) {
+	$waiting_session->write ( "\x02$data\x03" );
+	$waiting_session = undef;
+	print "TSS command, response sent\n";
     }
 
+    tss_parser ( $data );
+
+    # a reply to the last command just arrived
+    # so the client channel is idle, see if we have
+    # any commands queued.
+
+    my $qe = shift @cmd_list;
+    if ( $qe ) {
+	$waiting_session = $qe->{session};
+	my $cmd = $qe->{command};
+	$client_session->write ( "\x02$cmd\x03" );
+	$client_mode = "active";
+	print "TSS command, pulled from queue and sent\n";
+    }
 }
 
-#sub client_handler {
-#    my ( $session ) = @_;
-#    my $data;
-#    my $nb;
-#
-#    # save session for timer routine to write.
-#    $client_session = $session;
-#
-#    $nb = $session->aoline ( $data );
-#
-##    print "In client handler $read_count  $nb\n";
-##    $read_count++;
-##    exit if $read_count > 10;
-#
-#    # With all due respect to Lincoln Stein, this 0E0 thing
-#    # is silly and should be hidden and/or done away with.
-#    #
-#    # For now this means "no data yet, sorry, come back later".
-#    if ( $nb eq '0E0' ) {
-##	print "client handler, blocking avoided\n";
-#    	return;
-#    }
-#
-#    if ( $nb == 0 ) {
-##	print "client handler, connection lost\n";
-#	$client_handle = 0;
-#	$server->client_close ( $session );
-#    	return;
-#    }
-#
-#    tss_parser ( $data );
-#
-#    while ( $cmd = shift @cmd_list ) {
-#    	print "CMD: $cmd\n";
-#	unless ( $demo ) {
-#	    $client_session->write ( "\x02$cmd\x03" );
-#	}
-#    }
-#}
+# This handles binary commands from network connections
+# (i.e. legacy software).
+# the STX/ETX have already been stripped from the command.
+sub tss_handler {
+	my ( $session, $cmd ) = @_;
 
+#	print "IN tss handler: $cmd\n";
+
+	# This is the common case where a legacy piece of
+	# software is making a status request.
+	if ( $cmd eq "J000" ) {
+	    $session->write ( "\x02$last_j000\x03" );
+	    return;
+	}
+
+	# If client connection is idle, easy, just send the command.
+	if ( $client_mode eq "idle" ) {
+	    $client_session->write ( "\x02$cmd\x03" );
+	    $client_mode = "active";
+	    $waiting_session  = $session;
+	    print "TSS command, in the clear\n";
+	    return;
+	}
+
+	# client connection is busy, queue the command.
+	my $qe = new Command ( $session, $cmd );
+	push @cmd_list, $qe;
+	print "TSS command, queued\n";
+}
+
+# This gets called on a timer event.
+#  (typically every 1.0 seconds).
+# If needed, it makes a connection to the client.
+# NOTE: the tss is on the other side of a cyclades.
+# This means that we are essentially always able to make
+# a connection, regardless of whether the tss is on or not.
+# If the tss is off, we simply will not get any response.
 sub update_handler {
 
-#	print "In update handler\n";
+	#print "In update handler\n";
+
+	# We never got a response to our last
+	# request string.
+	if ( $client_mode eq "active" ) {
+	    $client_mode = "idle";
+	    $server->remove_client ( $client_session );
+	    $client_handle->close ();
+	    undef $client_handle;
+
+	    # Avoid endlessly responding with stale data.
+	    if ( $stale_count++ > 10 ) {
+	    	$last_j000 = "stale";
+	    }
+	}
 
 	unless ( $client_handle ) {
 	    $client_handle = IO::Socket::INET->new (  PeerAddr => $client_host,
@@ -442,15 +503,15 @@ sub update_handler {
 	    return unless $client_handle;
 
 	    $client_session = $server->add_client ( $client_handle, \&client_handler );
-
-	    # In this mode we just ask once and get data forever.
-	    if ( $send_j001 ) {
-		#print "SEND: $request_string\n";
-		$client_session->write ( $request_string );
-	    }
+	    $client_mode = "init";
 	}
 
-	return if ( $send_j001 );
+	if ( $send_j001 and $client_mode eq "init" ) {
+	    #print "SEND: $request_string\n";
+	    $client_session->write ( $request_string );
+	    $client_mode = "active";
+	    return;
+	}
 
 	# Once upon a time, on the first call,
 	# we did not yet have a client session
@@ -465,17 +526,7 @@ sub update_handler {
 #	    print "sys write: $request_string\n";
 	    syswrite ( $client_handle, $request_string );
 	}
-}
-
-# Command from user, queue it up to send to the TSS.
-
-sub command_handler {
-    my ( $cmd, $arg ) = @_;
-
-    print "Adding user command: $arg\n";
-    push @cmd_list, $arg;
-
-    return "OK\n";
+	$client_mode = "active";
 }
 
 $server = AOserver->new ( "tss_server" );
@@ -491,9 +542,11 @@ $server_vars = $server->get_data_ref ();
 $server->set_port ( $my_server_port );
 $server->tssmode ( 1 );
 
-$server->add_update_hook ( \&update_handler, $update_interval );
+# Add hook to relay to legacy software,
+# this will get anything wrapped in STX/ETX
+$server->add_tss_hook( \&tss_handler );
 
-$server->add_hook ( "tss_cmd", \&command_handler );
+$server->add_update_hook ( \&update_handler, $update_interval );
 
 #print " .. start tss server on port $my_server_port\n";
 $server->server_init ();

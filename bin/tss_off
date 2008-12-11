@@ -1,0 +1,22 @@
+#!/usr/bin/perl -w
+
+use IO::Socket;
+
+my $host = "localhost";
+my $port = 7003;
+
+# disable tss
+my $cmd = "K194";
+my $tcmd = "\x02$cmd\x03";
+
+
+my $handle = IO::Socket::INET->new (  PeerAddr => $host,
+                                        PeerPort => $port,
+                                        Proto => "tcp",
+                                        Timeout => 0.1);
+
+print "No dice\n" unless $handle;
+
+print $handle "$tcmd";
+
+# THE END

@@ -1,0 +1,702 @@
+#!/usr/bin/perl -w
+
+#use lib "/home/tom/mmtao/tss";
+#use AOIO::AOserver;
+
+use lib qw { /home/tom/mmtao/TSS /mmt/miniserver };
+#use lib "/mmt/miniserver";
+use IO::AOserver;
+
+my $ticker = 0;
+
+# The guts is 167 bytes, multiline form (many embedded CR)
+
+my @J000_stuff = qw(
+255
+251
+44
+255
+251
+3
+255
+251
+1
+255
+251
+0
+255
+253
+0
+2
+13
+32
+32
+51
+49
+51
+49
+13
+32
+32
+32
+32
+32
+48
+13
+32
+32
+32
+32
+32
+48
+13
+32
+32
+32
+32
+32
+48
+13
+32
+32
+45
+53
+48
+52
+13
+32
+32
+32
+32
+32
+48
+13
+32
+32
+45
+49
+55
+52
+13
+32
+32
+32
+32
+32
+48
+13
+32
+32
+49
+57
+52
+57
+13
+32
+32
+49
+56
+56
+57
+13
+32
+32
+49
+56
+53
+52
+13
+32
+32
+49
+54
+57
+51
+13
+32
+32
+49
+55
+49
+51
+13
+32
+32
+50
+48
+54
+48
+13
+32
+32
+50
+48
+51
+56
+13
+32
+32
+49
+57
+51
+53
+13
+32
+32
+32
+52
+57
+54
+13
+32
+32
+49
+48
+52
+48
+13
+32
+32
+32
+54
+55
+49
+13
+32
+32
+52
+48
+48
+48
+13
+49
+50
+13
+54
+51
+13
+51
+52
+13
+32
+56
+13
+49
+48
+49
+49
+49
+48
+48
+48
+49
+49
+48
+49
+48
+13
+3
+13
+); # end of J000_stuff
+
+# This came back from the TSS when we connected and sent
+# a J000 command on 9/20/2007 (dump.1)
+
+my @J000_stuff_REAL = qw(
+255
+251
+44
+255
+251
+3
+255
+251
+1
+255
+251
+0
+255
+253
+0
+2
+13
+32
+32
+51
+49
+51
+49
+13
+32
+32
+32
+32
+32
+48
+13
+32
+32
+32
+32
+32
+48
+13
+32
+32
+32
+32
+32
+48
+13
+32
+32
+45
+53
+48
+52
+13
+32
+32
+32
+32
+32
+48
+13
+32
+32
+45
+49
+55
+52
+13
+32
+32
+32
+32
+32
+48
+13
+32
+32
+49
+57
+52
+57
+13
+32
+32
+49
+56
+56
+57
+13
+32
+32
+49
+56
+53
+52
+13
+32
+32
+49
+54
+57
+51
+13
+32
+32
+49
+55
+49
+51
+13
+32
+32
+50
+48
+54
+48
+13
+32
+32
+50
+48
+51
+56
+13
+32
+32
+49
+57
+51
+53
+13
+32
+32
+32
+52
+57
+54
+13
+32
+32
+49
+48
+52
+48
+13
+32
+32
+32
+54
+55
+49
+13
+32
+32
+52
+48
+48
+48
+13
+49
+50
+13
+54
+51
+13
+51
+52
+13
+32
+56
+13
+49
+48
+49
+49
+49
+48
+48
+48
+49
+49
+48
+49
+48
+13
+3
+13
+); # end of J000_stuff
+
+# This came back from the TSS when we connected and sent
+# a J001 command on 9/20/2007 (dump.2)
+# The guts is 141 bytes, single line form (no embedded CR)
+
+my @J001_stuff = qw(
+2
+32
+32
+51
+49
+51
+56
+32
+32
+32
+32
+32
+48
+32
+32
+32
+32
+32
+48
+32
+32
+32
+32
+32
+48
+32
+32
+45
+53
+48
+57
+32
+32
+32
+32
+32
+48
+32
+32
+32
+32
+56
+56
+32
+32
+32
+32
+32
+48
+32
+32
+49
+57
+52
+54
+32
+32
+49
+56
+56
+54
+32
+32
+49
+56
+53
+49
+32
+32
+49
+54
+57
+51
+32
+32
+49
+55
+49
+51
+32
+32
+50
+48
+52
+56
+32
+32
+50
+48
+50
+55
+32
+32
+49
+57
+50
+51
+32
+32
+32
+53
+48
+50
+32
+32
+49
+48
+52
+54
+32
+32
+32
+54
+55
+55
+32
+32
+52
+48
+48
+48
+49
+50
+54
+51
+51
+52
+32
+56
+49
+48
+49
+49
+49
+48
+48
+48
+49
+49
+48
+49
+48
+3
+); # end of J001_stuff
+
+my $j000_reply = pack "C*", @J000_stuff;
+my $j001_reply = pack "C*", @J001_stuff;
+
+package AOserver;
+
+sub load_stuff {
+    ##$self = shift;
+    ##$self->{'data'}->{'dingus'} = 999;
+}
+
+package main;
+
+sub string_size {
+	my @bytes = unpack "C*", $_[0];
+	return scalar @bytes;
+}
+
+my $alive = 1;
+
+# Go to sleep
+sub off_handler {
+	$alive = 0;
+	return "OK\n"
+}
+
+# Wake up
+sub on_handler {
+	$alive = 1;
+	return "OK\n"
+}
+
+# Note: the current J000 response string trashes a telnet
+# client in some weird way (puts it into single character mode,
+# or so it says).
+sub j000_handler {
+    my $arg = shift;
+
+    return unless $alive;
+
+    my $count = string_size ( $j000_reply );
+    my $len = length ( $j000_reply );
+
+    #print "In J000 handler $arg, reply is $count/$len bytes\n";
+
+    # Hackish flip of one value back and forth that will
+    # be visible on GUI.
+    if ( $ticker == 1 ) {
+    	$ticker = 0;
+	$my_reply = $j000_reply;
+	my $i = index ( $my_reply, "\x02", 0 );
+	substr ( $my_reply, $i+4, 4 ) = "4949";
+	return $my_reply;
+    } else {
+    	$ticker = 1;
+	return $j000_reply;
+    }
+
+}
+
+# This seems fine.
+sub j001_handler {
+    my $arg = shift;
+
+    return unless $alive;
+
+    #my $count = string_size ( $j001_reply );
+    #my $len = length ( $j001_reply );
+    #print "In J001 handler $arg, reply is $count/$len bytes\n";
+
+    return $j001_reply;
+}
+
+# Bogus J002 for testing (the real TSS doesn't
+# support such a thing.
+sub j002_handler {
+    my $arg = shift;
+    my $reply = "Hello\n";
+
+    return unless $alive;
+
+    my $count = string_size ( $reply );
+    my $len = length ( $j001_reply );
+    print "In J002 handler $arg, reply is $count/$len bytes\n";
+
+    return $reply;
+}
+
+sub tss_handler {
+    my ( $session, $cmd ) = @_;
+    my $reply;
+
+    return unless $alive;
+
+    if ( $cmd eq "J002" ) {
+	$reply = j002_handler ( $cmd );
+	$session->write ( "\x02$reply\x03" );
+	return;
+    }
+
+    if ( $cmd eq "J001" ) {
+	$reply = j001_handler ( $cmd );
+	$session->write ( "\x02$reply\x03" );
+	return;
+    }
+
+    # Everybody else ( the normal case)
+    # gets a j000 reply.
+
+#    print "tss_handler sees: $cmd\n";
+#
+#    sleep ( 1.0 );
+#    print "tss_handler done sleeping\n";
+
+    $reply = j000_handler ( $cmd );
+    #$session->write ( "\x02$reply\x03" );
+    $session->write ( $reply );
+}
+
+sub dump_reply {
+    $reply = $j001_reply;
+    $si = index($reply,"\x02",0);
+    $ei = index($reply,"\x03",$si);
+    $guts = substr ( $reply, $si+1, $ei - $si - 1 );
+
+    print "$si .. $ei\n";
+
+    $guts =~ s/\r/\n/g;
+    print length $guts;
+    print "\n";
+    print $guts;
+    print "\n";
+}
+
+#dump_reply;
+#exit;
+
+my $s = AOserver->new ( "tss_demo" );
+$s->set_port ( '7200' );
+
+$s->load_stuff;
+
+# Note: dm_status.pro (the IDL gui) sends the
+# request string with a NL after the ETX,
+# so the NL is outside of the "sandwich" and will
+# yield a blank line to the command parser (OK, I guess).
+
+$s->add_tss_hook ( \&tss_handler );
+$s->add_hook("off", \&off_handler );
+$s->add_hook("on", \&on_handler );
+
+#$s->add_hook("J000", \&j000_handler );
+#$s->add_hook("J001", \&j001_handler );
+#$s->add_hook("J002", \&j002_handler );
+
+$s->server_init ();
+$s->main_loop ();
+
+# never returns ....
+
+# THE END

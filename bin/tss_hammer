@@ -1,0 +1,29 @@
+#!/usr/bin/perl -w
+
+use IO::Socket;
+
+my $host = "localhost";
+#my $port = 7200;
+my $port = 7400;
+
+my $cmd = "J000";
+
+my $handle = IO::Socket::INET->new (  PeerAddr => $host,
+                                        PeerPort => $port,
+                                        Proto => "tcp",
+                                        Timeout => 0.1);
+
+print "No dice\n" unless $handle;
+
+for ( ;; ) {
+
+    print $handle "all\n";
+
+    while ( defined($_ = <$handle>) ) {
+	last if /^.EOF/;
+	print;
+    }
+    sleep ( 0.5 );
+}
+
+# THE END

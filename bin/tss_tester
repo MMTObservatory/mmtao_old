@@ -1,0 +1,41 @@
+#!/usr/bin/perl -w
+
+use IO::Socket;
+
+my $host = "localhost";
+#my $port = 7200;
+my $port = 7400;
+
+select ( ( select(STDOUT), $| = 1 ) [0] );
+
+#my $cmd = "J000";
+my $cmd = "M000";
+
+my $handle = IO::Socket::INET->new (  PeerAddr => $host,
+                                        PeerPort => $port,
+                                        Proto => "tcp",
+                                        Timeout => 0.1);
+
+print "No dice\n" unless $handle;
+
+my $msg = "\x02$cmd\x03";
+my $nw = length $msg;
+
+my $count = 2;
+
+##for ( my $n=$count; $n; $n-- ) {
+
+while ( $count-- ) {
+
+    my $nio = syswrite $handle, $msg, $nw;
+
+    print "Wrote: $nio of $nw ... ";
+
+    $nio = sysread $handle, $buf, 4096;
+
+    print "Read: $nio\n";
+    #print $buf, "\n";
+    undef $buf;
+}
+
+# THE END
