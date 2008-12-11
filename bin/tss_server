@@ -434,7 +434,7 @@ sub client_handler {
 	my $cmd = $qe->{command};
 	$client_session->write ( "\x02$cmd\x03" );
 	$client_mode = "active";
-	print "TSS command, pulled from queue and sent\n";
+	print "TSS command: $cmd, pulled from queue and sent\n";
     }
 }
 
@@ -458,14 +458,14 @@ sub tss_handler {
 	    $client_session->write ( "\x02$cmd\x03" );
 	    $client_mode = "active";
 	    $waiting_session  = $session;
-	    print "TSS command, in the clear\n";
+	    print "TSS command: $cmd, in the clear\n";
 	    return;
 	}
 
 	# client connection is busy, queue the command.
 	my $qe = new Command ( $session, $cmd );
 	push @cmd_list, $qe;
-	print "TSS command, queued\n";
+	print "TSS command: $cmd, queued\n";
 }
 
 # This gets called on a timer event.

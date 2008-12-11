@@ -9,8 +9,6 @@ my $port = 7003;
 my $cmd = "K001";
 my $tcmd = "\x02$cmd\x03";
 
-for ( ;; ) {
-
 my $handle = IO::Socket::INET->new (  PeerAddr => $host,
                                         PeerPort => $port,
                                         Proto => "tcp",
@@ -21,8 +19,5 @@ print "No dice\n" unless $handle;
 print $handle "$tcmd";
 
 #my $resp = <$handle>;
-sleep ( 1.0 );
-$handle->close;
-}
 
 # THE END
