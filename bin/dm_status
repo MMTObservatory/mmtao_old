@@ -1,0 +1,6 @@
+#!/bin/sh
+# Run the IDL SAVE file in runtime mode.
+#idl -rt=dm_status.sav
+# Screw that nonsense, do this instead:
+cd /home/mmtao/ao/bin
+idl -e "dm_status"
