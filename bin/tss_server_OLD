@@ -16,8 +16,6 @@ use IO::AOserver;
 #my $demo = 1;
 my $demo = 0;
 
-my $verbose = 0;
-
 # Theory of Operation
 # Tom Trebisky  11-3-2008
 #
@@ -66,11 +64,6 @@ my $verbose = 0;
 #     the response for this command comes from the most recently cached data
 #     in the tss_server itself.
 #
-# 6 - special care needs to be taken with pass through binary commands to ensure
-#     that they do not get a cached response.  Legacy software (adsec) typically
-#     sends a command, and then checks the response (which is in the same format
-#     as the J000 thing) to verify that the TSS did what it was told to do.
-#
 # Legacy code expects a response to each "action command" in the same format as
 #  the J000 command provides.  In addition, the response is expected in many
 #  cases to reflect the result the action just commanded.  For this reason, this
@@ -99,14 +92,9 @@ my $request_string;
 
 # The J001 command gets a different (single line) string,
 # over and over and over.
-# This works for some things (like getting status), and we don't have to do
-# anything but set the TSS up once and then just listen.
+# This works also, and we don't have to do anything but set
+# the TSS up once and then just listen.
 # It seems to talk at about a 4 Hz rate.
-#
-# HOWEVER!  This will not play nice with the way we support legacy software
-# that sends commands and expects a J000 format string.  There might be
-# a way to make this work, but it has never been tried or tested and is not
-# likely to simply work as is by changing the following variable!!
 
 #my $send_j001 = 1;
 my $send_j001 = 0;
@@ -296,7 +284,7 @@ sub j000_parser {
     # normal count looks to be 167 bytes.
     # we essentially always get something weird on
     # the first read.
-    if ( $nb != 167 and $verbose ) {
+    if ( $nb != 167 ) {
 	print "Bizarre J000 read count (ignored): $nb\n";
 	dump_data ( "Bizarre", $data );
 	return;
@@ -431,7 +419,7 @@ sub client_handler {
     if ( $waiting_session ) {
 	$waiting_session->write ( "\x02$data\x03" );
 	$waiting_session = undef;
-	print "TSS command, response sent\n" if $verbose;
+	print "TSS command, response sent\n";
     }
 
     tss_parser ( $data );
@@ -446,7 +434,7 @@ sub client_handler {
 	my $cmd = $qe->{command};
 	$client_session->write ( "\x02$cmd\x03" );
 	$client_mode = "active";
-	print "TSS command: $cmd, pulled from queue and sent\n" if $verbose;
+	print "TSS command: $cmd, pulled from queue and sent\n";
     }
 }
 
@@ -470,14 +458,14 @@ sub tss_handler {
 	    $client_session->write ( "\x02$cmd\x03" );
 	    $client_mode = "active";
 	    $waiting_session  = $session;
-	    print "TSS command: $cmd, in the clear\n" if $verbose;
+	    print "TSS command: $cmd, in the clear\n";
 	    return;
 	}
 
 	# client connection is busy, queue the command.
 	my $qe = new Command ( $session, $cmd );
 	push @cmd_list, $qe;
-	print "TSS command: $cmd, queued\n" if $verbose;
+	print "TSS command: $cmd, queued\n";
 }
 
 # This gets called on a timer event.
@@ -511,9 +499,7 @@ sub update_handler {
                                         Proto => "tcp",
                                         Timeout => 0.1);
 
-	    unless ( $client_handle ) {
-		print "No client\n" if $verbose;
-	    }
+	    print "No client\n" unless $client_handle;
 	    return unless $client_handle;
 
 	    $client_session = $server->add_client ( $client_handle, \&client_handler );

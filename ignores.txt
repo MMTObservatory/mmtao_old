@@ -1,0 +1,4 @@
+lib*.a
+PCR_Wish
+depends
+*OLD*
