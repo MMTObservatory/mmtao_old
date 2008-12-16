@@ -143,6 +143,7 @@ sub read_buffer {
 sub error { $_[0]->{error} }
 sub eof { $_[0]->{eof} }
 sub handle { $_[0]->{handle} }
+sub name { $_[0]->{name} }
 
 sub dump_buffer {
 	my ( $self, $buf ) = @_;
@@ -417,6 +418,8 @@ sub do_read {
 
     unless (defined $rc) {  # error
       $self->{error} = $!;
+      # XXX we set eof also .... 
+      $self->{eof} = 1;
     } elsif ($rc == 0) {    # EOF
       $self->{eof} = 1;
     }

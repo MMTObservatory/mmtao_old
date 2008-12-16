@@ -1,0 +1,28 @@
+#!/usr/bin/perl -w
+
+use IO::Socket;
+
+my $host = "localhost";
+my $port = 7003;
+
+# enable tss
+my $cmd = "J000";
+my $tcmd = "\x02$cmd\x03";
+
+my $handle = IO::Socket::INET->new (  PeerAddr => $host,
+                                        PeerPort => $port,
+                                        Proto => "tcp",
+                                        Timeout => 0.1);
+
+print "No dice\n" unless $handle;
+
+my $buffer;
+
+for ( my $i=0; $i < 4; $i++ ) {
+	print $handle "$tcmd";
+	my $rc = sysread ( $handle, $buffer, 1024, 0 );
+	print "$rc\n";
+	sleep ( 0.1 );
+}
+
+# THE END

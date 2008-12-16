@@ -239,22 +239,23 @@ common tss_lun_block, tss_lun, use_tss_server
 com_connection_on = 0B
 socket_connection_on = 1B
 
-command = string(2B)+'J000'+string(3B)
-
 case use_tss_server of
 0: begin
     ; The real TSS via cyclades.
     tssip = 'mmtts2.mmto.arizona.edu'
     tssport = 7003
+    command = string(2B)+'J000'+string(3B)
 end
 2: begin
     ; TSS "demo" thingie on cholla
     tssip = 'cholla.mmto.arizona.edu'
     tssport = 7003
+    command = string(2B)+'J000'+string(3B)
 end
 1: begin
     tssip = 'ao-server.mmto.arizona.edu'
     tssport = 7003
+    command = 'J000'
 end
 endcase
 
@@ -392,7 +393,7 @@ common red_block, red_led
 common green_block,green_led
 common base_block,bmp_button
 
-use_tss_server = 2
+use_tss_server = 1
 tss_lun = 0
 
 device, true=24

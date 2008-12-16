@@ -203,9 +203,10 @@ sub wait {
       my $newhandle = $_->accept;
 
       # tjt adds this for debug.
-      my $conn_name = $self->peer_name ( $newhandle );
+      my $conn_name = "net_" . $self->peer_name ( $newhandle );
 
       warn "Accepting a new handle $newhandle.\n" if $DEBUG;
+      warn "Accepting a new handle ($conn_name) $newhandle.\n";
       if ( $newhandle ) {
 	  $self->add($newhandle, $conn_name ) if $newhandle;
       }

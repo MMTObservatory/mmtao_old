@@ -2,11 +2,9 @@
 
 use IO::Socket;
 
-#use lib "/home/tom/mmtao/tss";
-#use AOIO::AOserver;
+# use lib prepends to the @INC array.
+use lib qw { /home/mmtao/ao/bin /mmt/miniserver };
 
-#use lib "/mmt/miniserver";
-use lib qw { /home/tom/mmtao/TSS /mmt/miniserver };
 use IO::AOserver;
 
 # In demo mode, we are talking to the "tss_demo" server
@@ -16,7 +14,10 @@ use IO::AOserver;
 #my $demo = 1;
 my $demo = 0;
 
-my $verbose = 0;
+my $verbose = 1;
+my $debug2 = 1;
+
+my $no_update = 0;
 
 # Theory of Operation
 # Tom Trebisky  11-3-2008
@@ -78,6 +79,8 @@ my $verbose = 0;
 
 my $my_server_port = 7003;
 
+print "TSS server is now serving on port $my_server_port\n";
+
 my $update_interval = 1.0;
 
 # Host name and port for the Cyclades connected to the TSS.
@@ -87,7 +90,8 @@ my $client_port = 7003;
 my $server;
 my $client_handle = 0;
 my $client_session = 0;
-my $client_mode = "idle";
+my $client_mode = "init";
+my $active_wait = 0;
 my $waiting_session = undef;
 
 my $request;
@@ -223,10 +227,12 @@ wrong
 sub tss_parser {
     my ( $data ) = @_;
 
+    print "TSS response processed:\n$data\n" if $debug2;
+
     if ( $expect_j001 ) {
-    	j001_parser ( $data );
+    	return j001_parser ( $data );
     } else {
-    	j000_parser ( $data );
+    	return j000_parser ( $data );
     }
 }
 
@@ -299,7 +305,7 @@ sub j000_parser {
     if ( $nb != 167 and $verbose ) {
 	print "Bizarre J000 read count (ignored): $nb\n";
 	dump_data ( "Bizarre", $data );
-	return;
+	return 1;
     }
 
     # save multiline response (without STX/ETX)
@@ -322,6 +328,7 @@ sub j000_parser {
 
     load_vars ( @lines );
 
+    return 0;
 }
 
 # This is the endless telemetry way.
@@ -344,6 +351,7 @@ sub j001_parser {
     # XXX validate count XXX
 
     load_vars ( @stuff );
+    return 0;
 }
 
 sub load_vars {
@@ -410,13 +418,13 @@ my $read_count = 0;
 
 sub client_handler {
     my ( $data ) = @_;
+    my $invalid;
+    my $temp_session;
 
     #print "client_handler called with " . length($data) . "\n";
 
     # connection closed (eof) or error.
     # (socket close should already have been done)
-
-    $client_mode = "idle";
 
     unless ( defined $data ) {
         print "Lost client connection!\n";
@@ -425,16 +433,28 @@ sub client_handler {
         return;
     }
 
+    # !! process the data !!
+    $invalid = tss_parser ( $data );
+    $client_mode = "idle";
+
+    if ( $invalid ) {
+        print "Weird junk, what do I do ?????\n";
+    }
+
 #    print "tjt - client handler\n";
 
     # respond to a waiting session
     if ( $waiting_session ) {
-	$waiting_session->write ( "\x02$data\x03" );
+        # This little dance is to get around the situation (which happens)
+        # where we write the response, and another command comes in before we
+        # can clear the waiting session flag (which serves as a lock), so the
+        # command ends up queued, which is OK (sort of) but confusing.
+        $temp_session = $waiting_session;
 	$waiting_session = undef;
-	print "TSS command, response sent\n" if $verbose;
+	$temp_session->write ( "\x02$data\x03" );
+	print "Legacy tss command, response sent:\n" if $verbose;
+	print "$data\n";
     }
-
-    tss_parser ( $data );
 
     # a reply to the last command just arrived
     # so the client channel is idle, see if we have
@@ -446,8 +466,17 @@ sub client_handler {
 	my $cmd = $qe->{command};
 	$client_session->write ( "\x02$cmd\x03" );
 	$client_mode = "active";
+	$active_wait = 0;
 	print "TSS command: $cmd, pulled from queue and sent\n" if $verbose;
     }
+}
+
+# This is just a fast track for a mildly revised dm_status GUI.
+
+sub status_handler {
+	my ( $session, $cmd ) = @_;
+
+	return "\x02$last_j000\x03";
 }
 
 # This handles binary commands from network connections
@@ -456,19 +485,28 @@ sub client_handler {
 sub tss_handler {
 	my ( $session, $cmd ) = @_;
 
-#	print "IN tss handler: $cmd\n";
+	print "Legacy tss command: $cmd\n" if $debug2;
 
-	# This is the common case where a legacy piece of
-	# software is making a status request.
-	if ( $cmd eq "J000" ) {
-	    $session->write ( "\x02$last_j000\x03" );
-	    return;
-	}
+# This is the common case where a legacy piece of
+# software is making a status request.
+# --
+# while testing on 12-15-2008, we found that xadsec was doing things
+# (in particular enabling the coil), but then checking too quickly
+# for it to appear enabled and complaining, so we will just comment
+# this out and relay the J000 commands when they come in like this,
+# just like any other command.
+# NOTE:  the dm_status_gui could just as well use cached data though.
+
+#	if ( $cmd eq "J000" ) {
+#	    $session->write ( "\x02$last_j000\x03" );
+#	    return;
+#	}
 
 	# If client connection is idle, easy, just send the command.
 	if ( $client_mode eq "idle" ) {
 	    $client_session->write ( "\x02$cmd\x03" );
 	    $client_mode = "active";
+	    $active_wait = 0;
 	    $waiting_session  = $session;
 	    print "TSS command: $cmd, in the clear\n" if $verbose;
 	    return;
@@ -491,20 +529,36 @@ sub update_handler {
 
 	#print "In update handler\n";
 
-	# We never got a response to our last
-	# request string.
-	if ( $client_mode eq "active" ) {
-	    $client_mode = "idle";
-	    $server->remove_client ( $client_session );
-	    $client_handle->close ();
-	    undef $client_handle;
+	# only for special debug and test
+	return if $no_update and $client_mode ne "init";
 
-	    # Avoid endlessly responding with stale data.
-	    if ( $stale_count++ > 10 ) {
-	    	$last_j000 = "stale";
-	    }
+	# client connection is busy.
+	# We could queue the command, but if it
+	# really is an active command, it will yield
+	# a status anyway, and we can just skip the update,
+	# so we do.
+
+	if ( $client_mode eq "active" ) {
+		$active_wait++;
+
+		if ( $active_wait < 8 ) {
+			return;
+	        }
+
+		# looks like we lost the connection.
+	        $client_mode = "idle";
+		$server->remove_client ( $client_session );
+		$client_handle->close ();
+		undef $client_handle;
+		@cmd_list = ();
+
+		# Avoid endlessly responding with stale data.
+		if ( $stale_count++ > 10 ) {
+		    $last_j000 = "stale";
+		}
 	}
 
+	# Establish or Re-establish the connection.
 	unless ( $client_handle ) {
 	    $client_handle = IO::Socket::INET->new (  PeerAddr => $client_host,
                                         PeerPort => $client_port,
@@ -522,8 +576,10 @@ sub update_handler {
 
 	if ( $send_j001 and $client_mode eq "init" ) {
 	    #print "SEND: $request_string\n";
+	    print "Initial TSS request: $request\n" if $debug2;
 	    $client_session->write ( $request_string );
 	    $client_mode = "active";
+	    $active_wait = 0;
 	    return;
 	}
 
@@ -532,6 +588,7 @@ sub update_handler {
 	# and needed to do a sys_write.
 
 #	print "In update handler, sending request\n";
+        print "Update TSS request: $request\n" if $debug2;
 
 	if ( $client_session ) {
 #	    print "session write: $request_string\n";
@@ -541,6 +598,7 @@ sub update_handler {
 	    syswrite ( $client_handle, $request_string );
 	}
 	$client_mode = "active";
+        $active_wait = 0;
 }
 
 $server = AOserver->new ( "tss_server" );
@@ -555,6 +613,9 @@ $server_vars = $server->get_data_ref ();
 
 $server->set_port ( $my_server_port );
 $server->tssmode ( 1 );
+
+# Add hook to just give cached status
+$server->add_hook( "J000", \&status_handler );
 
 # Add hook to relay to legacy software,
 # this will get anything wrapped in STX/ETX
