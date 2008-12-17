@@ -14,8 +14,8 @@ use IO::AOserver;
 #my $demo = 1;
 my $demo = 0;
 
-my $verbose = 1;
-my $debug2 = 1;
+my $verbose = 0;
+my $debug2 = 0;
 
 my $no_update = 0;
 

@@ -809,10 +809,12 @@ sub main_loop {
             
             # read any available data.
             $session->do_read ();
-	    # this is a total hack.
+
+	    # XXX - this is not weird at all
+	    # this is the normal way that a network session closes.
 	    if ( $session->eof() ) {
-		my $xx = $session->name();
-		print "Weird close: $xx\n";
+		#my $xx = $session->name();
+		#print "Weird close: $xx\n";
 	        $session->close ();
 		last;
 	    }
@@ -832,7 +834,7 @@ sub main_loop {
 		# This handles closed connections.
 		if ( $nio == 0 ) {
 		    print "connection or client gone, close\n" if $debug;
-		    print "connection or client gone, close\n";
+		    #print "connection or client gone, close\n";
 		    $session->close ();
 		    undef $buf;
 		    if ( $session eq $self->{gizmo_session} ) {
@@ -847,7 +849,7 @@ sub main_loop {
 		# This handles IO errors (unusual!)
 		if ( $nio < 0 ) {
 		    print "IO error: closing\n" if $debug;
-		    print "IO error: closing\n";
+		    #print "IO error: closing\n";
 		    $session->close ();
 		    undef $buf;
 		    if ( $session eq $self->{gizmo_session} ) {
