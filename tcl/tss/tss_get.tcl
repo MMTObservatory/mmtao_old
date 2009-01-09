@@ -29,8 +29,28 @@ proc tss_get { request parent_win } {
 	    }
 
 #	    puts $TSS_Reply
+
 	    set status_lines [split $TSS_Reply "\n"]
-	    set status_length [lsearch $status_lines "EOF"]
+
+# Just for the record, the new tss_server seems to give us 48 lines,
+# the last of which is just an empty line (for who knows what reason).
+# 0 is the first thing, and 46 is the ".EOF"
+#		set ll [llength $status_lines]
+#		puts "lines in reply: $ll"
+#		puts [ lindex $status_lines 0 ]
+#		puts [ lindex $status_lines 46 ]
+#		puts [ lindex $status_lines 47 ]
+
+# tjt 1-9-2009   Just today this began to fail, and I changed the search
+# string in the following from "EOF" to ".EOF" and now it works!?
+# Don't ask me what is up.  Adding the -glob switch didn't do a thing,
+# so it is as if it is doing an exact match come hell or high water.
+# Typical tcl behaviour.
+
+	    set status_length [lsearch $status_lines ".EOF"]
+
+#		puts "tss_get length $status_length"
+
 	    if { $status_length > 0 } {
 		for { set i 0 } { $i<$status_length } { incr i } {
 		    set temp [split [lindex $status_lines $i] ]
