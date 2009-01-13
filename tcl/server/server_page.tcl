@@ -122,12 +122,12 @@ proc server_page { server_win page } {
 # TSS server Process
 #
     label $server_page.server.process.tss_label \
-	-text "TSS_Server"
+	-text "TSS Server"
     button $server_page.server.process.tss_start \
 	-background red -activebackground OrangeRed \
 	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
 	-command { 
-	    process_start tss_server $server_page
+#	    process_start tss_server $server_page
 	}
 #
 # Science server Process

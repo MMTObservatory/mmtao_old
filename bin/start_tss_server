@@ -29,4 +29,4 @@ fi
 #
 # Start the TSS Server on the specified host
 #
-ssh -XYCq $hostname xterm -geometry 70x10+839+860 +hold -sb -sl 500 -title "TSS_Server" -e "local_tss_server" &
+#ssh -XYCq $hostname xterm -geometry 70x10+839+860 +hold -sb -sl 500 -title "TSS_Server" -e "local_tss_server" &

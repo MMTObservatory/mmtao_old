@@ -18,6 +18,6 @@ echo -n "]2;TSS Server @ `/bin/hostname`"
 #
 # Start the tss_server
 #
-tss_server
+#tss_server
 
 # THE END

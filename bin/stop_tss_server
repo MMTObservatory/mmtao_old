@@ -27,4 +27,4 @@ fi
 #
 # Kill the TSS Server on the specified host
 #
-ssh -XYCq $hostname kill_tss_server
+#ssh -XYCq $hostname kill_tss_server
