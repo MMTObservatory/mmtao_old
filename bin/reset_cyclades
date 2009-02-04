@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo 'Rebooting Cyclades terminal server mmtts2....'
-ssh root@mmtts2 reboot
+echo 'Resetting Cyclades terminal server mmtts2....'
+ssh root@mmtts2 "signal_ras hup"
 echo "....done."
 
