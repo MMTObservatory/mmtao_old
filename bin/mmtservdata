@@ -1,0 +1,22 @@
+#!/usr/bin/ruby
+
+require 'resolv'
+require 'timeout'
+
+def srv_lookup(name)
+  srv = "_#{name}._tcp.mmto.arizona.edu"
+  dns =  Resolv::DNS.open
+  port = dns.getresource(srv, Resolv::DNS::Resource::IN::SRV).port
+  host = dns.getresource(srv, Resolv::DNS::Resource::IN::SRV).target.to_s
+  return host, port
+end
+
+begin
+    timeout(10) do
+	h, p = srv_lookup(ARGV[0].tr('_','-'))
+	puts "#{h} #{p}"
+    end
+rescue
+    puts "nil nil"
+end
+
