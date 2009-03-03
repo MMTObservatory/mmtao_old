@@ -5,15 +5,15 @@
 require 'socket'
 require 'timeout'
 
-puts "environment variable SCIENCE-SERVER_SRVPORT is undefined.  Using #{ENV['SCIENCE-SERVER_SRVPORT']="7700"}\n" unless ENV['SCIENCE-SERVER_SRVPORT']
+puts "environment variable SCIENCE_SERVER_SRVPORT is undefined.  Using #{ENV['SCIENCE_SERVER_SRVPORT']="7700"}\n" unless ENV['SCIENCE_SERVER_SRVPORT']
 puts "environment variable HEXAPOD_SRVHOST is undefined.  Using #{ENV['HEXAPOD_SRVHOST']="hexapod"}\n" unless ENV['HEXAPOD_SRVHOST'] # hexapod.mmto.arizona.edu
 puts "environment variable HEXAPOD_SRVPORT is undefined.  Using #{ENV['HEXAPOD_SRVPORT']="5340"}\n" unless ENV['HEXAPOD_SRVPORT']
-puts "environment variable NGS-TOPBOX_SRVHOST is undefined.  Using #{ENV['NGS-TOPBOX_SRVHOST']="ao-server"}\n" unless ENV['NGS-TOPBOX_SRVHOST'] # ao-server.mmto.arizona.edu
-puts "environment variable NGS-TOPBOX-STATUS_SRVPORT is undefined.  Using #{ENV['NGS-TOPBOX-STATUS_SRVPORT']="7400"}\n" unless ENV['NGS-TOPBOX-STATUS_SRVPORT']
-puts "environment variable NGS-TOPBOX_SRVPORT is undefined.  Using #{ENV['NGS-TOPBOX_SRVPORT']="7401"}\n" unless ENV['NGS-TOPBOX_SRVPORT']
-puts "environment variable NGS-INFO_SRVHOST is undefined.  Using #{ENV['NGS-INFO_SRVHOST']="ao-server"}\n" unless ENV['NGS-INFO_SRVHOST'] # ao-server.mmto.arizona.edu
-puts "environment variable NGS-INFO-STATUS_SRVPORT is undefined.  Using #{ENV['NGS-INFO-STATUS_SRVPORT']="7500"}\n" unless ENV['NGS-INFO-STATUS_SRVPORT']
-puts "environment variable NGS-INFO_SRVPORT is undefined.  Using #{ENV['NGS-INFO_SRVPORT']="7501"}\n" unless ENV['NGS-INFO_SRVPORT']
+puts "environment variable NGS_TOPBOX_SRVHOST is undefined.  Using #{ENV['NGS_TOPBOX_SRVHOST']="ao-server"}\n" unless ENV['NGS_TOPBOX_SRVHOST'] # ao-server.mmto.arizona.edu
+puts "environment variable NGS_TOPBOX_STATUS_SRVPORT is undefined.  Using #{ENV['NGS_TOPBOX_STATUS_SRVPORT']="7400"}\n" unless ENV['NGS_TOPBOX_STATUS_SRVPORT']
+puts "environment variable NGS_TOPBOX_SRVPORT is undefined.  Using #{ENV['NGS_TOPBOX_SRVPORT']="7401"}\n" unless ENV['NGS_TOPBOX_SRVPORT']
+puts "environment variable NGS_INFO_SRVHOST is undefined.  Using #{ENV['NGS_INFO_SRVHOST']="ao-server"}\n" unless ENV['NGS_INFO_SRVHOST'] # ao-server.mmto.arizona.edu
+puts "environment variable NGS_INFO_STATUS_SRVPORT is undefined.  Using #{ENV['NGS_INFO_STATUS_SRVPORT']="7500"}\n" unless ENV['NGS_INFO_STATUS_SRVPORT']
+puts "environment variable NGS_INFO_SRVPORT is undefined.  Using #{ENV['NGS_INFO_SRVPORT']="7501"}\n" unless ENV['NGS_INFO_SRVPORT']
 puts "environment variable MOUNT_SRVHOST is undefined.  Using #{ENV['MOUNT_SRVHOST']="mount"}\n" unless ENV['MOUNT_SRVHOST'] # mount.mmto.arizona.edu
 puts "environment variable MOUNT_SRVPORT is undefined.  Using #{ENV['MOUNT_SRVPORT']="5240"}\n" unless ENV['MOUNT_SRVPORT']
 
@@ -263,7 +263,7 @@ def update_topbox
     begin
 	timeout(@@update_topbox_timeout) do
 
-	    io = TCPSocket.open(ENV['NGS-TOPBOX_SRVHOST'],ENV['NGS-TOPBOX-STATUS_SRVPORT'].to_i)
+	    io = TCPSocket.open(ENV['NGS_TOPBOX_SRVHOST'],ENV['NGS_TOPBOX_STATUS_SRVPORT'].to_i)
 	    io.puts("all")
 	    while (not_last_line(line = io.gets.strip))
 		words = line.split
@@ -305,7 +305,7 @@ def update_info
     begin
 	timeout(@@update_info_timeout) do
 
-	    io = TCPSocket.open(ENV['NGS-INFO_SRVHOST'],ENV['NGS-INFO-STATUS_SRVPORT'].to_i)
+	    io = TCPSocket.open(ENV['NGS_INFO_SRVHOST'],ENV['NGS_INFO_STATUS_SRVPORT'].to_i)
 	    io.puts("all")
 	    while (not_last_line(line = io.gets.strip))
 		words = line.split
@@ -467,7 +467,7 @@ def science_static (arg1, arg2)
 
 	    step = "info"
 	    # now send to the INFO server
-	    io = TCPSocket.open(ENV['NGS-INFO_SRVHOST'],ENV['NGS-INFO_SRVPORT'].to_i)
+	    io = TCPSocket.open(ENV['NGS_INFO_SRVHOST'],ENV['NGS_INFO_SRVPORT'].to_i)
 	    io.puts("slope_offset_set")
 	    scale.each do |sm|
 	        io.puts(sm.to_s)
@@ -524,7 +524,7 @@ def science_focus (arg)
 
 	    step = "topbox"
 	    # run the topbox command
-	    io = TCPSocket.open(ENV['NGS-TOPBOX_SRVHOST'],ENV['NGS-TOPBOX_SRVPORT'].to_i)
+	    io = TCPSocket.open(ENV['NGS_TOPBOX_SRVHOST'],ENV['NGS_TOPBOX_SRVPORT'].to_i)
 	    io.puts("Focus Rel #{arg}")
 	    # nothing to read back - this command makes no response
 	    io.close
@@ -623,7 +623,7 @@ def science_offset (arg1, arg2)
 
 		    step = "info"
 		    # set the gain to zero
-		    io = TCPSocket.open(ENV['NGS-INFO_SRVHOST'],ENV['NGS-INFO_SRVPORT'].to_i)
+		    io = TCPSocket.open(ENV['NGS_INFO_SRVHOST'],ENV['NGS_INFO_SRVPORT'].to_i)
 		    io.puts("loop_gain\n0.00\n")
 		    # nothing to read back - this command makes no response
 		    io.close
@@ -640,7 +640,7 @@ def science_offset (arg1, arg2)
 
 		step = "topbox"
 		# run the topbox commands
-		io = TCPSocket.open(ENV['NGS-TOPBOX_SRVHOST'],ENV['NGS-TOPBOX_SRVPORT'].to_i)
+		io = TCPSocket.open(ENV['NGS_TOPBOX_SRVHOST'],ENV['NGS_TOPBOX_SRVPORT'].to_i)
 		io.puts("FSM_Tip Rel #{tip}")
 		# nothing to read back - this command makes no response
 		io.puts("FSM_Tilt Rel #{tilt}")
@@ -667,7 +667,7 @@ def science_offset (arg1, arg2)
 
 		    step = "info"
 		    # set the gain to 0.05
-		    io = TCPSocket.open(ENV['NGS-INFO_SRVHOST'],ENV['NGS-INFO_SRVPORT'].to_i)
+		    io = TCPSocket.open(ENV['NGS_INFO_SRVHOST'],ENV['NGS_INFO_SRVPORT'].to_i)
 		    io.puts("loop_gain\n0.05\n")
 		    # nothing to read back - this command makes no response
 
@@ -860,7 +860,7 @@ end
 # any necessary arguments follow, one per line.
 # the reply is a line starting with Done: or Error:
 
-server = TCPServer.new(ENV['SCIENCE-SERVER_SRVPORT'])
+server = TCPServer.new(ENV['SCIENCE_SERVER_SRVPORT'])
 while (new_session = server.accept)
     Thread.new(new_session) do |session|
 	cmd = nil
