@@ -23,15 +23,49 @@ set TSS_Error 0
 #   lists must be exactly the same as the list received 
 #
 set TSS_Int [list \
-		    total_current \
+		 humidity_ambient \
+		 current_on_tss \
+		 max_hold1 \
+		 max_hold2 \
+		 max_hold3 \
 		   ]
 
 set TSS_Float [list \
-		      dummy_float \
+		   total_current \
+		   power_vccp \
+		   power_vssp \
+		   voltage_vccp \
+		   voltage_vssp \
+		   voltage_vcca \
+		   voltage_vssa \
+		   voltage_vccl \
+		   temp_crate1 \
+		   temp_crate2 \
+		   temp_crate3 \
+		   temp_water_inlet \
+		   temp_water_outlet \
+		   temp_coldplate1 \
+		   temp_coldplate2 \
+		   temp_ambient \
+		   pressure_inlet \
+		   pressure_outlet \
+		   max_crate_temp \
 		      ]
 
 set TSS_Char [list \
-		      dummy_char \
+		  overcurrent_vccp \
+		  overcurrent_vssp \
+		  overcurrent_push \
+		  overcurrent_pull \
+		  mystery \
+		  enable_coil_sw \
+		  enable_coil_hw \
+		  coil_status \
+		  tss_status \
+		  power_status \
+		  fiber_status \
+		  command \
+		  wrong \
 		      ]
 
 set TSS_List [ concat $TSS_Int $TSS_Float $TSS_Char]

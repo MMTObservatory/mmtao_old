@@ -3,25 +3,38 @@
 import os
 import socket
 import time
+import DNS
 from struct import *
 from scipy import *
+
+""" routine to lookup host/port using SRV records """
+def srv_lookup(service):
+    DNS.DiscoverNameServers()
+    srv_req = DNS.Request(qtype='srv')
+    srv_result = srv_req.req('_%s._tcp.mmto.arizona.edu' % service)
+    for res in srv_result.answers:
+        if res['typename'] == 'SRV':
+            port = res['data'][2]
+            host = res['data'][3]
+
+    return (host, port)
 
 """ open socket to info port on dataserver """
 def info_socket():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(("ao-server.mmto.arizona.edu", 7500))
+    sock.connect(srv_lookup("ngs-info-status"))
     return sock
 
 """ open socket on command port on dataserver """
 def cmd_socket():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(("ao-server.mmto.arizona.edu", 7501))
+    sock.connect(srv_lookup("ngs-info"))
     return sock
 
 """ open socket on data port on dataserver """
 def data_socket():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(("ao-server.mmto.arizona.edu", 7502))
+    sock.connect(srv_lookup("ngs-info-wfsc"))
     return sock
 
 """ set camera bias for given quadrant to given value """
