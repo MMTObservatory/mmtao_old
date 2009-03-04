@@ -46,7 +46,7 @@ proc science_page { science_win page } {
     label $science_page.delay.delay3 -textvar Science(offset_closed_delay3) -bg grey84 -relief sunken -width 10
     entry $science_page.delay.e3 -textvariable offset_closed_delay3 -bg white -width 10
     bind $science_page.delay.e3 <Return> {science_set offset_closed_delay3 $offset_closed_delay3}
-    label $science_page.delay.l4 -text "Gain to 0.5"
+    label $science_page.delay.l4 -text "Gain to 0.05"
     label $science_page.delay.delay4 -textvar Science(offset_closed_delay4) -bg grey84 -relief sunken -width 10
     entry $science_page.delay.e4 -textvariable offset_closed_delay4 -bg white -width 10
     bind $science_page.delay.e4 <Return> {science_set offset_closed_delay4 $offset_closed_delay4}
