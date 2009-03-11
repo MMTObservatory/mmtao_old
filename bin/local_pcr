@@ -32,11 +32,11 @@ echo -n "]2;PCR @ `/bin/hostname`"
 #
 # Start the pcr (wfsc) process
 #
-xterm -geometry 70x10+0+457 +hold -sb -sl 500 -title "PCR WFSC Port" -e "local_wfsc" &
+xterm -geometry 70x10+0+457 -hold -sb -sl 500 -title "PCR WFSC Port" -e "local_wfsc" &
 #
 # Start the pcr (error) process
 #
-xterm -geometry 70x10+0+624 +hold -sb -sl 500 -title "PCR Error Port" -e "local_error" &
+xterm -geometry 70x10+0+624 -hold -sb -sl 500 -title "PCR Error Port" -e "local_error" &
 #
 # Start the pcr (cmd) process and place time stamp in the logfile
 #
