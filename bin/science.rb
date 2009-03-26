@@ -869,6 +869,8 @@ while (new_session = server.accept)
 	    while cmd = getstripdown(session)
 		result = nil
 		case cmd
+                when ""
+                    next
 		when "all"
 		    result = science_all
 		when "set_home"
