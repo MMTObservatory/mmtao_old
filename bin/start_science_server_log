@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Script to start the Science Server log tailing xterm
-# 2008-10-23 skip
+# 2009-03-26 skip
 #
 running=`ps auxww | grep -v grep | grep 'xterm.*-title Science_Server' | awk '{print $2}'`
 if [ $running ]; then

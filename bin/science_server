@@ -8,6 +8,6 @@
 
 setenv MATRIX_PATHNAME ${PCR_HOME}/tcl/static/robin_slopes2008_03_1.dat
 #setenv SCIENCE_LOG_FILENAME ${MMTAO_DATA_DIR}/science_server_log.txt
-setenv SCIENCE_LOG_FILENAME /home/mmtao/data/science.`date +%y%m%d`
+setenv SCIENCE_LOG_FILENAME /home/mmtao/data/science.`date +%Y%m%d`
 cd ${PCR_HOME}/bin
 ./science.rb

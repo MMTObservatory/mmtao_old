@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Script to start the Data Server log tailing xterm
+# 2009-03-26 skip
+#
+running=`ps auxww | grep -v grep | grep 'xterm.*-title Data_Server' | awk '{print $2}'`
+if [ $running ]; then
+    /bin/false
+else
+    xterm -geometry 70x10+839+192 +hold -sb -sl 500 -title "Data_Server" -e "echo data | nc `/mmt/bin/mmtservdata mmtaodata`" &
+    sleep 1
+fi

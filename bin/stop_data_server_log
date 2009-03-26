@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Script to stop the Data Server log tailing xterm
+# 2009-03-26 skip
+#
+running=`ps auxww | grep -v grep | grep 'xterm.*-title Data_Server' | awk '{print $2}'`
+if [ $running ]; then
+    sleep 1
+    kill -9 $running
+else
+    /bin/false
+fi

@@ -1,18 +1,6 @@
 #!/bin/sh
-#++++++++++++++++++++++++++++++++++++++++++++++++++++
-#
-# Script to query if the PCR_Server is running
-#
-#++++++++++++++++++++++++++++++++++++++++++++++++++++
-#
-# Written  26jul07  DLM  Started with Phil Hinz's runao script
-#
-#++++++++++++++++++++++++++++++++++++++++++++++++++++
-#
-# Check to see if the pcr_server is running.  If so, then kill it
-#
-running=`ps auxww | grep '\.\/pcr_server' | awk '{print $2}'`
-if [ $running ]; then 
+running=`/mmt/bin/mmtserv ngs_info status | grep "ngs_info running" | awk '{print $1}'`
+if [ $running ]; then
     echo "1"
 else
     echo "0"
