@@ -41,9 +41,11 @@ proc process_start_all { pcr_server_start pcr_start topbox_start science_start t
 		    [tk_messageBox -parent $parent_win -icon question -type yesno \
 			 -message "Data_Server is not running\nDo you want to start it?" ]
 		if { $status == "yes" } {
+                    set status [catch { exec start_data_server_log & } msg ]
 		    set status [catch { exec start_pcr_server $PCR_Server_Address & } msg ]
 		}
 	    } elseif { $msg == "1" } {
+	        set status [catch { exec start_data_server_log & } msg ]
 		set PCR_Server_Running 1
 	    } else {
 		puts "  process_start_all: $msg"
@@ -65,9 +67,11 @@ proc process_start_all { pcr_server_start pcr_start topbox_start science_start t
 		    [tk_messageBox -parent $parent_win -icon question -type yesno \
 			 -message "Topbox_Server is not running\nDo you want to start it?" ]
 		if { $status == "yes" } {
+                    set status [catch { exec start_topbox_server_log & } msg ]
 		    set status [catch { exec start_topbox_server $Topbox_Server_Address & } msg ]
 		}
 	    } elseif { $msg == "1" } {
+	        set status [catch { exec start_topbox_server_log & } msg ]
 		set Topbox_Server_Running 1
 	    } else {
 		puts "  process_start_all: $msg"
