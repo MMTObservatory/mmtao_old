@@ -70,12 +70,14 @@ proc process_start { process parent_win } {
     }
 
     if { $process == "science_server" } {
+	set status [catch { exec start_science_server_log & } msg ]
 	if { $Science_Server_Running } {
 	    set status \
 		[tk_messageBox -parent $parent_win -icon question -type yesno \
 		     -message "Science Server is running\nAre you sure you want to kill it?" ]
 	    if { $status == "yes" } {
 		set status [catch { exec stop_science_server $Science_Server_Address & } msg ]
+		set status [catch { exec stop_science_server_log & } msg ]
 	    }
 	} else {
 	    set status [catch { exec start_science_server $Science_Server_Address & } msg ]
