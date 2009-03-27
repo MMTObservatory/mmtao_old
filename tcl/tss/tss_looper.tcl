@@ -13,6 +13,7 @@ proc tss_looper { parent_win } {
     source $PCR_HOME/tcl/tss/tss_globals.tcl
     source $PCR_HOME/tcl/client/client_globals.tcl
     source $PCR_HOME/tcl/process/process_globals.tcl
+    source $PCR_HOME/tcl/loop/loop_globals.tcl
 
     if { $TSS_Connected } {
 	set status [ tss_get all $parent_win ]
@@ -36,6 +37,15 @@ proc tss_looper { parent_win } {
 	    set TSS_Server_Running 0
 	    source $PCR_HOME/tcl/tss/tss_globals_set.tcl
 	}
+    }
+
+#   if TSS goes into safe mode while the loop is closed, open it
+    if { $TSS(tss_status) == "ok" } {
+        if { $Info(Loop_Running) } {
+            loop_open_close $parent_win
+            tk_messageBox -message "TSS in SAFE mode\nOpening loop" \
+                -parent $parent_win -icon error -type ok
+        }
     }
 
     after $Client_Update_Rate tss_looper $parent_win
