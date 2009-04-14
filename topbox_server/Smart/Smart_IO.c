@@ -57,18 +57,21 @@ Smart_Flush_common ( Socket_Info *Socket, int debug, int wait)
   int n;
   char buf[STRING_LENGTH];
 
-  FD_ZERO (&mySet);
-  FD_SET (Socket->sockfd, &mySet);
-  delay.tv_sec  = wait;
-  delay.tv_usec = 0;
+  do {
+    n = 0;
+    FD_ZERO (&mySet);
+    FD_SET (Socket->sockfd, &mySet);
+    delay.tv_sec  = wait;
+    delay.tv_usec = 10000; /* add 10 ms to any wait */
 
-  while ( select (FD_SETSIZE, &mySet, NULL, NULL, &delay ) ) {
-    n = read (Socket->sockfd, buf, STRING_LENGTH);
-    if ( debug ) {
-      printf("  Smart_Flush: flushing %d characters\n", n );
-      fflush(stdout);
+    if ( select (FD_SETSIZE, &mySet, NULL, NULL, &delay ) ) {
+      n = read (Socket->sockfd, buf, STRING_LENGTH);
+      if ( debug ) {
+        printf("  Smart_Flush: flushing %d characters\n", n );
+        fflush(stdout);
+      }
     }
-  }
+  } while (n > 0) ;
 }
 
 /* external interface */
@@ -389,8 +392,10 @@ Smart_Init ( Socket_Info *Socket, int debug)
 
     }
 
-    printf("  Smart_Init: Initialization failed, quit after %d tries\n", tries );
-    fflush(stdout);
+    if (debug ) {
+        printf("  Smart_Init: Initialization failed, quit after %d tries\n", tries );
+        fflush(stdout);
+    }
     return -1;
 }
 

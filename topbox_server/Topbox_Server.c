@@ -18,6 +18,8 @@
 #include "Fwheel.h"
 #include "Power.h"
 
+#include <signal.h>
+
 /*
   Setup the Status array
 */
@@ -34,6 +36,18 @@ int main ( int argc, char **argv )
   int start_debug = 1;
   int status;
   int i;
+    struct sigaction sigact;
+
+    /* ignore SIGPIPE
+     */
+    memset (&sigact, 0, sizeof(sigact));
+    sigact.sa_handler = SIG_IGN;
+    sigact.sa_flags = 0;
+    status = sigaction (SIGPIPE, &sigact, NULL);
+    if (status < 0) {
+        perror ("sigaction");
+        exit (1);
+    }
 
   pthread_attr_t attr;
   pthread_attr_init(&attr);
