@@ -507,15 +507,6 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
     DServ_DataPtr = Info->data->framePtr[new_frame];
     DServ_NumberPtr = DServ_DataPtr + 3;
     //    printf(" next frame %d  %d\n", new_frame, ntohl(*( (int *)DServ_NumberPtr)) );
-
-    /*
-      Set wait time to see if a request has been sent by the client.  This
-      is set to 1/10 of a second.
-    */
-    FD_ZERO(&rfds);
-    FD_SET(sockfd, &rfds);
-    tv.tv_sec = 0;
-    tv.tv_usec = 0;
  
     /*
       Check to see if the next frame has been saved.  Loop the given number of times
@@ -524,6 +515,15 @@ int DServ_Stream( DServ_Info *WFSC_Info, DServ_Info *DM_Info, int sockfd, int *d
     count = 0;
 
     do {
+
+      /*
+        Set wait time to see if a request has been sent by the client.  This
+        is set to 1/10 of a second.
+      */
+      FD_ZERO(&rfds);
+      FD_SET(sockfd, &rfds);
+      tv.tv_sec = 0;
+      tv.tv_usec = 0;
 
       /*
 	Check to see if the client has sent a request

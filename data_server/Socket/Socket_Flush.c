@@ -22,17 +22,17 @@ int Socket_Flush ( int sockfd)
   int n;
 
   /*
-    Set time to wait to 0
-  */
-  FD_ZERO (&mySet);
-  FD_SET (sockfd, &mySet);
-  delay.tv_sec  = 0;
-  delay.tv_usec = 10;
-
-  /*
     Read until socket is empty
   */
   do {
+
+    /*
+      Set time to wait to 0
+    */
+    FD_ZERO (&mySet);
+    FD_SET (sockfd, &mySet);
+    delay.tv_sec  = 0;
+    delay.tv_usec = 10;
     n =0;
     if ( select (FD_SETSIZE, &mySet, NULL, NULL, &delay) ) {
       n = read (sockfd, buff, SOCKET_MAXLINE);
