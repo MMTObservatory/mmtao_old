@@ -48,6 +48,8 @@ void *PCR_Process( void *Passed_Info)
   //  char *offsets_ptr;
   int quad, value, rate;
   float gain;
+  float pgain;
+  float dgain;
 
   /*
     Pointers to the needed Info structures
@@ -684,6 +686,84 @@ void *PCR_Process( void *Passed_Info)
       } else {
 	List[Loop_Gain_Position].f_value = gain;
 	strcpy(List[Seeing_Gain_Change_Position].s_value, "1");
+      }
+
+    } else if ( !strncmp (request, "loop_pgain", strlen(request) ) ) {
+
+      /*
+	Read the request pgain value
+      */
+      if ( Socket_StringRead( sockfd, request) ) {
+	if ( *debug ) {
+	  printf("  PCR_Process: Error reading PGain in Socket_StringRead\n");
+	  fflush(stdout);
+	}
+	continue;
+      }
+      pgain = atof(request);
+
+      /*
+	Check that the requested pgain is within range
+      */
+      if ( pgain < 0.0 || pgain > 1.0 ) {
+	printf("PCR_Process: Loop pgain is out of range [0-1], request = %f\n", pgain);
+	fflush(stdout);
+	continue;
+      }
+
+      /*
+	Create request to send to the PCR
+      */
+      sprintf(Request, "set_proportional_gain %.3f", pgain);
+
+      /*
+        Send a request to the PCR
+      */
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", request);
+	fflush(stdout);
+      } else {
+        ;
+      }
+
+    } else if ( !strncmp (request, "loop_dgain", strlen(request) ) ) {
+
+      /*
+	Read the request dgain value
+      */
+      if ( Socket_StringRead( sockfd, request) ) {
+	if ( *debug ) {
+	  printf("  PCR_Process: Error reading DGain in Socket_StringRead\n");
+	  fflush(stdout);
+	}
+	continue;
+      }
+      dgain = atof(request);
+
+      /*
+	Check that the requested dgain is within range
+      */
+      if ( dgain < 0.0 || dgain > 1.0 ) {
+	printf("PCR_Process: Loop dgain is out of range [0-1], request = %f\n", dgain);
+	fflush(stdout);
+	continue;
+      }
+
+      /*
+	Create request to send to the PCR
+      */
+      sprintf(Request, "set_derivative_gain %.3f", dgain);
+
+      /*
+        Send a request to the PCR
+      */
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", request);
+	fflush(stdout);
+      } else {
+        ;
       }
 
       //    } else if ( !strncmp (request, "cam_temp_get", strlen(request) ) ) {
