@@ -131,6 +131,34 @@ proc main_window { win_name } {
 	    loop_gain_up_down down $main_win
 	}
 #
+    label $main_win.main.controls.pgain_label -text "Loop PGain" -bg cyan 
+
+    label $main_win.main.controls.pgain_entry -textvariable Info(Loop_PGain) \
+	-width 4 -anchor e -relief sunken -bg white -fg black
+
+    button $main_win.main.controls.pgain_up -bitmap @$BitMaps_Dir/up -state disabled \
+	-command {
+	    loop_pgain_up_down up $main_win
+	}
+    button $main_win.main.controls.pgain_down -bitmap @$BitMaps_Dir/down -state disabled \
+	-command {
+	    loop_pgain_up_down down $main_win
+	}
+#
+    label $main_win.main.controls.dgain_label -text "Loop DGain" -bg cyan 
+
+    label $main_win.main.controls.dgain_entry -textvariable Info(Loop_DGain) \
+	-width 4 -anchor e -relief sunken -bg white -fg black
+
+    button $main_win.main.controls.dgain_up -bitmap @$BitMaps_Dir/up -state disabled \
+	-command {
+	    loop_dgain_up_down up $main_win
+	}
+    button $main_win.main.controls.dgain_down -bitmap @$BitMaps_Dir/down -state disabled \
+	-command {
+	    loop_dgain_up_down down $main_win
+	}
+#
 # Camera Status
 #
     label $main_win.main.controls.cam_status \
@@ -154,6 +182,28 @@ proc main_window { win_name } {
 	-row $i -column 1 -sticky w
     incr i
     grid config $main_win.main.controls.gain_down \
+	-row $i -column 1 -sticky w
+    incr i
+    grid config $main_win.main.controls.pgain_label \
+	-row $i -column 0 -columnspan 2 -sticky ew
+    incr i
+    grid config $main_win.main.controls.pgain_entry \
+	-row $i -rowspan 2 -column 0 -sticky e
+    grid config $main_win.main.controls.pgain_up \
+	-row $i -column 1 -sticky w
+    incr i
+    grid config $main_win.main.controls.pgain_down \
+	-row $i -column 1 -sticky w
+    incr i
+    grid config $main_win.main.controls.dgain_label \
+	-row $i -column 0 -columnspan 2 -sticky ew
+    incr i
+    grid config $main_win.main.controls.dgain_entry \
+	-row $i -rowspan 2 -column 0 -sticky e
+    grid config $main_win.main.controls.dgain_up \
+	-row $i -column 1 -sticky w
+    incr i
+    grid config $main_win.main.controls.dgain_down \
 	-row $i -column 1 -sticky w
     incr i
     grid config $main_win.main.controls.cam_status \

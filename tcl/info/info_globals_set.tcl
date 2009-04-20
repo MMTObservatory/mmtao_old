@@ -101,6 +101,8 @@ set Info_Float [list \
 		    Seeing_Value \
 		    Strehl_Value \
 		    Loop_Gain \
+		    Loop_PGain \
+		    Loop_DGain \
 		    Loop_Save_Data ]
 
 set Info_Char [list \
@@ -131,6 +133,8 @@ foreach el $Info_Float {
 set Info_Format(WFSC_Period) "%.1f"
 set Info_Format(User_Gain) "%.3f"
 set Info_Format(Loop_Gain) "%.2f"
+set Info_Format(Loop_PGain) "%.2f"
+set Info_Format(Loop_DGain) "%.2f"
 #
 # Set all char values and default format
 #
