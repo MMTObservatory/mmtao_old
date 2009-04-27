@@ -50,6 +50,8 @@
 
 #include "InfoList.h"
 
+#include <signal.h>
+
 /*
   Make the mutex variable PCR_CMD_Lock a global variable so all threads
     can see it.
@@ -67,6 +69,19 @@ int main( )
   int newsockfd, saveflags;
   int local_debug = 0;
   char filename[STRING_LENGTH];
+
+    struct sigaction sigact;
+
+    /* ignore SIGPIPE
+     */
+    memset (&sigact, 0, sizeof(sigact));
+    sigact.sa_handler = SIG_IGN;
+    sigact.sa_flags = 0;
+    status = sigaction (SIGPIPE, &sigact, NULL);
+    if (status < 0) {
+        perror ("sigaction");
+        exit (1);
+    }
 
   pthread_attr_t attr;
   pthread_attr_init(&attr);
