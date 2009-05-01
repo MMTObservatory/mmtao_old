@@ -106,6 +106,11 @@ void *Status_Master( void *Passed_Info)
 	    fflush(stdout);
 	  }
 	  pthread_mutex_unlock( &PCR_CMD_Lock);
+	  status =  Socket_Close ( PCR_CMD_Socket, *debug);
+	  if ( status ) {
+	    printf("  Status_Master: Error in Socket_Close\n");
+	    fflush(stdout);
+	  }	
 	  continue;
 	}
 
@@ -119,6 +124,11 @@ void *Status_Master( void *Passed_Info)
 	    fflush(stdout);
 	  }
 	  pthread_mutex_unlock( &PCR_CMD_Lock);
+	  status =  Socket_Close ( PCR_CMD_Socket, *debug);
+	  if ( status ) {
+	    printf("  Status_Master: Error in Socket_Close\n");
+	    fflush(stdout);
+	  }	
 	  continue;
 	}
 
@@ -179,6 +189,11 @@ void *Status_Master( void *Passed_Info)
 	  fflush(stdout);
 	}
 	pthread_mutex_unlock( &PCR_CMD_Lock);
+	status =  Socket_Close ( PCR_CMD_Socket, *debug);
+	if ( status ) {
+	  printf("  Status_Master: Error in Socket_Close\n");
+	  fflush(stdout);
+	}	
 	continue;
       }
 
@@ -192,6 +207,11 @@ void *Status_Master( void *Passed_Info)
 	  fflush(stdout);
 	}
 	pthread_mutex_unlock( &PCR_CMD_Lock);
+	status =  Socket_Close ( PCR_CMD_Socket, *debug);
+	if ( status ) {
+	  printf("  Status_Master: Error in Socket_Close\n");
+	  fflush(stdout);
+	}	
 	continue;
       }
 

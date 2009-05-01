@@ -186,6 +186,11 @@ void *Error_Master( void *Passed_Info)
 	  printf("  Error_Master: Error reading PCR_OK in Socket_Read\n");
 	  fflush(stdout);
 	}
+	status =  Socket_Close ( PCR_Error_Socket, *debug);
+	if ( status ) {
+	  printf("  Error_Master: Error in Socket_Close\n");
+	  fflush(stdout);
+	}
 	continue;
       }
       errorNumber = htons(tempInt);
