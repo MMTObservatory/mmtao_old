@@ -15,6 +15,8 @@ proc tss_looper { parent_win } {
     source $PCR_HOME/tcl/process/process_globals.tcl
     source $PCR_HOME/tcl/loop/loop_globals.tcl
 
+    upvar #0 Info Info
+
     if { $TSS_Connected } {
 	set status [ tss_get all $parent_win ]
 	if { $status } {
