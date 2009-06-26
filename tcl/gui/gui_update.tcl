@@ -51,6 +51,8 @@ proc info_update_set { name element op } {
 		    $main_win.main.controls.gain_down configure -state normal
 		    $main_win.main.controls.pgain_up configure -state normal
 		    $main_win.main.controls.pgain_down configure -state normal
+		    $main_win.main.controls.igain_up configure -state normal
+		    $main_win.main.controls.igain_down configure -state normal
 		    $main_win.main.controls.dgain_up configure -state normal
 		    $main_win.main.controls.dgain_down configure -state normal
 		} else {
@@ -63,6 +65,8 @@ proc info_update_set { name element op } {
 		    $main_win.main.controls.gain_down configure -state disabled
 		    $main_win.main.controls.pgain_up configure -state disabled
 		    $main_win.main.controls.pgain_down configure -state disabled
+		    $main_win.main.controls.igain_up configure -state disabled
+		    $main_win.main.controls.igain_down configure -state disabled
 		    $main_win.main.controls.dgain_up configure -state disabled
 		    $main_win.main.controls.dgain_down configure -state disabled
 		}
@@ -78,6 +82,8 @@ proc info_update_set { name element op } {
 		$main_win.main.controls.gain_down configure -state disabled
 	        $main_win.main.controls.pgain_up configure -state disabled
 	        $main_win.main.controls.pgain_down configure -state disabled
+	        $main_win.main.controls.igain_up configure -state disabled
+	        $main_win.main.controls.igain_down configure -state disabled
 	        $main_win.main.controls.dgain_up configure -state disabled
 	        $main_win.main.controls.dgain_down configure -state disabled
 	    }

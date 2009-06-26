@@ -19,6 +19,9 @@ global Loop_Gain_Maximum
 global Loop_PGain_Increment
 global Loop_PGain_Minimum
 global Loop_PGain_Maximum
+global Loop_IGain_Increment
+global Loop_IGain_Minimum
+global Loop_IGain_Maximum
 global Loop_DGain_Increment
 global Loop_DGain_Minimum
 global Loop_DGain_Maximum

@@ -49,6 +49,7 @@ void *PCR_Process( void *Passed_Info)
   int quad, value, rate;
   float gain;
   float pgain;
+  float igain;
   float dgain;
 
   /*
@@ -705,8 +706,8 @@ void *PCR_Process( void *Passed_Info)
       /*
 	Check that the requested pgain is within range
       */
-      if ( pgain < 0.0 || pgain > 1.0 ) {
-	printf("PCR_Process: Loop pgain is out of range [0-1], request = %f\n", pgain);
+      if ( pgain < 0.0 || pgain > 10.0 ) {
+	printf("PCR_Process: Loop pgain is out of range [0-10], request = %f\n", pgain);
 	fflush(stdout);
 	continue;
       }
@@ -715,6 +716,45 @@ void *PCR_Process( void *Passed_Info)
 	Create request to send to the PCR
       */
       sprintf(Request, "set_proportional_gain %.3f", pgain);
+
+      /*
+        Send a request to the PCR
+      */
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", request);
+	fflush(stdout);
+      } else {
+        ;
+      }
+
+    } else if ( !strncmp (request, "loop_igain", strlen(request) ) ) {
+
+      /*
+	Read the request igain value
+      */
+      if ( Socket_StringRead( sockfd, request) ) {
+	if ( *debug ) {
+	  printf("  PCR_Process: Error reading IGain in Socket_StringRead\n");
+	  fflush(stdout);
+	}
+	continue;
+      }
+      igain = atof(request);
+
+      /*
+	Check that the requested igain is within range
+      */
+      if ( igain < 0.0 || igain > 10.0 ) {
+	printf("PCR_Process: Loop igain is out of range [0-10], request = %f\n", igain);
+	fflush(stdout);
+	continue;
+      }
+
+      /*
+	Create request to send to the PCR
+      */
+      sprintf(Request, "set_integral_gain %.3f", igain);
 
       /*
         Send a request to the PCR
@@ -744,8 +784,8 @@ void *PCR_Process( void *Passed_Info)
       /*
 	Check that the requested dgain is within range
       */
-      if ( dgain < 0.0 || dgain > 1.0 ) {
-	printf("PCR_Process: Loop dgain is out of range [0-1], request = %f\n", dgain);
+      if ( dgain < 0.0 || dgain > 10.0 ) {
+	printf("PCR_Process: Loop dgain is out of range [0-10], request = %f\n", dgain);
 	fflush(stdout);
 	continue;
       }
