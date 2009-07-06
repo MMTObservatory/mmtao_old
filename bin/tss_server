@@ -16,6 +16,7 @@ my $demo = 0;
 
 my $verbose = 0;
 my $debug2 = 0;
+my $debug_cmd = 1;
 
 my $no_update = 0;
 
@@ -223,9 +224,47 @@ wrong
 # Also, I have been liberal in the assignment of on/ok/yes to the flags,
 #    it might be best to just leave them as 0/1, but I would really like
 #    to know what 0/1 mean at this level and assign words.
+#
+# In one aberrant mode, we now (7-6-2009) get the following messages;
+#
+#client_handler called with 17bytes of data
+#client_handler got data: ---binary junk---
+#Weird cyclades junk rejected:  --same binary junk--
+#Weird junk, what do I do ?????
+#client_handler called with 3bytes of data
+#client_handler got data: *
+#
+#Weird cyclades junk rejected: *
+#Weird junk, what do I do ?????
+#client_handler called with 41bytes of data
+#client_handler got data: * * * ttyS3 is being used by (none) !!!
+#
+#Weird cyclades junk rejected: * * * ttyS3 is being used by (none) !!!
+#Weird junk, what do I do ?????
+#client_handler called with 3bytes of data
+#client_handler got data: *
+#
+#Weird cyclades junk rejected: *
+#Weird junk, what do I do ?????
 
 sub tss_parser {
     my ( $data ) = @_;
+
+    # Just in case Cyclades is sending weird junk.
+    # (as it sometimes does, and we don't want to try to parse it).
+    if ( $data =~ /^\*/ ) {
+        print "Weird cyclades junk rejected: $data";
+        return 1;
+    }
+
+    # Just in case Cyclades is sending weird telnet junk.
+    # (as it sometimes does, and we don't want to try to parse it).
+    if ( $data =~ /^\xff\xfb/ ) {
+        print "Weird cyclades telnet junk rejected!\n";
+	dump_data ( "telnet junk", $data );
+	print "\n";
+        return 1;
+    }
 
     print "TSS response processed:\n$data\n" if $debug2;
 
@@ -415,13 +454,48 @@ my $read_count = 0;
 
 # This is called when we get binary responses on the client handle.
 # When called, the data already has the STX/ETX stripped.
+#
+# When some crazy nonsense is going on with the Cyclades, we get:
+# (after many update requests)
+# client_handler called with 17 bytes of data
+#     (binary telnet stuff, see below)
+# client_handler called with 3 bytes of data
+# client_handler got data: *
+# client_handler called with 41 bytes of data
+# client_handler got data: * * * ttyS3 is being used by (NONE) !!!
+# client_handler called with 3 bytes of data
+# client_handler got data: *
+# ---
+# these cyclades strings end in \r\n
+# (so the 3 byte string is just *\r\n)
+#
+# The telnet stuff looks like:
+# FF FB 2c WILL (com port control)
+# FF FB 03 WILL (suppress go ahead (no half duplex))
+# FF FB 01 WILL (echo)
+# FF FB 00 WILL (binary)
+# FF FD 00 DO (echo)
+# 0D 0A
+# and that totals to 17 bytes
 
 sub client_handler {
     my ( $data ) = @_;
     my $invalid;
     my $temp_session;
 
-    #print "client_handler called with " . length($data) . "\n";
+#    if ( length($data) == 17 ) {
+#	print "client_handler, weird data length (17)\n";
+#        dump_data ( "client_handler", $data );
+#	print "\n";
+#	return;
+#    }
+
+    print "client_handler called with " . length($data) . " bytes of data\n";
+    if ( $data =~ /^\xff/ ) {
+        print "client_handler got binary data ... !!\n";
+    } else {
+        print "client_handler got data: " . $data . "\n";
+    }
 
     # connection closed (eof) or error.
     # (socket close should already have been done)
@@ -485,7 +559,7 @@ sub status_handler {
 sub tss_handler {
 	my ( $session, $cmd ) = @_;
 
-	print "Legacy tss command: $cmd\n" if $debug2;
+	print "Legacy tss command: $cmd\n" if $debug_cmd;
 
 # This is the common case where a legacy piece of
 # software is making a status request.
@@ -527,7 +601,7 @@ sub tss_handler {
 # If the tss is off, we simply will not get any response.
 sub update_handler {
 
-	#print "In update handler\n";
+	print "In update handler\n";
 
 	# only for special debug and test
 	return if $no_update and $client_mode ne "init";
@@ -601,6 +675,10 @@ sub update_handler {
         $active_wait = 0;
 }
 
+# turn on autoflush so log messages don't get buffered.
+select (( select (STDOUT), $|=1)[0]);
+
+print "TSS server starting !!\n";
 $server = AOserver->new ( "tss_server" );
 $server_vars = $server->get_data_ref ();
 
@@ -623,7 +701,7 @@ $server->add_tss_hook( \&tss_handler );
 
 $server->add_update_hook ( \&update_handler, $update_interval );
 
-#print " .. start tss server on port $my_server_port\n";
+print " .. starting tss server on port $my_server_port\n";
 $server->server_init ();
 
 #print " .. enter main loop\n";
