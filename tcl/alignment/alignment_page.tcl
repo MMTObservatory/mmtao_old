@@ -311,6 +311,10 @@ proc alignment_page { alignment_win page } {
 	-command {
 	    recon_set $recon_size $server_page
 	}
+    $recon_menu add radiobutton -label 55 -variable recon_size \
+	-command {
+	    recon_set $recon_size $server_page
+	}
     $recon_menu add radiobutton -label 44 -variable recon_size \
 	-command {
 	    recon_set $recon_size $server_page
