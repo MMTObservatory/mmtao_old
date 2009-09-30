@@ -32,6 +32,31 @@ proc loop_open_close { parent_win } {
 		-parent $parent_win -icon error -type ok
 	}
 
+	# per vidhya's email to skip 2009-9-30
+	# we set the the p,i,d, gains to 0
+	# when we push open loop
+	set status [catch { PCR_Cmd Loop_PGain 0.0 } msg ]
+	if { $status }  {
+	    tk_messageBox -message "Error changing loop pgain" \
+		-parent $parent_win -icon error -type ok
+	} else {
+	    set Info(Loop_PGain) 0.0
+	}
+	set status [catch { PCR_Cmd Loop_IGain 0.0 } msg ]
+	if { $status }  {
+	    tk_messageBox -message "Error changing loop igain" \
+		-parent $parent_win -icon error -type ok
+	} else {
+	    set Info(Loop_IGain) 0.0
+	}
+	set status [catch { PCR_Cmd Loop_DGain 0.0 } msg ]
+	if { $status }  {
+	    tk_messageBox -message "Error changing loop dgain" \
+		-parent $parent_win -icon error -type ok
+	} else {
+	    set Info(Loop_DGain) 0.0
+	}
+
     } else {
 
 	if { !$Info(WFSC_Running) } {
