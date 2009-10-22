@@ -49,7 +49,12 @@ sub hork_database {
     my $whoami = (uname())[1];
     return undef unless $whoami =~ /hacksaw/;
 
-    my $DBI =  DBI->connect('DBI:mysql:miniservers', 'mmtstaff', 'multiple');
+    # dsn stands for "Data Source Name"
+    #my $dsn = "dbi:mysql:miniservers";
+    #my $dsn = "dbi:mysql:miniservers:hacksaw:3306";
+    my $dsn = "dbi:mysql:miniservers:hacksaw";
+
+    my $DBI =  DBI->connect($dsn, 'mmtstaff', 'multiple');
     
     # --------------------------------
     # Get stuff from miniservers table.
@@ -398,7 +403,7 @@ sub remove_client {
 #  my ($self) = @_;
 #}
 
-sub get_data_ref {
+sub get_evil_ref {
     my ($self) = @_;
     
     # this IS a hash reference.
@@ -410,6 +415,18 @@ sub publish {
     
     $self->{data}->{$self->{PREFIX} . $var} = $val;
 }
+
+sub publish_verbatim {
+    my ($self, $var, $val) = @_;
+    
+    $self->{data}->{$var} = $val;
+}
+
+#sub pub {
+#    my ($self, $var, $val) = @_;
+#    
+#    $self->{data}->{$var} = $val;
+#}
 
 # set this, and "get" will act like "get_eof", and we
 # always get a reply, even if we ask for a variable that
