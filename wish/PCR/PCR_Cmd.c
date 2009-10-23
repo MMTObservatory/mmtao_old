@@ -885,6 +885,38 @@ int PCR_Cmd( ClientData client_data, Tcl_Interp* interp, int argc, char *argv[])
       printf("                           %s\n", request);
     }
 
+  } else if ( !strncmp( request, "set_pid_off", strlen(request)) ) {
+
+    /*
+      Send request to PCR Cmd server
+    */
+    status = PCR_Request( PCR_Info, request, errorMsg);
+    if ( status ) {
+      status = PCR_RoutineError( "ERROR sending request to PCR", argv[0], argv[1],
+				     errorMsg, reply_data);
+      return TCL_ERROR;
+    }
+
+    if ( debug_PCR ) {
+      printf("  PCR_Cmd: Sent request %s\n", request);
+    }
+
+  } else if ( !strncmp( request, "set_pid_on", strlen(request)) ) {
+
+    /*
+      Send request to PCR Cmd server
+    */
+    status = PCR_Request( PCR_Info, request, errorMsg);
+    if ( status ) {
+      status = PCR_RoutineError( "ERROR sending request to PCR", argv[0], argv[1],
+				     errorMsg, reply_data);
+      return TCL_ERROR;
+    }
+
+    if ( debug_PCR ) {
+      printf("  PCR_Cmd: Sent request %s\n", request);
+    }
+
   } else if ( !strncmp( request, "dm_stop", strlen(request)) ) {
 
     /*

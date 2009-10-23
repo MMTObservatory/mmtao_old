@@ -167,3 +167,130 @@ proc loop_dgain_up_down { direction parent_win } {
 
     return 0
 }
+
+proc loop_set_pid_off { parent_win } {
+
+    set status [catch { PCR_Cmd set_pid_off } msg ]
+    if { $status }  {
+	tk_messageBox -message "Error setting pid off" \
+	    -parent $parent_win -icon error -type ok
+    }
+
+    loop_pgain_set 0.0 $parent_win
+    loop_igain_set 0.0 $parent_win
+    loop_dgain_set 0.0 $parent_win
+    return 0
+}
+
+proc loop_set_pid_on { parent_win } {
+
+    set status [catch { PCR_Cmd set_pid_on } msg ]
+    if { $status }  {
+	tk_messageBox -message "Error setting pid on" \
+	    -parent $parent_win -icon error -type ok
+    }
+
+    return 0
+}
+
+proc loop_pgain_set { gain parent_win } {
+
+    global PCR_HOME
+    source $PCR_HOME/tcl/loop/loop_globals.tcl
+
+    upvar #0 Info Info
+
+    if { !$Info(Loop_Running) } {
+	tk_messageBox -message "Cannot change the Loop PGain. AO Loop is not running" \
+	    -parent $parent_win -icon error -type ok
+	return
+    }
+
+    if { $gain < $Loop_PGain_Minimum } {
+        return 0
+    }
+
+    if { $gain > $Loop_PGain_Maximum } {
+        return 0
+    }
+
+    set loop_pgain $gain
+
+    set status [catch { PCR_Cmd Loop_PGain $loop_pgain } msg ]
+    if { $status }  {
+	tk_messageBox -message "Error changing loop pgain" \
+	    -parent $parent_win -icon error -type ok
+    } else {
+        set Info(Loop_PGain) $loop_pgain
+    }
+
+    return 0
+}
+
+proc loop_igain_set { gain parent_win } {
+
+    global PCR_HOME
+    source $PCR_HOME/tcl/loop/loop_globals.tcl
+
+    upvar #0 Info Info
+
+    if { !$Info(Loop_Running) } {
+	tk_messageBox -message "Cannot change the Loop IGain. AO Loop is not running" \
+	    -parent $parent_win -icon error -type ok
+	return
+    }
+
+    if { $gain < $Loop_IGain_Minimum } {
+        return 0
+    }
+
+    if { $gain > $Loop_IGain_Maximum } {
+        return 0
+    }
+
+    set loop_igain $gain
+
+    set status [catch { PCR_Cmd Loop_PGain $loop_igain } msg ]
+    if { $status }  {
+	tk_messageBox -message "Error changing loop igain" \
+	    -parent $parent_win -icon error -type ok
+    } else {
+        set Info(Loop_IGain) $loop_igain
+    }
+
+    return 0
+}
+
+proc loop_dgain_set { gain parent_win } {
+
+    global PCR_HOME
+    source $PCR_HOME/tcl/loop/loop_globals.tcl
+
+    upvar #0 Info Info
+
+    if { !$Info(Loop_Running) } {
+	tk_messageBox -message "Cannot change the Loop DGain. AO Loop is not running" \
+	    -parent $parent_win -icon error -type ok
+	return
+    }
+
+    if { $gain < $Loop_DGain_Minimum } {
+        return 0
+    }
+
+    if { $gain > $Loop_DGain_Maximum } {
+        return 0
+    }
+
+    set loop_dgain $gain
+
+    set status [catch { PCR_Cmd Loop_DGain $loop_dgain } msg ]
+    if { $status }  {
+	tk_messageBox -message "Error changing loop dgain" \
+	    -parent $parent_win -icon error -type ok
+    } else {
+        set Info(Loop_DGain) $loop_dgain
+    }
+
+    return 0
+}

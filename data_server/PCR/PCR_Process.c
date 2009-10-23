@@ -806,6 +806,30 @@ void *PCR_Process( void *Passed_Info)
         ;
       }
 
+    } else if ( !strncmp (request, "set_pid_off", strlen(request) ) ) {
+
+      /*
+        Send a request to turn pid off
+      */
+      strcpy(Request, "set_pid_off");
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", Request);
+	fflush(stdout);
+      }
+
+    } else if ( !strncmp (request, "set_pid_on", strlen(request) ) ) {
+
+      /*
+        Send a request to turn pid on
+      */
+      strcpy(Request, "set_pid_on");
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", Request);
+	fflush(stdout);
+      }
+
       //    } else if ( !strncmp (request, "cam_temp_get", strlen(request) ) ) {
 
       /*

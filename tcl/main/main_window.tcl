@@ -131,10 +131,15 @@ proc main_window { win_name } {
 	    loop_gain_up_down down $main_win
 	}
 #
+#
+    button $main_win.main.controls.pid_off -text "pid off" -command { loop_set_pid_off $main_win }
+    button $main_win.main.controls.pid_on  -text "pid on"  -command { loop_set_pid_on  $main_win }
+#
     label $main_win.main.controls.pgain_label -text "Loop PGain" -bg cyan 
 
-    label $main_win.main.controls.pgain_entry -textvariable Info(Loop_PGain) \
-	-width 4 -anchor e -relief sunken -bg white -fg black
+    entry $main_win.main.controls.pgain_entry -textvariable Info(Loop_PGain) \
+	-width 4 -justify right -relief sunken -bg white -fg black
+    bind $main_win.main.controls.pgain_entry <Return> {loop_pgain_set $Info(Loop_PGain) $main_win}
 
     button $main_win.main.controls.pgain_up -bitmap @$BitMaps_Dir/up -state disabled \
 	-command {
@@ -147,8 +152,9 @@ proc main_window { win_name } {
 #
     label $main_win.main.controls.igain_label -text "Loop IGain" -bg cyan 
 
-    label $main_win.main.controls.igain_entry -textvariable Info(Loop_IGain) \
-	-width 4 -anchor e -relief sunken -bg white -fg black
+    entry $main_win.main.controls.igain_entry -textvariable Info(Loop_IGain) \
+	-width 4 -justify right -relief sunken -bg white -fg black
+    bind $main_win.main.controls.igain_entry <Return> {loop_igain_set $Info(Loop_IGain) $main_win}
 
     button $main_win.main.controls.igain_up -bitmap @$BitMaps_Dir/up -state disabled \
 	-command {
@@ -161,8 +167,9 @@ proc main_window { win_name } {
 #
     label $main_win.main.controls.dgain_label -text "Loop DGain" -bg cyan 
 
-    label $main_win.main.controls.dgain_entry -textvariable Info(Loop_DGain) \
-	-width 4 -anchor e -relief sunken -bg white -fg black
+    entry $main_win.main.controls.dgain_entry -textvariable Info(Loop_DGain) \
+	-width 4 -justify right -relief sunken -bg white -fg black
+    bind $main_win.main.controls.dgain_entry <Return> {loop_dgain_set $Info(Loop_DGain) $main_win}
 
     button $main_win.main.controls.dgain_up -bitmap @$BitMaps_Dir/up -state disabled \
 	-command {
@@ -196,6 +203,11 @@ proc main_window { win_name } {
 	-row $i -column 1 -sticky w
     incr i
     grid config $main_win.main.controls.gain_down \
+	-row $i -column 1 -sticky w
+    incr i
+    grid config $main_win.main.controls.pid_off \
+	-row $i -column 0 -sticky w
+    grid config $main_win.main.controls.pid_on \
 	-row $i -column 1 -sticky w
     incr i
     grid config $main_win.main.controls.pgain_label \
