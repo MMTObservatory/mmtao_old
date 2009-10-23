@@ -14,6 +14,7 @@ proc main_window { win_name } {
 
     global PCR_HOME
     source $PCR_HOME/tcl/window/window_globals.tcl
+    source $PCR_HOME/tcl/main/main_globals.tcl
 #
    if { $win_name != $main_win } {
 	puts "main_window routine should be called with the parameter \$main_win"
@@ -137,45 +138,51 @@ proc main_window { win_name } {
 #
     label $main_win.main.controls.pgain_label -text "Loop PGain" -bg cyan 
 
-    entry $main_win.main.controls.pgain_entry -textvariable Info(Loop_PGain) \
+    entry $main_win.main.controls.pgain_entry -textvariable Main_P_Gain \
 	-width 4 -justify right -relief sunken -bg white -fg black
-    bind $main_win.main.controls.pgain_entry <Return> {loop_pgain_set $Info(Loop_PGain) $main_win}
+    bind $main_win.main.controls.pgain_entry <Return> {loop_pgain_set $Main_P_Gain $main_win}
 
-    button $main_win.main.controls.pgain_up -bitmap @$BitMaps_Dir/up -state disabled \
+    button $main_win.main.controls.pgain_up -bitmap @$BitMaps_Dir/up \
+	-state normal \
 	-command {
 	    loop_pgain_up_down up $main_win
 	}
-    button $main_win.main.controls.pgain_down -bitmap @$BitMaps_Dir/down -state disabled \
+    button $main_win.main.controls.pgain_down -bitmap @$BitMaps_Dir/down \
+	 -state normal \
 	-command {
 	    loop_pgain_up_down down $main_win
 	}
 #
     label $main_win.main.controls.igain_label -text "Loop IGain" -bg cyan 
 
-    entry $main_win.main.controls.igain_entry -textvariable Info(Loop_IGain) \
+    entry $main_win.main.controls.igain_entry -textvariable Main_I_Gain \
 	-width 4 -justify right -relief sunken -bg white -fg black
-    bind $main_win.main.controls.igain_entry <Return> {loop_igain_set $Info(Loop_IGain) $main_win}
+    bind $main_win.main.controls.igain_entry <Return> {loop_igain_set $Main_I_Gain $main_win}
 
-    button $main_win.main.controls.igain_up -bitmap @$BitMaps_Dir/up -state disabled \
+    button $main_win.main.controls.igain_up -bitmap @$BitMaps_Dir/up \
+	 -state normal \
 	-command {
 	    loop_igain_up_down up $main_win
 	}
-    button $main_win.main.controls.igain_down -bitmap @$BitMaps_Dir/down -state disabled \
+    button $main_win.main.controls.igain_down -bitmap @$BitMaps_Dir/down \
+	 -state normal \
 	-command {
 	    loop_igain_up_down down $main_win
 	}
 #
     label $main_win.main.controls.dgain_label -text "Loop DGain" -bg cyan 
 
-    entry $main_win.main.controls.dgain_entry -textvariable Info(Loop_DGain) \
+    entry $main_win.main.controls.dgain_entry -textvariable Main_D_Gain \
 	-width 4 -justify right -relief sunken -bg white -fg black
-    bind $main_win.main.controls.dgain_entry <Return> {loop_dgain_set $Info(Loop_DGain) $main_win}
+    bind $main_win.main.controls.dgain_entry <Return> {loop_dgain_set $Main_D_Gain $main_win}
 
-    button $main_win.main.controls.dgain_up -bitmap @$BitMaps_Dir/up -state disabled \
+    button $main_win.main.controls.dgain_up -bitmap @$BitMaps_Dir/up \
+	 -state normal \
 	-command {
 	    loop_dgain_up_down up $main_win
 	}
-    button $main_win.main.controls.dgain_down -bitmap @$BitMaps_Dir/down -state disabled \
+    button $main_win.main.controls.dgain_down -bitmap @$BitMaps_Dir/down \
+	 -state normal \
 	-command {
 	    loop_dgain_up_down down $main_win
 	}

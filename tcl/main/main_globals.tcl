@@ -16,3 +16,7 @@
 #
 ###################################
 #
+
+global Main_P_Gain
+global Main_I_Gain
+global Main_D_Gain

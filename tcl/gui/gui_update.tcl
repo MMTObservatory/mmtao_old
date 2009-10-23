@@ -49,12 +49,12 @@ proc info_update_set { name element op } {
 			-state normal -text "LOOP IS\nCLOSED\n\nPress to Open" -bg red
 		    $main_win.main.controls.gain_up configure -state normal
 		    $main_win.main.controls.gain_down configure -state normal
-		    $main_win.main.controls.pgain_up configure -state normal
-		    $main_win.main.controls.pgain_down configure -state normal
-		    $main_win.main.controls.igain_up configure -state normal
-		    $main_win.main.controls.igain_down configure -state normal
-		    $main_win.main.controls.dgain_up configure -state normal
-		    $main_win.main.controls.dgain_down configure -state normal
+#		    $main_win.main.controls.pgain_up configure -state normal
+#		    $main_win.main.controls.pgain_down configure -state normal
+#		    $main_win.main.controls.igain_up configure -state normal
+#		    $main_win.main.controls.igain_down configure -state normal
+#		    $main_win.main.controls.dgain_up configure -state normal
+#		    $main_win.main.controls.dgain_down configure -state normal
 		} else {
 		    #
 		    # Loop Ready but NON Running
@@ -63,12 +63,12 @@ proc info_update_set { name element op } {
 			-state normal -text "LOOP IS\nOPEN\n\nPress to Close" -bg yellow
 		    $main_win.main.controls.gain_up configure -state disabled
 		    $main_win.main.controls.gain_down configure -state disabled
-		    $main_win.main.controls.pgain_up configure -state disabled
-		    $main_win.main.controls.pgain_down configure -state disabled
-		    $main_win.main.controls.igain_up configure -state disabled
-		    $main_win.main.controls.igain_down configure -state disabled
-		    $main_win.main.controls.dgain_up configure -state disabled
-		    $main_win.main.controls.dgain_down configure -state disabled
+#		    $main_win.main.controls.pgain_up configure -state disabled
+#		    $main_win.main.controls.pgain_down configure -state disabled
+#		    $main_win.main.controls.igain_up configure -state disabled
+#		    $main_win.main.controls.igain_down configure -state disabled
+#		    $main_win.main.controls.dgain_up configure -state disabled
+#		    $main_win.main.controls.dgain_down configure -state disabled
 		}
 	    } else {
 		#
@@ -80,12 +80,12 @@ proc info_update_set { name element op } {
 		    -state disabled -text "LOOP IS\nOPEN" -bg yellow
 		$main_win.main.controls.gain_up configure -state disabled
 		$main_win.main.controls.gain_down configure -state disabled
-	        $main_win.main.controls.pgain_up configure -state disabled
-	        $main_win.main.controls.pgain_down configure -state disabled
-	        $main_win.main.controls.igain_up configure -state disabled
-	        $main_win.main.controls.igain_down configure -state disabled
-	        $main_win.main.controls.dgain_up configure -state disabled
-	        $main_win.main.controls.dgain_down configure -state disabled
+#	        $main_win.main.controls.pgain_up configure -state disabled
+#	        $main_win.main.controls.pgain_down configure -state disabled
+#	        $main_win.main.controls.igain_up configure -state disabled
+#	        $main_win.main.controls.igain_down configure -state disabled
+#	        $main_win.main.controls.dgain_up configure -state disabled
+#	        $main_win.main.controls.dgain_down configure -state disabled
 	    }
 	} else {
 	    #

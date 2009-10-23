@@ -16,3 +16,7 @@
 #
 ###################################
 #
+
+set Main_P_Gain 0.00
+set Main_I_Gain 0.00
+set Main_D_Gain 0.00
