@@ -86,3 +86,6 @@ Background_File         Zero_Background
 Loop_Running            0
 Loop_Gain               0.0
 Loop_Save_Data          0
+P_Gain			0.0
+I_Gain			0.0
+D_Gain			0.0

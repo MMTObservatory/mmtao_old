@@ -97,6 +97,9 @@ Info_Entry Info_List[] = {
   { "Loop_Running",          "AO Loop is Running", "i" },
   { "Loop_Gain",             "User Gain", "f" },
   { "Loop_Save_Data",        "Flag indicating the DDS server should save data", "i" },
+  { "P_Gain",                "Proportional Gain", "f" },
+  { "I_Gain",                "Integral Gain", "f" },
+  { "D_Gain",                "Derivative Gain", "f" },
 };
 
 int Info_ListLength = ( sizeof(Info_List)/sizeof(struct _Info_Entry) );
