@@ -196,6 +196,13 @@ proc loop_set_pid_on { parent_win } {
 	    -parent $parent_win -icon error -type ok
     }
 
+# temporary
+    after 2000
+    set Main_P_Gain  $Info(P_Gain)
+    set Main_I_Gain  $Info(I_Gain)
+    set Main_D_Gain  $Info(D_Gain)
+# /temporary
+
     return 0
 }
 
