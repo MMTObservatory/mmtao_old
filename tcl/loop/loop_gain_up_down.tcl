@@ -190,6 +190,12 @@ proc loop_set_pid_off { parent_win } {
 
 proc loop_set_pid_on { parent_win } {
 
+    global PCR_HOME
+    source $PCR_HOME/tcl/loop/loop_globals.tcl
+    source $PCR_HOME/tcl/main/main_globals.tcl
+
+    upvar #0 Info Info
+
     set status [catch { PCR_Cmd set_pid_on } msg ]
     if { $status }  {
 	tk_messageBox -message "Error setting pid on" \
@@ -197,11 +203,23 @@ proc loop_set_pid_on { parent_win } {
     }
 
 # temporary
-    after 2000
+    after 2000 loop_reset_pid_gains
+# /temporary
+
+    return 0
+}
+
+proc loop_reset_pid_gains {} {
+
+    global PCR_HOME
+    source $PCR_HOME/tcl/loop/loop_globals.tcl
+    source $PCR_HOME/tcl/main/main_globals.tcl
+
+    upvar #0 Info Info
+
     set Main_P_Gain  $Info(P_Gain)
     set Main_I_Gain  $Info(I_Gain)
     set Main_D_Gain  $Info(D_Gain)
-# /temporary
 
     return 0
 }
