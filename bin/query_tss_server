@@ -1,19 +1,6 @@
 #!/bin/sh
-#++++++++++++++++++++++++++++++++++++++++++++++++++++
-#
-# Script to query if the TSS Server is running
-#
-#++++++++++++++++++++++++++++++++++++++++++++++++++++
-#
-# 4-2-2008 tjt
-# 2008-11-03 skip
-#
-#++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-#running=`ps auxww | grep -v grep | grep '\.\/tss_server' | awk '{print $2}'`
-#running=`ps auxww | grep -v grep | grep '/usr/bin/ruby /home/skip/mmt/REPOS/ao/trunk/bin/tss_server' | awk '{print $2}'`
-running=`ps auxww | grep -v grep | grep "/usr/bin/perl -w ${PCR_HOME}/bin/tss_server" | awk '{print $2}'`
-if [ $running ]; then 
+running=`/mmt/bin/mmtserv tss_server status | grep "tss_server running" | awk '{print $1}'`
+if [ $running ]; then
     echo "1"
 else
     echo "0"
