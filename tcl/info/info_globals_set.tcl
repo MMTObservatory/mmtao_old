@@ -111,6 +111,8 @@ set Info_Char [list \
 		   PCR_HOME \
 		   Setup_Dir \
 		   Recon_Name \
+		   Recon_List \
+		   Recon_List_Last \
 		   WFSC_Size \
 		   WFSC_Source \
 		   Seeing_Mode_File \

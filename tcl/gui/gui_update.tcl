@@ -185,5 +185,10 @@ proc info_update_set { name element op } {
 	    $main_win.main.info.pos.rot.tracking configure \
 		-text "Not Tracking" -bg green
 	}
+
+        if { ![string equal $Info(Recon_List) $Info(Recon_List_Last)] } {
+            set Info(Recon_List_Last) $Info(Recon_List)
+            alignment_set_recon_menu
+        }
     }
 }

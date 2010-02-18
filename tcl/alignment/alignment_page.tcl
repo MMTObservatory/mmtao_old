@@ -303,23 +303,7 @@ proc alignment_page { alignment_win page } {
 	-menu $alignment_page.center.recon.list.menu \
 	-relief raised -border 2 -disabledforeground black
     set recon_menu [menu $alignment_page.center.recon.list.menu]
-    $recon_menu add radiobutton -label 80 -variable recon_size \
-	-command {
-	    recon_set $recon_size $server_page
-	}
-    $recon_menu add radiobutton -label 56 -variable recon_size \
-	-command {
-	    recon_set $recon_size $server_page
-	}
-    $recon_menu add radiobutton -label 55 -variable recon_size \
-	-command {
-	    recon_set $recon_size $server_page
-	}
-    $recon_menu add radiobutton -label 44 -variable recon_size \
-	-command {
-	    recon_set $recon_size $server_page
-	}
-    $recon_menu add radiobutton -label 23 -variable recon_size \
+    $recon_menu add radiobutton -label 56m_all -variable recon_size \
 	-command {
 	    recon_set $recon_size $server_page
 	}
@@ -375,4 +359,21 @@ proc alignment_page { alignment_win page } {
 	$alignment_page.right \
 	$alignment_page.far_right \
 	-side left -anchor nw
+}
+
+proc alignment_set_recon_menu {} {
+    global PCR_HOME
+    source $PCR_HOME/tcl/window/window_globals.tcl
+    upvar #0 Info Info
+    global alignment_page
+
+    set recon_menu $alignment_page.center.recon.list.menu
+    $recon_menu delete 0 last
+    set recon_list [split $Info(Recon_List) ","]
+    foreach f $recon_list {
+        $recon_menu add radiobutton -label $f -variable recon_size \
+            -command {
+                recon_set $recon_size $server_page
+            }
+    }
 }
