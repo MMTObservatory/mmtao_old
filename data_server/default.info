@@ -19,6 +19,7 @@ PCR_DDS_Error           0
 PCR_ERROR_Connected     0
 PCR_ERROR_Error         0
 Recon_Name              56
+Recon_List              80,56,55,44,23
 DServ_WFSC_Running      0
 DServ_DDS_Running       0
 Info_Running            0

@@ -30,6 +30,7 @@ Info_Entry Info_List[] = {
   { "PCR_ERROR_Connected",   "Pointer to a flag for the connection of PCR_Server to the PCR Error port", "I" },
   { "PCR_ERROR_Error",       "Pointer to a flag for an error on the PCR Error port", "I" },
   { "Recon_Name",            "Name of the Reconstrutor files loaded into the PCR", "s" },
+  { "Recon_List",            "List of the Reconstrutor files loaded into the PCR", "s" },
   { "DServ_WFSC_Running",    "Pointer to a flag indicating WFSC Data Server is running", "I" },
   { "DServ_DDS_Running",     "Pointer to a flag indicating DDS Data Server is running", "I" },
   { "Info_Running",          "Pointer to a flag indicating Info Server is running", "I" },
