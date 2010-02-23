@@ -830,6 +830,35 @@ void *PCR_Process( void *Passed_Info)
 	fflush(stdout);
       }
 
+    } else if ( !strncmp (request, "slope_offset_on", strlen(request) ) ) {
+      strcpy(Request, "slope_offset_on");
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", Request);
+	fflush(stdout);
+      }
+    } else if ( !strncmp (request, "slope_offset_off", strlen(request) ) ) {
+      strcpy(Request, "slope_offset_off");
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", Request);
+	fflush(stdout);
+      }
+    } else if ( !strncmp (request, "mod_offset_on", strlen(request) ) ) {
+      strcpy(Request, "mod_offset_on");
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", Request);
+	fflush(stdout);
+      }
+    } else if ( !strncmp (request, "mod_offset_off", strlen(request) ) ) {
+      strcpy(Request, "mod_offset_off");
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", Request);
+	fflush(stdout);
+      }
+
       //    } else if ( !strncmp (request, "cam_temp_get", strlen(request) ) ) {
 
       /*
