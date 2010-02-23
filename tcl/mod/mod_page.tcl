@@ -129,6 +129,7 @@ proc mod_page { mod_win page } {
         }
     button $mod_page.mod.rate_set -text "Set" \
         -command {
+            mod_rate_send $ModRatePath $mod_page
         }
     button $mod_page.mod.on -text "On" \
         -command {
