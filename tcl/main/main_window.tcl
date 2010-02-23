@@ -693,8 +693,8 @@ proc main_window { win_name } {
 	-label "Camera\nBackground" -under 0
     $main_win.aux add static -createcmd { static_page $main_win.aux static } \
 	-label "Static\nOffsets" -under 0
-#    $main_win.aux add mod -createcmd { mod_page $main_win.aux mod } \
-#	-label "Slope\nModulation" -under 0
+    $main_win.aux add mod -createcmd { mod_page $main_win.aux mod } \
+	-label "Slope & Mod\nOffsets" -under 0
     $main_win.aux add seeing -createcmd { seeing_page $main_win.aux seeing } \
 	-label "Seeing" -under 0
     $main_win.aux add save -createcmd { save_page $main_win.aux save } \

@@ -8,6 +8,7 @@
 #
 # Written  9jan06  DLM  Started with static_page.tcl
 #
+# Almost totally rewritten 23feb10 Skip according to Vidhya's request
 ##################################################
 
 proc mod_page { mod_win page } {
@@ -18,81 +19,150 @@ proc mod_page { mod_win page } {
     upvar #0 Info Info
 #
     global reply_data
+
+    global USER_HOME
 #
 # Create the tix NoteBook frame
 #
     global mod_page
     set mod_page [ $mod_win subwidget $page ]
 #
-# Build the two column page
+# Build frames for slope offsets and mod offsets
 #
-    frame $mod_page.modes -relief ridge -border 4
-    frame $mod_page.rate -relief ridge -border 4
-#
-# Create mode column
-#
-    radiobutton $mod_page.modes.radio_none -text "None" \
-	-variable Mod_Offset_Value -value "None" -anchor w \
-	-command {
-	    mod_offset_send $mod_page
-	}
-#
-    pack $mod_page.modes.radio_none
-#   
-    for { set i 0 } { $i < 5 } { incr i } {
-#
-	radiobutton $mod_page.modes.radio_$i -text "Mode $i" \
-	    -variable Mod_Offset_Value -value $i -anchor w \
-	    -command {
-		mod_offset_send $mod_page
+    frame $mod_page.slope -relief ridge -border 4
+    label $mod_page.slope.label -text "slope offsets"
+    label $mod_page.slope.entry_label -text "slope offset pathname"
+    entry $mod_page.slope.entry -width 40 -relief sunken -textvar SlopeOffsetPath
+    button $mod_page.slope.browse -text "Browse" \
+        -command {
+            set SlopeOffsetDir $USER_HOME
+            set SlopeOffsetFile ""
+            set status [browse_file \
+                            "slope offset pathname" \
+                            { "slope offset file" { .slopeoffset }} \
+                            SlopeOffsetDir \
+                            SlopeOffsetFile \
+                            $mod_page ]
+            if { $status } {
+		set SlopeOffsetDir $USER_HOME
+		set SlopeOffsetFile ""
+                set SlopeOffsetPath ""
+            } else {
+                set SlopeOffsetPath [file join $SlopeOffsetDir $SlopeOffsetFile ]
+            }
+        }
+    button $mod_page.slope.set -text "Set" \
+        -command {
+        }
+    button $mod_page.slope.on -text "On" \
+        -command {
+            set status [catch { PCR_Cmd slope_offset_on } msg ]
+            if { $status }  {
+	        tk_messageBox -message "Error setting slope offset on" \
+                    -parent $mod_win -icon error -type ok
 	    }
-#
-	pack $mod_page.modes.radio_$i
-
-    }
-#
-# Build rate column
-#
-    label $mod_page.rate.label -text "Rate" -bg cyan
-    pack $mod_page.rate.label -anchor center -fill x
-
-    foreach el $Mod_Rate_List {
-#
-	radiobutton $mod_page.rate.radio_$el -text "$el" \
-	    -variable Mod_Rate_Value -value $el -anchor w \
-	    -command {
-		mod_rate_send $mod_page
+        }
+    button $mod_page.slope.off -text "Off" \
+        -command {
+            set status [catch { PCR_Cmd slope_offset_off } msg ]
+            if { $status }  {
+	        tk_messageBox -message "Error setting slope offset off" \
+                    -parent $mod_win -icon error -type ok
 	    }
-		
-#
-	pack $mod_page.rate.radio_$el
-#
-    }
-#
-#########################
-#
-    frame $mod_page.controls -relief ridge -border 4
-#
-    label $mod_page.controls.label -text "Not Modulating" \
-	 -relief raised -border 4
-#
-    button $mod_page.controls.start -text "Start Modulating" \
-	-bg green \
-	-command {
-	    mod_start_stop $mod_page
-	}
-#
-    pack $mod_page.controls.label \
-	    $mod_page.controls.start \
-	    -side left -anchor w
-#
-#---------------------------------------------------
-# Final packing
-#---------------------------------------------------
-#
-    pack $mod_page.modes \
-	$mod_page.rate \
-	$mod_page.controls \
-	    -side left -anchor w
+        }
+
+    set i 0
+    grid config $mod_page.slope.label -row $i -column 0 -columnspan 6
+    incr i
+    grid config $mod_page.slope.entry_label -row $i -column 0
+    grid config $mod_page.slope.entry -row $i -column 1 -columnspan 3
+    grid config $mod_page.slope.browse -row $i -column 4
+    grid config $mod_page.slope.set -row $i -column 5
+    incr i
+    grid config $mod_page.slope.on  -row $i -column 2
+    grid config $mod_page.slope.off -row $i -column 3
+
+    frame $mod_page.mod -relief ridge -border 4
+    label $mod_page.mod.label -text "mod offsets"
+    label $mod_page.mod.offset_entry_label -text "mod offset pathname"
+    entry $mod_page.mod.offset_entry -width 40 -relief sunken -textvar ModOffsetPath
+    button $mod_page.mod.offset_browse -text "Browse" \
+        -command {
+            set ModOffsetDir $USER_HOME
+            set ModOffsetFile ""
+            set status [browse_file \
+                            "mod offset pathname" \
+                            { "mod offset file" { .modoffset }} \
+                            ModOffsetDir \
+                            ModOffsetFile \
+                            $mod_page ]
+            if { $status } {
+		set ModOffsetDir $USER_HOME
+		set ModOffsetFile ""
+                set ModOffsetPath ""
+            } else {
+                set ModOffsetPath [file join $ModOffsetDir $ModOffsetFile ]
+            }
+        }
+    button $mod_page.mod.offset_set -text "Set" \
+        -command {
+        }
+    label $mod_page.mod.rate_entry_label -text "mod rate pathname"
+    entry $mod_page.mod.rate_entry -width 40 -relief sunken -textvar ModRatePath
+    button $mod_page.mod.rate_browse -text "Browse" \
+        -command {
+            set ModRateDir $USER_HOME
+            set ModRateFile ""
+            set status [browse_file \
+                            "mod rate pathname" \
+                            { "mod rate file" { .modrate }} \
+                            ModRateDir \
+                            ModRateFile \
+                            $mod_page ]
+            if { $status } {
+		set ModRateDir $USER_HOME
+		set ModRateFile ""
+                set ModRatePath ""
+            } else {
+                set ModRatePath [file join $ModRateDir $ModRateFile ]
+            }
+        }
+    button $mod_page.mod.rate_set -text "Set" \
+        -command {
+        }
+    button $mod_page.mod.on -text "On" \
+        -command {
+            set status [catch { PCR_Cmd mod_offset_on } msg ]
+            if { $status }  {
+	        tk_messageBox -message "Error setting mod offset on" \
+                    -parent $mod_win -icon error -type ok
+	    }
+        }
+    button $mod_page.mod.off -text "Off" \
+        -command {
+            set status [catch { PCR_Cmd mod_offset_off } msg ]
+            if { $status }  {
+	        tk_messageBox -message "Error setting mod offset off" \
+                    -parent $mod_win -icon error -type ok
+	    }
+        }
+
+    set i 0
+    grid config $mod_page.mod.label -row $i -column 0 -columnspan 6
+    incr i
+    grid config $mod_page.mod.offset_entry_label -row $i -column 0
+    grid config $mod_page.mod.offset_entry -row $i -column 1 -columnspan 3
+    grid config $mod_page.mod.offset_browse -row $i -column 4
+    grid config $mod_page.mod.offset_set -row $i -column 5
+    incr i
+    grid config $mod_page.mod.rate_entry_label -row $i -column 0
+    grid config $mod_page.mod.rate_entry -row $i -column 1 -columnspan 3
+    grid config $mod_page.mod.rate_browse -row $i -column 4
+    grid config $mod_page.mod.rate_set -row $i -column 5
+    incr i
+    grid config $mod_page.mod.on  -row $i -column 2
+    grid config $mod_page.mod.off -row $i -column 3
+
+    pack $mod_page.slope $mod_page.mod -side top
 
 }

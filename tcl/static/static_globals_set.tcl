@@ -66,9 +66,9 @@ set Static_RMS 0
 #   **NOTE: Chane the path and file name here for Wack-A-Speckle tests
 #
 set Base $PCR_HOME/tcl/static
-#set File 56m_all.slo_off_zernike
+set File 56m_all.slo_off_zernike
 #set File robin_slopes2008_01220.dat
-set File robin_slopes2008_03_1.dat
+#set File robin_slopes2008_03_1.dat
 #
 # Scripts that are executed when a variable is modified
 #
