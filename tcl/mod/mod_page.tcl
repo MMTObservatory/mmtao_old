@@ -21,6 +21,12 @@ proc mod_page { mod_win page } {
     global reply_data
 
     global USER_HOME
+    global SlopeOffsetDir
+    global ModOffsetDir
+    global ModRateDir
+    set SlopeOffsetDir $USER_HOME
+    set ModOffsetDir $USER_HOME
+    set ModRateDir $USER_HOME
 #
 # Create the tix NoteBook frame
 #
@@ -35,7 +41,7 @@ proc mod_page { mod_win page } {
     entry $mod_page.slope.entry -width 40 -relief sunken -textvar SlopeOffsetPath
     button $mod_page.slope.browse -text "Browse" \
         -command {
-            set SlopeOffsetDir $USER_HOME
+            global SlopeOffsetDir
             set SlopeOffsetFile ""
             set status [browse_file \
                             "slope offset pathname" \
@@ -88,7 +94,7 @@ proc mod_page { mod_win page } {
     entry $mod_page.mod.offset_entry -width 40 -relief sunken -textvar ModOffsetPath
     button $mod_page.mod.offset_browse -text "Browse" \
         -command {
-            set ModOffsetDir $USER_HOME
+            global ModOffsetDir
             set ModOffsetFile ""
             set status [browse_file \
                             "mod offset pathname" \
@@ -111,7 +117,7 @@ proc mod_page { mod_win page } {
     entry $mod_page.mod.rate_entry -width 40 -relief sunken -textvar ModRatePath
     button $mod_page.mod.rate_browse -text "Browse" \
         -command {
-            set ModRateDir $USER_HOME
+            global ModRateDir
             set ModRateFile ""
             set status [browse_file \
                             "mod rate pathname" \
