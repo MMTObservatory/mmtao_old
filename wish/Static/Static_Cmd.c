@@ -197,6 +197,66 @@ int Static_Cmd( ClientData client_data, Tcl_Interp* interp, int argc, char *argv
       return TCL_ERROR;
     }
 
+  } else if ( !strncmp( request, "slope_offset_send_raw", strlen("slope_offset_send_raw")) ) {
+
+    for ( j = 0; j<NUM_STATIC_ZERN; j++ ) {
+      scale[j] = 0.0;
+    }
+
+  char ascii[120];
+  float *nxtfloat;
+  float flt;
+  FILE *fptr;
+
+  if((fptr = fopen(argv[2], "r"))){
+
+    if(!fgets(ascii, 120, fptr)){		    /* read line, up to 120 characters. */
+      status = Client_RoutineError( interp, "error reading slope_offset_send_raw file", argv[0],
+                                    argv[1], errorMsg, reply_data, debug_Static);
+      return TCL_ERROR;
+    }
+
+    /* Read any number of comment lines */
+    while(ascii[0] == '#'){
+      if(!fgets(ascii, 120, fptr)){
+          status = Client_RoutineError( interp, "error reading slope_offset_send_raw file", argv[0],
+                                        argv[1], errorMsg, reply_data, debug_Static);
+          return TCL_ERROR;
+      }
+    }
+
+    nxtfloat = Static_Offsets;
+      sscanf(ascii, "%f", &flt);
+      *nxtfloat++ = flt;
+
+    for(j = 0; j < NUM_SLOPES-1; j++){
+
+      if(!fgets(ascii, 120, fptr)){		    /* read line, up to 120 characters. */
+          status = Client_RoutineError( interp, "error reading slope_offset_send_raw file", argv[0],
+                                        argv[1], errorMsg, reply_data, debug_Static);
+          return TCL_ERROR;
+      }
+      sscanf(ascii, "%f", &flt);
+      *nxtfloat++ = flt;
+
+    }
+
+    fclose(fptr);
+
+  } else {
+      status = Client_RoutineError( interp, "could not open slope_offset_send_raw file", argv[0],
+                                    argv[1], errorMsg, reply_data, debug_Static);
+      return TCL_ERROR;
+  }
+
+
+    status = Static_Send( PCR_Info, Static_Offsets, scale, debug_Static, errorMsg);
+    if ( status ) {
+      status = Client_RoutineError( interp, "ERROR Sending Offsets to PCR", argv[0],
+                                    argv[1], errorMsg, reply_data, debug_Static);
+      return TCL_ERROR;
+    }
+
 /**************************************************************************
 **
 **  Unknown call and cleanup

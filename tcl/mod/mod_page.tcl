@@ -45,7 +45,7 @@ proc mod_page { mod_win page } {
             set SlopeOffsetFile ""
             set status [browse_file \
                             "slope offset pathname" \
-                            { "slope offset file" { .slopeoffset }} \
+                            { "slope offset file" { .slope_offset }} \
                             SlopeOffsetDir \
                             SlopeOffsetFile \
                             $mod_page ]
@@ -59,13 +59,18 @@ proc mod_page { mod_win page } {
         }
     button $mod_page.slope.set -text "Set" \
         -command {
+            set status [catch { Static_Cmd slope_offset_send_raw $SlopeOffsetPath } msg ]
+            if { $status }  {
+	        tk_messageBox -message "Error setting slope offsets" \
+                    -parent $mod_page -icon error -type ok
+	    }
         }
     button $mod_page.slope.on -text "On" \
         -command {
             set status [catch { PCR_Cmd slope_offset_on } msg ]
             if { $status }  {
 	        tk_messageBox -message "Error setting slope offset on" \
-                    -parent $mod_win -icon error -type ok
+                    -parent $mod_page -icon error -type ok
 	    }
         }
     button $mod_page.slope.off -text "Off" \
@@ -73,7 +78,7 @@ proc mod_page { mod_win page } {
             set status [catch { PCR_Cmd slope_offset_off } msg ]
             if { $status }  {
 	        tk_messageBox -message "Error setting slope offset off" \
-                    -parent $mod_win -icon error -type ok
+                    -parent $mod_page -icon error -type ok
 	    }
         }
 
@@ -98,7 +103,7 @@ proc mod_page { mod_win page } {
             set ModOffsetFile ""
             set status [browse_file \
                             "mod offset pathname" \
-                            { "mod offset file" { .modoffset }} \
+                            { "mod offset file" { .mod_offset }} \
                             ModOffsetDir \
                             ModOffsetFile \
                             $mod_page ]
@@ -121,7 +126,7 @@ proc mod_page { mod_win page } {
             set ModRateFile ""
             set status [browse_file \
                             "mod rate pathname" \
-                            { "mod rate file" { .modrate }} \
+                            { "mod rate file" { .mod_rate }} \
                             ModRateDir \
                             ModRateFile \
                             $mod_page ]
@@ -142,7 +147,7 @@ proc mod_page { mod_win page } {
             set status [catch { PCR_Cmd mod_offset_on } msg ]
             if { $status }  {
 	        tk_messageBox -message "Error setting mod offset on" \
-                    -parent $mod_win -icon error -type ok
+                    -parent $mod_page -icon error -type ok
 	    }
         }
     button $mod_page.mod.off -text "Off" \
@@ -150,7 +155,7 @@ proc mod_page { mod_win page } {
             set status [catch { PCR_Cmd mod_offset_off } msg ]
             if { $status }  {
 	        tk_messageBox -message "Error setting mod offset off" \
-                    -parent $mod_win -icon error -type ok
+                    -parent $mod_page -icon error -type ok
 	    }
         }
 
