@@ -20,6 +20,8 @@ global Info_Connected
 global Info_Error
 global Info_Reply
 
+global Info_Prior_Loop_Gain
+
 global Info_Int
 global Info_Float
 global Info_Char

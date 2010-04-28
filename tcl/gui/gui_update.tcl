@@ -23,6 +23,8 @@ proc info_update_set { name element op } {
     source $PCR_HOME/tcl/camera/camera_globals.tcl
     source $PCR_HOME/tcl/rotator/rotator_globals.tcl
     source $PCR_HOME/tcl/pcr/pcr_globals.tcl
+    source $PCR_HOME/tcl/main/main_globals.tcl
+    source $PCR_HOME/tcl/info/info_globals.tcl
 
     upvar #0 Info Info
 #
@@ -97,6 +99,13 @@ proc info_update_set { name element op } {
 		-state disabled -text "Close AO Loop" -bg grey84
 	}
         set PCR_Save_Data $Info(Loop_Save_Data)
+
+	# check to see if the Loop Gain just went to zero
+	if { $Info(Loop_Gain) == 0.0 && $Info_Prior_Loop_Gain != 0.0 } {
+	    set Main_Delta_gain 0.0
+	    set Main_Previous_gain 0.0
+	}
+	set Info_Prior_Loop_Gain $Info(Loop_Gain)
 #
 # Check to see which Tix Notebook page is on top and set values on specific pages
 #   accordingly.

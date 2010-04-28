@@ -18,6 +18,8 @@
 #
 set Info_Connected 0
 set Info_Error 0
+
+set Info_Prior_Loop_Gain 0.0
 #
 # Setup the list of variables that are received from the Info server.  This
 #   lists must be exactly the same as the list received 
@@ -104,6 +106,8 @@ set Info_Float [list \
 		    P_Gain \
 		    I_Gain \
 		    D_Gain \
+		    Delta_gain \
+		    Previous_gain \
 		    Loop_Save_Data ]
 
 set Info_Char [list \
@@ -139,6 +143,8 @@ set Info_Format(Loop_Gain) "%.2f"
 set Info_Format(P_Gain) "%.2f"
 set Info_Format(I_Gain) "%.2f"
 set Info_Format(D_Gain) "%.2f"
+set Info_Format(Delta_gain) "%.2f"
+set Info_Format(Previous_gain) "%.2f"
 #
 # Set all char values and default format
 #

@@ -90,3 +90,5 @@ Loop_Save_Data          0
 P_Gain			0.0
 I_Gain			0.0
 D_Gain			0.0
+Delta_gain		0.0
+Previous_gain		0.0

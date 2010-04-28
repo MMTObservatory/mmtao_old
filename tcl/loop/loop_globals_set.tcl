@@ -23,3 +23,9 @@ set Loop_IGain_Maximum 10.0
 set Loop_DGain_Increment 0.05
 set Loop_DGain_Minimum 0.0
 set Loop_DGain_Maximum 10.0
+set Loop_Delta_gain_Increment 0.05
+set Loop_Delta_gain_Minimum 0.0
+set Loop_Delta_gain_Maximum 0.9
+set Loop_Previous_gain_Increment 0.05
+set Loop_Previous_gain_Minimum 0.0
+set Loop_Previous_gain_Maximum 0.9

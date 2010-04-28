@@ -20,3 +20,5 @@
 global Main_P_Gain
 global Main_I_Gain
 global Main_D_Gain
+global Main_Delta_gain
+global Main_Previous_gain

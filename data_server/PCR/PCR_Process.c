@@ -51,6 +51,8 @@ void *PCR_Process( void *Passed_Info)
   float pgain;
   float igain;
   float dgain;
+  float Delta_gain;
+  float Previous_gain;
 
   /*
     Pointers to the needed Info structures
@@ -824,6 +826,108 @@ void *PCR_Process( void *Passed_Info)
         Send a request to turn pid on
       */
       strcpy(Request, "set_pid_on");
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", Request);
+	fflush(stdout);
+      }
+
+    } else if ( !strncmp (request, "set_delta_gain", strlen(request) ) ) {
+
+      /*
+	Read the request Delta_gain value
+      */
+      if ( Socket_StringRead( sockfd, request) ) {
+	if ( *debug ) {
+	  printf("  PCR_Process: Error reading Delta_gain in Socket_StringRead\n");
+	  fflush(stdout);
+	}
+	continue;
+      }
+      Delta_gain = atof(request);
+
+      /*
+	Check that the requested Delta_gain is within range
+      */
+      if ( Delta_gain < 0.0 || Delta_gain > 0.9 ) {
+	printf("PCR_Process: Delta_gain is out of range [0.0-0.9], request = %f\n", Delta_gain);
+	fflush(stdout);
+	continue;
+      }
+
+      /*
+	Create request to send to the PCR
+      */
+      sprintf(Request, "set_delta_gain %.3f", Delta_gain);
+
+      /*
+        Send a request to the PCR
+      */
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", request);
+	fflush(stdout);
+      } else {
+        ;
+      }
+
+    } else if ( !strncmp (request, "set_previous_gain", strlen(request) ) ) {
+
+      /*
+	Read the request Previous_gain value
+      */
+      if ( Socket_StringRead( sockfd, request) ) {
+	if ( *debug ) {
+	  printf("  PCR_Process: Error reading Previous_gain in Socket_StringRead\n");
+	  fflush(stdout);
+	}
+	continue;
+      }
+      Previous_gain = atof(request);
+
+      /*
+	Check that the requested Previous_gain is within range
+      */
+      if ( Previous_gain < 0.0 || Previous_gain > 0.9 ) {
+	printf("PCR_Process: Previous_gain is out of range [0.0-0.9], request = %f\n", Previous_gain);
+	fflush(stdout);
+	continue;
+      }
+
+      /*
+	Create request to send to the PCR
+      */
+      sprintf(Request, "set_previous_gain %.3f", Previous_gain);
+
+      /*
+        Send a request to the PCR
+      */
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", request);
+	fflush(stdout);
+      } else {
+        ;
+      }
+
+    } else if ( !strncmp (request, "set_tap_gains_off", strlen(request) ) ) {
+
+      /*
+        Send a request to turn tap_gains off
+      */
+      strcpy(Request, "set_tap_gains_off");
+      status = PCR_SendCmd( CMD_Info, Request, debug);
+      if ( status ) {
+	printf("PCR_Process: Error applying %s request\n", Request);
+	fflush(stdout);
+      }
+
+    } else if ( !strncmp (request, "set_tap_gains_on", strlen(request) ) ) {
+
+      /*
+        Send a request to turn tap_gains on
+      */
+      strcpy(Request, "set_tap_gains_on");
       status = PCR_SendCmd( CMD_Info, Request, debug);
       if ( status ) {
 	printf("PCR_Process: Error applying %s request\n", Request);

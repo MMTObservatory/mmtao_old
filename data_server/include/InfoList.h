@@ -101,6 +101,8 @@ Info_Entry Info_List[] = {
   { "P_Gain",                "Proportional Gain", "f" },
   { "I_Gain",                "Integral Gain", "f" },
   { "D_Gain",                "Derivative Gain", "f" },
+  { "Delta_gain",            "tap Delta gain", "f" },
+  { "Previous_gain",         "tap Previous gain", "f" },
 };
 
 int Info_ListLength = ( sizeof(Info_List)/sizeof(struct _Info_Entry) );

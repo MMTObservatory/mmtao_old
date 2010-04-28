@@ -917,6 +917,98 @@ int PCR_Cmd( ClientData client_data, Tcl_Interp* interp, int argc, char *argv[])
       printf("  PCR_Cmd: Sent request %s\n", request);
     }
 
+  } else if ( !strncmp( request, "set_delta_gain", strlen(request)) ) {
+
+    /*
+      Send request to PCR Cmd server
+    */
+    status = PCR_Request( PCR_Info, request, errorMsg);
+    if ( status ) {
+      status = PCR_RoutineError( "ERROR sending request to PCR", argv[0], argv[1],
+				     errorMsg, reply_data);
+      return TCL_ERROR;
+    }
+    if ( debug_PCR ) {
+      printf("  PCR_Cmd: Sent request %s\n", request);
+    }
+
+    /*
+      Send loop Delta gain value to PCR
+    */
+    i = 2;
+    sprintf( request, "%s", argv[i++]);
+    status = PCR_Request( PCR_Info, request, errorMsg);
+    if ( status ) {
+      status = PCR_RoutineError( "ERROR sending request to PCR", argv[0], argv[1],
+				     errorMsg, reply_data);
+      return TCL_ERROR;
+    }
+    if ( debug_PCR ) {
+      printf("                           %s\n", request);
+    }
+
+  } else if ( !strncmp( request, "set_previous_gain", strlen(request)) ) {
+
+    /*
+      Send request to PCR Cmd server
+    */
+    status = PCR_Request( PCR_Info, request, errorMsg);
+    if ( status ) {
+      status = PCR_RoutineError( "ERROR sending request to PCR", argv[0], argv[1],
+				     errorMsg, reply_data);
+      return TCL_ERROR;
+    }
+    if ( debug_PCR ) {
+      printf("  PCR_Cmd: Sent request %s\n", request);
+    }
+
+    /*
+      Send loop Previous_gain value to PCR
+    */
+    i = 2;
+    sprintf( request, "%s", argv[i++]);
+    status = PCR_Request( PCR_Info, request, errorMsg);
+    if ( status ) {
+      status = PCR_RoutineError( "ERROR sending request to PCR", argv[0], argv[1],
+				     errorMsg, reply_data);
+      return TCL_ERROR;
+    }
+    if ( debug_PCR ) {
+      printf("                           %s\n", request);
+    }
+
+  } else if ( !strncmp( request, "set_tap_gains_off", strlen(request)) ) {
+
+    /*
+      Send request to PCR Cmd server
+    */
+    status = PCR_Request( PCR_Info, request, errorMsg);
+    if ( status ) {
+      status = PCR_RoutineError( "ERROR sending request to PCR", argv[0], argv[1],
+				     errorMsg, reply_data);
+      return TCL_ERROR;
+    }
+
+    if ( debug_PCR ) {
+      printf("  PCR_Cmd: Sent request %s\n", request);
+    }
+
+  } else if ( !strncmp( request, "set_tap_gains_on", strlen(request)) ) {
+
+    /*
+      Send request to PCR Cmd server
+    */
+    status = PCR_Request( PCR_Info, request, errorMsg);
+    if ( status ) {
+      status = PCR_RoutineError( "ERROR sending request to PCR", argv[0], argv[1],
+				     errorMsg, reply_data);
+      return TCL_ERROR;
+    }
+
+    if ( debug_PCR ) {
+      printf("  PCR_Cmd: Sent request %s\n", request);
+    }
+
   } else if ( !strncmp( request, "dm_stop", strlen(request)) ) {
 
     /*

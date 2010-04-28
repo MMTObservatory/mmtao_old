@@ -187,6 +187,44 @@ proc main_window { win_name } {
 	    loop_dgain_up_down down $main_win
 	}
 #
+#
+    button $main_win.main.controls.tap_off -text "tap off" -command { loop_set_tap_gains_off $main_win }
+    button $main_win.main.controls.tap_on  -text "tap on"  -command { loop_set_tap_gains_on  $main_win }
+#
+    label $main_win.main.controls.Delta_gain_label -text "Delta_gain" -bg cyan 
+
+    entry $main_win.main.controls.Delta_gain_entry -textvariable Main_Delta_gain \
+	-width 4 -justify right -relief sunken -bg white -fg black
+    bind $main_win.main.controls.Delta_gain_entry <Return> {loop_Delta_gain_set $Main_Delta_gain $main_win}
+
+    button $main_win.main.controls.Delta_gain_up -bitmap @$BitMaps_Dir/up \
+	 -state normal \
+	-command {
+	    loop_Delta_gain_up_down up $main_win
+	}
+    button $main_win.main.controls.Delta_gain_down -bitmap @$BitMaps_Dir/down \
+	 -state normal \
+	-command {
+	    loop_Delta_gain_up_down down $main_win
+	}
+#
+    label $main_win.main.controls.Previous_gain_label -text "Previous_gain" -bg cyan 
+
+    entry $main_win.main.controls.Previous_gain_entry -textvariable Main_Previous_gain \
+	-width 4 -justify right -relief sunken -bg white -fg black
+    bind $main_win.main.controls.Previous_gain_entry <Return> {loop_Previous_gain_set $Main_Previous_gain $main_win}
+
+    button $main_win.main.controls.Previous_gain_up -bitmap @$BitMaps_Dir/up \
+	-state normal \
+	-command {
+	    loop_Previous_gain_up_down up $main_win
+	}
+    button $main_win.main.controls.Previous_gain_down -bitmap @$BitMaps_Dir/down \
+	 -state normal \
+	-command {
+	    loop_Previous_gain_up_down down $main_win
+	}
+#
 # Camera Status
 #
     label $main_win.main.controls.cam_status \
@@ -248,6 +286,33 @@ proc main_window { win_name } {
 	-row $i -column 1 -sticky w
     incr i
     grid config $main_win.main.controls.dgain_down \
+	-row $i -column 1 -sticky w
+    incr i
+    grid config $main_win.main.controls.tap_off \
+	-row $i -column 0 -sticky w
+    grid config $main_win.main.controls.tap_on \
+	-row $i -column 1 -sticky w
+    incr i
+    grid config $main_win.main.controls.Delta_gain_label \
+	-row $i -column 0 -columnspan 2 -sticky ew
+    incr i
+    grid config $main_win.main.controls.Delta_gain_entry \
+	-row $i -rowspan 2 -column 0 -sticky e
+    grid config $main_win.main.controls.Delta_gain_up \
+	-row $i -column 1 -sticky w
+    incr i
+    grid config $main_win.main.controls.Delta_gain_down \
+	-row $i -column 1 -sticky w
+    incr i
+    grid config $main_win.main.controls.Previous_gain_label \
+	-row $i -column 0 -columnspan 2 -sticky ew
+    incr i
+    grid config $main_win.main.controls.Previous_gain_entry \
+	-row $i -rowspan 2 -column 0 -sticky e
+    grid config $main_win.main.controls.Previous_gain_up \
+	-row $i -column 1 -sticky w
+    incr i
+    grid config $main_win.main.controls.pgain_down \
 	-row $i -column 1 -sticky w
     incr i
     grid config $main_win.main.controls.cam_status \

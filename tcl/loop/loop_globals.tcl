@@ -25,3 +25,9 @@ global Loop_IGain_Maximum
 global Loop_DGain_Increment
 global Loop_DGain_Minimum
 global Loop_DGain_Maximum
+global Loop_Delta_gain_Increment
+global Loop_Delta_gain_Minimum
+global Loop_Delta_gain_Maximum
+global Loop_Previous_gain_Increment
+global Loop_Previous_gain_Minimum
+global Loop_Previous_gain_Maximum
