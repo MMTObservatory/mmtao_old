@@ -75,7 +75,7 @@ if { $DUAL_SCREEN } {
 } else {
 
     set main_win .main_win
-    set main_position "800x820+0+0"
+    set main_position "900x920+0+0"
 
     set lgs_win .lgs_win
     set lgs_position "-0-0"

@@ -191,35 +191,35 @@ proc main_window { win_name } {
     button $main_win.main.controls.tap_off -text "tap off" -command { loop_set_tap_gains_off $main_win }
     button $main_win.main.controls.tap_on  -text "tap on"  -command { loop_set_tap_gains_on  $main_win }
 #
-    label $main_win.main.controls.Delta_gain_label -text "Delta_gain" -bg cyan 
+    label $main_win.main.controls.delta_gain_label -text "Delta_gain" -bg cyan 
 
-    entry $main_win.main.controls.Delta_gain_entry -textvariable Main_Delta_gain \
+    entry $main_win.main.controls.delta_gain_entry -textvariable Main_Delta_gain \
 	-width 4 -justify right -relief sunken -bg white -fg black
-    bind $main_win.main.controls.Delta_gain_entry <Return> {loop_Delta_gain_set $Main_Delta_gain $main_win}
+    bind $main_win.main.controls.delta_gain_entry <Return> {loop_Delta_gain_set $Main_Delta_gain $main_win}
 
-    button $main_win.main.controls.Delta_gain_up -bitmap @$BitMaps_Dir/up \
+    button $main_win.main.controls.delta_gain_up -bitmap @$BitMaps_Dir/up \
 	 -state normal \
 	-command {
 	    loop_Delta_gain_up_down up $main_win
 	}
-    button $main_win.main.controls.Delta_gain_down -bitmap @$BitMaps_Dir/down \
+    button $main_win.main.controls.delta_gain_down -bitmap @$BitMaps_Dir/down \
 	 -state normal \
 	-command {
 	    loop_Delta_gain_up_down down $main_win
 	}
 #
-    label $main_win.main.controls.Previous_gain_label -text "Previous_gain" -bg cyan 
+    label $main_win.main.controls.previous_gain_label -text "Previous_gain" -bg cyan 
 
-    entry $main_win.main.controls.Previous_gain_entry -textvariable Main_Previous_gain \
+    entry $main_win.main.controls.previous_gain_entry -textvariable Main_Previous_gain \
 	-width 4 -justify right -relief sunken -bg white -fg black
-    bind $main_win.main.controls.Previous_gain_entry <Return> {loop_Previous_gain_set $Main_Previous_gain $main_win}
+    bind $main_win.main.controls.previous_gain_entry <Return> {loop_Previous_gain_set $Main_Previous_gain $main_win}
 
-    button $main_win.main.controls.Previous_gain_up -bitmap @$BitMaps_Dir/up \
+    button $main_win.main.controls.previous_gain_up -bitmap @$BitMaps_Dir/up \
 	-state normal \
 	-command {
 	    loop_Previous_gain_up_down up $main_win
 	}
-    button $main_win.main.controls.Previous_gain_down -bitmap @$BitMaps_Dir/down \
+    button $main_win.main.controls.previous_gain_down -bitmap @$BitMaps_Dir/down \
 	 -state normal \
 	-command {
 	    loop_Previous_gain_up_down down $main_win
@@ -293,26 +293,26 @@ proc main_window { win_name } {
     grid config $main_win.main.controls.tap_on \
 	-row $i -column 1 -sticky w
     incr i
-    grid config $main_win.main.controls.Delta_gain_label \
+    grid config $main_win.main.controls.delta_gain_label \
 	-row $i -column 0 -columnspan 2 -sticky ew
     incr i
-    grid config $main_win.main.controls.Delta_gain_entry \
+    grid config $main_win.main.controls.delta_gain_entry \
 	-row $i -rowspan 2 -column 0 -sticky e
-    grid config $main_win.main.controls.Delta_gain_up \
+    grid config $main_win.main.controls.delta_gain_up \
 	-row $i -column 1 -sticky w
     incr i
-    grid config $main_win.main.controls.Delta_gain_down \
+    grid config $main_win.main.controls.delta_gain_down \
 	-row $i -column 1 -sticky w
     incr i
-    grid config $main_win.main.controls.Previous_gain_label \
+    grid config $main_win.main.controls.previous_gain_label \
 	-row $i -column 0 -columnspan 2 -sticky ew
     incr i
-    grid config $main_win.main.controls.Previous_gain_entry \
+    grid config $main_win.main.controls.previous_gain_entry \
 	-row $i -rowspan 2 -column 0 -sticky e
-    grid config $main_win.main.controls.Previous_gain_up \
+    grid config $main_win.main.controls.previous_gain_up \
 	-row $i -column 1 -sticky w
     incr i
-    grid config $main_win.main.controls.pgain_down \
+    grid config $main_win.main.controls.previous_gain_down \
 	-row $i -column 1 -sticky w
     incr i
     grid config $main_win.main.controls.cam_status \
@@ -742,7 +742,7 @@ proc main_window { win_name } {
 #
 #-----------------------------------------------------------------
 #
-    tixNoteBook $main_win.aux -ipadx 5 -ipady 5 -height 330 -width 800
+    tixNoteBook $main_win.aux -ipadx 5 -ipady 5 -height 330 -width 900
 #
     $main_win.aux add server -createcmd { server_page $main_win.aux server } \
 	-label "Servers\n& Power" -under 0

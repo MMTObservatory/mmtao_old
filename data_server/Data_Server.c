@@ -66,7 +66,8 @@ int main( )
   int debug = 0;
   int start_debug = 1;
   int status, i;
-  int newsockfd, saveflags;
+  int newsockfd = -1;
+  int saveflags;
   int local_debug = 0;
   char filename[STRING_LENGTH];
 

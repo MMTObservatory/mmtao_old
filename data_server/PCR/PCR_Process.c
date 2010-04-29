@@ -598,7 +598,7 @@ void *PCR_Process( void *Passed_Info)
       */
       status = PCR_SendCmd( CMD_Info, Request, debug);
       if ( status ) {
-	printf("PCR_Process: Error applying %s request\n", request);
+	printf("PCR_Process: Error applying %s request\n", Request);
 	fflush(stdout);
       } else {
 	List[Loop_Gain_Position].f_value = 0.0;
@@ -638,7 +638,7 @@ void *PCR_Process( void *Passed_Info)
 	*/
 	status = PCR_SendCmd( CMD_Info, Request, debug);
 	if ( status ) {
-	  printf("PCR_Process: Error applying %s request\n", request);
+	  printf("PCR_Process: Error applying %s request\n", Request);
 	  fflush(stdout);
 	} else {
 	  List[Loop_Gain_Position].f_value = 0.0;
@@ -684,7 +684,7 @@ void *PCR_Process( void *Passed_Info)
       */
       status = PCR_SendCmd( CMD_Info, Request, debug);
       if ( status ) {
-	printf("PCR_Process: Error applying %s request\n", request);
+	printf("PCR_Process: Error applying %s request\n", Request);
 	fflush(stdout);
       } else {
 	List[Loop_Gain_Position].f_value = gain;
@@ -724,7 +724,7 @@ void *PCR_Process( void *Passed_Info)
       */
       status = PCR_SendCmd( CMD_Info, Request, debug);
       if ( status ) {
-	printf("PCR_Process: Error applying %s request\n", request);
+	printf("PCR_Process: Error applying %s request\n", Request);
 	fflush(stdout);
       } else {
         ;
@@ -763,7 +763,7 @@ void *PCR_Process( void *Passed_Info)
       */
       status = PCR_SendCmd( CMD_Info, Request, debug);
       if ( status ) {
-	printf("PCR_Process: Error applying %s request\n", request);
+	printf("PCR_Process: Error applying %s request\n", Request);
 	fflush(stdout);
       } else {
         ;
@@ -802,7 +802,7 @@ void *PCR_Process( void *Passed_Info)
       */
       status = PCR_SendCmd( CMD_Info, Request, debug);
       if ( status ) {
-	printf("PCR_Process: Error applying %s request\n", request);
+	printf("PCR_Process: Error applying %s request\n", Request);
 	fflush(stdout);
       } else {
         ;
@@ -865,7 +865,7 @@ void *PCR_Process( void *Passed_Info)
       */
       status = PCR_SendCmd( CMD_Info, Request, debug);
       if ( status ) {
-	printf("PCR_Process: Error applying %s request\n", request);
+	printf("PCR_Process: Error applying %s request\n", Request);
 	fflush(stdout);
       } else {
         ;
@@ -904,7 +904,7 @@ void *PCR_Process( void *Passed_Info)
       */
       status = PCR_SendCmd( CMD_Info, Request, debug);
       if ( status ) {
-	printf("PCR_Process: Error applying %s request\n", request);
+	printf("PCR_Process: Error applying %s request\n", Request);
 	fflush(stdout);
       } else {
         ;
