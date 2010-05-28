@@ -30,5 +30,5 @@ else
 #
 # Start the PCR Server on the specified host
 #
-    ssh -XYCq $pcr_server_host xterm -geometry 70x10+839+693 +hold -sb -sl 500 -title "DDS" -e "local_dds" &
+    ssh -XYCq $pcr_server_host xterm -geometry 70x10+839+693 +hold -sb -sl 500 -title "DDS" -e "local_dds_ao-pcr" &
 fi

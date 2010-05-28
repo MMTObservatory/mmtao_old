@@ -30,5 +30,5 @@ else
 #
 # Start the PCR Server on the specified host
 #
-    ssh -XYCq $pcr_server_host xterm -geometry 70x10+839+526 -hold -sb -sl 500 -title "PCR" -e "local_pcr" &
+    ssh -XYCq $pcr_server_host xterm -geometry 70x10+839+526 -hold -sb -sl 500 -title "PCR" -e "local_pcr_ao-pcr" &
 fi

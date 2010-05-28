@@ -26,5 +26,5 @@ else
 #
 # Kill the PCR Server on the specified host
 #
-    ssh -XYCq $pcr_host kill_dds
+    ssh -XYCq $pcr_host kill_dds_ao-pcr
 fi

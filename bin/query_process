@@ -66,9 +66,9 @@ else
 	if [[ $server == pcr_server ]]; then
 	    ssh -XYCq $hostname query_pcr_server
 	elif [[ $server == pcr ]]; then
-	    ssh -XYCq $hostname query_pcr
+	    ssh -XYCq $hostname query_pcr_ao-pcr
 	elif [[ $server == dds ]]; then
-	    ssh -XYCq $hostname query_dds
+	    ssh -XYCq $hostname query_dds_ao-pcr
 	elif [[ $server == topbox_server ]]; then
 	    ssh -XYCq $hostname query_topbox_server
 	elif [[ $server == science_server ]]; then
