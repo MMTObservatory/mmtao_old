@@ -55,6 +55,13 @@ puts "environment variable SCIENCE_LOG_FILENAME is undefined.  Using #{ENV['SCIE
 @@offset_total_upper = 50.0
 @@offset_total_lower = -50.0
 
+# according to phinz 2010-05-30,
+# the top/tilt axes are rotated
+# from the telescope axes
+# by a few degrees.
+
+@@offset_rotation = -4
+
 @@focus_max = 20.0	# microns
 
 @@Science_Tip_Home  = "0.00"
@@ -634,7 +641,7 @@ def science_offset (arg1, arg2)
 		end
 
 		# convert offsets on the sky from ra/dec to az/el
-		angle = (@@TCS["pa"].to_f - @@TCS["rot"].to_f) * Math::PI / 180.0
+		angle = (@@TCS["pa"].to_f - @@TCS["rot"].to_f + @@offset_rotation) * Math::PI / 180.0
 		tip  = ra * Math.sin(angle) + dec * Math.cos(angle)
 		tilt = ra * Math.cos(angle) - dec * Math.sin(angle)
 
