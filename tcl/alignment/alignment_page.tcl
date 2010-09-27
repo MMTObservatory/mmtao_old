@@ -199,6 +199,21 @@ proc alignment_page { alignment_win page } {
     radiobutton $alignment_page.right.hex.science -text "Science\nCamera" \
 	-var Hex_Move -value Science -anchor e
 
+    label $alignment_page.right.hex.wfsc_pos \
+	-textvariable Hex_Pos_WFSC
+    label $alignment_page.right.hex.science_pos \
+	-textvariable Hex_Pos_Science
+    button $alignment_page.right.hex.wfsc_pos_reset \
+	-text "reset" -bg green \
+	-command {
+	    set Hex_Pos_WFSC 0
+	}
+    button $alignment_page.right.hex.science_pos_reset \
+	-text "reset" -bg green \
+	-command {
+	    set Hex_Pos_Science 0
+	}
+
     button $alignment_page.right.hex.move.y_pos -bitmap @$BitMaps_Dir/up \
 	-command {
 	    hex_move up $alignment_page
@@ -264,9 +279,17 @@ proc alignment_page { alignment_win page } {
     incr i
     grid config $alignment_page.right.hex.wfsc  \
 	-row $i -column 0 -sticky w
+    grid config $alignment_page.right.hex.wfsc_pos  \
+	-row $i -column 1 -sticky w
+    grid config $alignment_page.right.hex.wfsc_pos_reset  \
+	-row $i -column 2 -sticky w
     incr i
     grid config $alignment_page.right.hex.science  \
 	-row $i -column 0 -sticky w
+    grid config $alignment_page.right.hex.science_pos  \
+	-row $i -column 1 -sticky w
+    grid config $alignment_page.right.hex.science_pos_reset  \
+	-row $i -column 2 -sticky w
     incr i
     grid config $alignment_page.right.hex.move \
 	-row $i -column 0 -sticky nsew

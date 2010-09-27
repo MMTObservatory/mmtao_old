@@ -53,5 +53,11 @@ proc hex_move { direction parent_win } {
 	topbox_move_rel "Focus" $incr $parent_win
     }
 
+    if { ![string compare Science $Hex_Move] } {
+	set Hex_Pos_Science [expr $incr + $Hex_Pos_Science]
+    } else {
+	set Hex_Pos_WFSC [expr $incr + $Hex_Pos_WFSC]
+    }
+
     return 0
 }

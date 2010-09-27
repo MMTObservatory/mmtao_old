@@ -15,6 +15,8 @@
 #
 set Hex_Move WFSC
 set Hex_Incr 10
+set Hex_Pos_WFSC 0
+set Hex_Pos_Science 0
 #
 # Hex status flags and loooong return string
 #

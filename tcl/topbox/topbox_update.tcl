@@ -134,10 +134,10 @@ proc status_update_set { name element op } {
 #       F15_Enabled
 #
 	if { $Status(F15_Enabled) } {
-	    $topbox_page.center.f15.info.enable configure -bg red \
+	    $topbox_page.center.f15.info.enable configure -bg green \
 		-activebackground tomato -text "Enabled"
 	} else {
-	    $topbox_page.center.f15.info.enable configure -bg green \
+	    $topbox_page.center.f15.info.enable configure -bg red \
 		-activebackground lightgreen -text "Disabled"
 	}
 #
@@ -180,10 +180,10 @@ proc status_update_set { name element op } {
 #       Indigo_Enabled
 #
 	if { $Status(Indigo_Enabled) } {
-	    $topbox_page.center.indigo.info.enable configure -bg red \
+	    $topbox_page.center.indigo.info.enable configure -bg green \
 		-activebackground tomato -text "Enabled"
 	} else {
-	    $topbox_page.center.indigo.info.enable configure -bg green \
+	    $topbox_page.center.indigo.info.enable configure -bg red \
 		-activebackground lightgreen -text "Disabled"
 	}
 #

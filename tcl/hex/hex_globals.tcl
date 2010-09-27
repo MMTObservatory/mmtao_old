@@ -16,6 +16,8 @@
 #
 global Hex_Move
 global Hex_Incr
+global Hex_Pos_WFSC
+global Hex_Pos_Science
 #
 # Hex status flags and loooong return string
 #
