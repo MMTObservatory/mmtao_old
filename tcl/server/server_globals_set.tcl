@@ -260,10 +260,10 @@ proc pcr_cmd_connected_trace { name element op } {
     if { [ expr ![ expr ![winfo exists $main_win] || ![string compare .null $server_page] ] ] } {
 	if { $Info(PCR_CMD_Connected) } {
 	    $server_page.server.pcr.connected_PCR_CMD configure -bg green -state disabled
-	    set PCR_Running 1
+#	    set PCR_Running 1
 	} else {
 	    $server_page.server.pcr.connected_PCR_CMD configure -bg red -state normal
-	    set PCR_Running 0
+#	    set PCR_Running 0
 	}
     }
 }
@@ -273,14 +273,17 @@ proc pcr_wfsc_connected_trace { name element op } {
 
     global PCR_HOME
     source $PCR_HOME/tcl/window/window_globals.tcl
+    source $PCR_HOME/tcl/process/process_globals.tcl
 
     upvar #0 Info Info
 
     if { [ expr ![ expr ![winfo exists $main_win] || ![string compare .null $server_page] ] ] } {
 	if { $Info(PCR_WFSC_Connected) } {
 	    $server_page.server.pcr.connected_PCR_WFSC configure -bg green -state disabled
+	    set PCR_Running 1
 	} else {
 	    $server_page.server.pcr.connected_PCR_WFSC configure -bg red -state normal
+	    set PCR_Running 0
 	}
     }
 }
