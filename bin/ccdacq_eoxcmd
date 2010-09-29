@@ -1,0 +1,2 @@
+#!/bin/csh
+play /usr/share/sounds/KDE_Beep.ogg < /dev/null >& /dev/null
