@@ -45,7 +45,7 @@ proc tss_looper { parent_win } {
     if { $TSS(tss_status) == "ok" } {
         if { $Info(Loop_Running) } {
             loop_open_close $parent_win
-	    bell;after 500;bell;after 500;bell
+	    tss_bell;after 500;tss_bell;after 500;tss_bell
             tk_messageBox -message "TSS in SAFE mode\nLoop commanded open" \
                 -parent $parent_win -icon error -type ok
         }
@@ -55,3 +55,6 @@ proc tss_looper { parent_win } {
 
 }
 
+proc tss_bell {} {
+    catch { exec ccdacq_eoxcmd }
+}
