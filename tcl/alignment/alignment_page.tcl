@@ -204,18 +204,34 @@ proc alignment_page { alignment_win page } {
     label $alignment_page.right.hex.science_pos \
 	-textvariable Hex_Pos_Science
     button $alignment_page.right.hex.wfsc_pos_reset \
-	-text "reset" -bg green \
+	-text "Clear" -bg green \
 	-command {
 	    set Hex_Pos_WFSC 0
 	}
     button $alignment_page.right.hex.science_pos_reset \
-	-text "reset" -bg green \
+	-text "Clear" -bg green \
 	-command {
 	    set Hex_Pos_Science 0
 	}
 
     button $alignment_page.right.hex.move.y_pos -bitmap @$BitMaps_Dir/up \
 	-command {
+	    hex_move up $alignment_page
+	}
+    button $alignment_page.right.hex.move.return \
+	-text "Return" -bg green \
+	-command {
+	    if { ![string compare Science $Hex_Move] } {
+		set Hex_Incr [expr -1 * $Hex_Pos_Science]
+	    } else {
+		set Hex_Incr [expr -1 * $Hex_Pos_WFSC]
+	    }
+	    if { [expr $Hex_Incr] > 20 } {
+		set Hex_Incr 20
+	    }
+	    if { [expr $Hex_Incr] < -20 } {
+		set Hex_Incr -20
+	    }
 	    hex_move up $alignment_page
 	}
     button $alignment_page.right.hex.move.y_neg -bitmap @$BitMaps_Dir/down \
@@ -240,11 +256,11 @@ proc alignment_page { alignment_win page } {
 	    set Hex_Incr 20
 	}
 
-    radiobutton $alignment_page.right.hex.incr_50 -text "50 microns" \
-	-var Hex_Incr -value 50 -anchor w \
-	-command {
-	    set Hex_Incr 50
-	}
+#    radiobutton $alignment_page.right.hex.incr_50 -text "50 microns" \
+#	-var Hex_Incr -value 50 -anchor w \
+#	-command {
+#	    set Hex_Incr 50
+#	}
 
     label $alignment_page.right.hex.incr.incr_label \
 	-text "Increment in\nHex microns"
@@ -260,6 +276,9 @@ proc alignment_page { alignment_win page } {
 	-row $i -column 0
     grid config $alignment_page.right.hex.move.pos_label \
 	-row $i -column 1 -sticky w
+    incr i
+    grid config $alignment_page.right.hex.move.return \
+	-row $i -column 0
     incr i
     grid config $alignment_page.right.hex.move.y_neg \
 	-row $i -column 0
@@ -303,8 +322,8 @@ proc alignment_page { alignment_win page } {
     grid config $alignment_page.right.hex.incr_20 \
 	-row $i -column 0
     incr i
-    grid config $alignment_page.right.hex.incr_50 \
-	-row $i -column 0
+#    grid config $alignment_page.right.hex.incr_50 \
+#	-row $i -column 0
 #
 #---------------------------------------------------
 # Pack the Hex stuff
