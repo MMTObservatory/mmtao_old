@@ -278,8 +278,7 @@ proc camera_page { camera_win page } {
 #
     pack $camera_page.cam_bias \
 	-side bottom -anchor w
-    pack $camera_page.cam_source \
-	$camera_page.cam_size \
+    pack $camera_page.cam_size \
 	-side left -anchor nw
     pack $camera_page.cam_rate \
 	-side left -anchor n

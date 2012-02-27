@@ -355,8 +355,7 @@ proc bg_page { back_win page } {
 	    -row $i -column 1 -sticky w
     incr i
 
-    pack $bg_page.full.new.read \
-	    $bg_page.full.new.acquire \
+    pack    $bg_page.full.new.acquire \
 	    -side left -anchor n
 
     pack $bg_page.full.curr \
