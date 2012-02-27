@@ -780,3 +780,12 @@ proc main_window { win_name } {
     pack $main_win.aux -side top -expand yes
 
 }
+
+proc main_window_start_spots_realtime { parent_win } {
+
+    global PCR_HOME
+    source $PCR_HOME/tcl/display/display_globals.tcl
+
+    set Display_RT(Spots) 1
+    display_spots Spots 1 1 $parent_win
+}
