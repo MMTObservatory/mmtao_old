@@ -61,7 +61,7 @@ proc server_page { server_win page } {
 #
 #   Labels
 #
-    set button_size 0.05i
+    set button_size 0.20i
 
     set i 0
     set j 0
