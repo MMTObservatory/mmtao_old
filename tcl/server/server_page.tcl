@@ -61,6 +61,8 @@ proc server_page { server_win page } {
 #
 #   Labels
 #
+    set button_size 0.05i
+
     set i 0
     set j 0
     grid config $server_page.server.process.process_label \
@@ -81,7 +83,7 @@ proc server_page { server_win page } {
 	-text "Data_Server"
     button $server_page.server.process.pcr_server_start \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    process_start pcr_server $server_page
 	}
@@ -92,7 +94,7 @@ proc server_page { server_win page } {
 	-text "PCR"
     button $server_page.server.process.pcr_start \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    process_start pcr $server_page
 	}
@@ -103,7 +105,7 @@ proc server_page { server_win page } {
 	-text "DDS"
     button $server_page.server.process.dds_start \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    process_start dds $server_page
 	}
@@ -114,7 +116,7 @@ proc server_page { server_win page } {
 	-text "Topbox Server"
     button $server_page.server.process.topbox_start \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    process_start topbox_server $server_page
 	}
@@ -125,7 +127,7 @@ proc server_page { server_win page } {
 	-text "TSS Server"
     button $server_page.server.process.tss_start \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 #	    process_start tss_server $server_page
 	}
@@ -136,7 +138,7 @@ proc server_page { server_win page } {
 	-text "Science Server"
     button $server_page.server.process.science_start \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    process_start science_server $server_page
 	}
@@ -227,7 +229,7 @@ proc server_page { server_win page } {
 	-text "TCS"
     button $server_page.server.gui.tcs_connected \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    tcs_connect $server_page
 	}
@@ -248,7 +250,7 @@ proc server_page { server_win page } {
 	-text "Topbox_Status"
     button $server_page.server.gui.status_connected \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    status_connect $server_page
 	}
@@ -270,7 +272,7 @@ proc server_page { server_win page } {
 	-text "Topbox_Cmd"
     button $server_page.server.gui.topbox_connected \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    topbox_connect $server_page
 	    if { $status } {
@@ -298,7 +300,7 @@ proc server_page { server_win page } {
 	-text "PCR_Info"
     button $server_page.server.gui.info_connected \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    info_connect $server_page
 	}
@@ -320,7 +322,7 @@ proc server_page { server_win page } {
 	-text "PCR_Cmd"
     button $server_page.server.gui.pcr_connected \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    pcr_server_connect PCR $server_page
 	}
@@ -342,7 +344,7 @@ proc server_page { server_win page } {
 	-text "TSS"
     button $server_page.server.gui.tss_connected \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    tss_connect $tss_page
 	}
@@ -364,7 +366,7 @@ proc server_page { server_win page } {
 	-text "Science"
     button $server_page.server.gui.science_connected \
 	-background red -activebackground OrangeRed \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    science_connect $server_page
 	}
@@ -415,7 +417,7 @@ proc server_page { server_win page } {
 	    -text $el
 	button $server_page.server.pcr.connected_$el \
 	    -background red -activebackground OrangeRed \
-	    -padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	    -padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	    -command "
 		pcr_server_connect $el $server_page
 	    "
@@ -449,7 +451,7 @@ proc server_page { server_win page } {
 #
     button $server_page.server.power.connected \
 	-background red -activebackground tomato \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    set status [ topbox_connect_device "Power" $topbox_page ]
 	    if { $status } {
@@ -470,7 +472,7 @@ proc server_page { server_win page } {
 	-text "WFSC"
     button $server_page.server.power.wfsc_start \
 	-background red -activebackground tomato \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    topbox_power "WFSC" $server_page
 	}
@@ -479,7 +481,7 @@ proc server_page { server_win page } {
 	-text "WFSC_Peltier"
     button $server_page.server.power.peltier_start \
 	-background red -activebackground tomato \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    topbox_power "Peltier" $server_page
 	}
@@ -488,7 +490,7 @@ proc server_page { server_win page } {
 	-text "Stella"
     button $server_page.server.power.stella_start \
 	-background red -activebackground tomato \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    topbox_power "Stella" $server_page
 	}
@@ -497,7 +499,7 @@ proc server_page { server_win page } {
 	-text "Alignment_Laser"
     button $server_page.server.power.alignment_start \
 	-background grey84 -activebackground grey100 \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    topbox_power "Alignment_Laser" $server_page
 	}
@@ -506,7 +508,7 @@ proc server_page { server_win page } {
 	-text "F15_Laser"
     button $server_page.server.power.f15_start \
 	-background grey84 -activebackground grey100 \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    topbox_power "F15_Laser" $server_page
 	}
@@ -515,7 +517,7 @@ proc server_page { server_win page } {
 	-text "Indigo"
     button $server_page.server.power.indigo_start \
 	-background grey84 -activebackground grey100 \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    topbox_power "Indigo" $server_page
 	}
@@ -524,7 +526,7 @@ proc server_page { server_win page } {
 	-text "Spare1"
     button $server_page.server.power.spare1_start \
 	-background grey84 -activebackground grey84 \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    topbox_power "Spare1" $server_page
 	}
@@ -533,7 +535,7 @@ proc server_page { server_win page } {
 	-text "Spare2"
     button $server_page.server.power.spare2_start \
 	-background grey84 -activebackground grey100 \
-	-padx 0 -pady 0 -height 5 -width 5 -bitmap @$BitMaps_Dir/solid \
+	-padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
 	-command { 
 	    topbox_power "Spare2" $server_page
 	}
