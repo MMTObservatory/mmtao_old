@@ -359,4 +359,17 @@ process_start_all 1 1 1 1 1 $main_win
 # Start looper for rotation tracking
 #
 rotator_looper $main_win
+
 main_window_start_spots_realtime $main_win
+
+set default_cam_rate 550
+set default_cam_bias_0 520
+set default_cam_bias_1 520
+set default_cam_bias_2 560
+set default_cam_bias_3 550
+
+camera_rate_set $default_cam_rate $camera_page
+camera_bias_set 0 $default_cam_bias_0 $camera_page
+camera_bias_set 1 $default_cam_bias_1 $camera_page
+camera_bias_set 2 $default_cam_bias_2 $camera_page
+camera_bias_set 3 $default_cam_bias_3 $camera_page
