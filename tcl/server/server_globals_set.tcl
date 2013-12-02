@@ -53,8 +53,14 @@ proc pcr_running_trace { name element op } {
     if { [ expr ![ expr ![winfo exists $main_win] || ![string compare .null $server_page] ] ] } {
 	if { $value } {
 	    $server_page.server.process.pcr_start configure -bg green -activebackground lightgreen
+	    if { [string compare .null $camera_page] } {
+	        $camera_page.cam_servers.pcr_start configure -bg green -activebackground lightgreen
+            }
 	} else {
 	    $server_page.server.process.pcr_start configure -bg red -activebackground OrangeRed
+	    if { [string compare .null $camera_page] } {
+	        $camera_page.cam_servers.pcr_start configure -bg red -activebackground OrangeRed
+            }
 	}
     }
 }

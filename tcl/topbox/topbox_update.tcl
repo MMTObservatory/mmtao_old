@@ -330,11 +330,20 @@ proc status_update_set { name element op } {
 	if { $Status(Power_Connected) } {
 	    if { $Status(Power_WFSC) } {
 		$server_page.server.power.wfsc_start configure -bg green -activebackground lawngreen -state normal
+                if { [string compare .null $camera_page] } {
+		    $camera_page.cam_servers.wfsc_start configure -bg green -activebackground lawngreen -state normal
+                }
 	    } else {
 		$server_page.server.power.wfsc_start configure -bg red -activebackground tomato -state normal
+                if { [string compare .null $camera_page] } {
+		    $camera_page.cam_servers.wfsc_start configure -bg red -activebackground tomato -state normal
+                }
 	    }
 	} else {
 	    $server_page.server.power.wfsc_start configure -bg grey84 -state disabled
+            if { [string compare .null $camera_page] } {
+	        $camera_page.cam_servers.wfsc_start configure -bg grey84 -state disabled
+            }
 	}
 #
 #       WFSC Peltier Power

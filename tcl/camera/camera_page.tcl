@@ -14,6 +14,7 @@ proc camera_page { camera_win page } {
 
     global PCR_HOME
     source $PCR_HOME/tcl/camera/camera_globals.tcl
+    source $PCR_HOME/tcl/bitmaps/bitmaps_globals.tcl
 #
     upvar #0 Info Info
 #
@@ -31,6 +32,7 @@ proc camera_page { camera_win page } {
     frame $camera_page.cam_rate
     frame $camera_page.cam_run
     frame $camera_page.cam_bias -relief ridge -border 4
+    frame $camera_page.cam_servers
 #
 # Radio buttons to the source of the camera frame
 #
@@ -271,6 +273,52 @@ proc camera_page { camera_win page } {
     incr j
     grid config $camera_page.cam_bias.default \
 	-row $i -column $j
+
+# duplicate server/power buttons
+
+    label $camera_page.cam_servers.label -text "Servers/Power" \
+        -bg cyan -width 20
+
+#
+# PCR Process
+#
+    set button_size 0.20i
+    label $camera_page.cam_servers.pcr_label \
+        -text "PCR"
+    button $camera_page.cam_servers.pcr_start \
+        -background red -activebackground OrangeRed \
+        -padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
+        -command { 
+            process_start pcr $camera_page
+         }
+
+    label $camera_page.cam_servers.wfsc_label \
+        -text "WFSC"
+    button $camera_page.cam_servers.wfsc_start \
+        -background red -activebackground tomato \
+        -padx 0 -pady 0 -height $button_size -width $button_size -bitmap @$BitMaps_Dir/solid \
+        -command { 
+            topbox_power "WFSC" $camera_page
+        }
+
+    set i 0
+    grid config $camera_page.cam_servers.label \
+	-row $i -column 0 -columnspan 2 -sticky ew
+    incr i
+    set j 0
+    grid config $camera_page.cam_servers.wfsc_label \
+	-row $i -column $j
+    incr j
+    grid config $camera_page.cam_servers.wfsc_start \
+	-row $i -column $j
+    incr i
+    set j 0
+    grid config $camera_page.cam_servers.pcr_label \
+	-row $i -column $j
+    incr j
+    grid config $camera_page.cam_servers.pcr_start \
+	-row $i -column $j
+
 #
 #---------------------------------------------------
 # Final packing
@@ -283,6 +331,8 @@ proc camera_page { camera_win page } {
     pack $camera_page.cam_rate \
 	-side left -anchor n
     pack $camera_page.cam_run \
+	-side left -anchor nw
+    pack $camera_page.cam_servers \
 	-side left -anchor nw
 
     camera_current_bias $camera_page
